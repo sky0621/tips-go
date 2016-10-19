@@ -1,0 +1,26 @@
+2016/10/20 04:24:35 [NewSignalReceiver]START
+2016/10/20 04:24:35 [NewSignalReceiver]END
+2016/10/20 04:24:35 [main]END
+2016/10/20 04:24:35 [ReceiveSignal]START
+2016/10/20 04:24:35 [go func()]START
+2016/10/20 04:24:35 [go func()]END
+2016/10/20 04:26:37 [NewSignalReceiver]START
+2016/10/20 04:26:37 [NewSignalReceiver]END
+2016/10/20 04:26:37 [main]END
+2016/10/20 04:26:37 [ReceiveSignal]START
+2016/10/20 04:26:37 [go func()]START
+2016/10/20 04:26:37 [go func()]END
+2016/10/20 04:27:58 [NewSignalReceiver]START
+2016/10/20 04:27:58 [NewSignalReceiver]END
+2016/10/20 04:27:58 [main]END
+2016/10/20 04:27:58 [ReceiveSignal]START
+2016/10/20 04:27:58 [go func()]START
+2016/10/20 04:27:58 [go func()]END
+2016/10/20 04:28:01 [ReceiveSignal]OSからシグナル受信！！！ -> appStopFuncをコールします。
+2016/10/20 04:28:01 [CloseApp]START
+2016/10/20 04:28:01 [CloseApp]アプリ終了フラグ： false
+2016/10/20 04:28:01 [CloseApp]locked!
+2016/10/20 04:28:01 [CloseApp]unlocked!
+2016/10/20 04:28:01 [CloseApp]アプリ終了フラグ： true
+2016/10/20 04:28:01 [CloseApp]END
+2016/10/20 04:28:01 [ReceiveSignal]END
