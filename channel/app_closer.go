@@ -22,5 +22,6 @@ func closeApp() {
 	log.Println("[CloseApp]unlocked!")
 	log.Println("[CloseApp]アプリ終了フラグ：", isStop)
 	appStopChannel <- struct{}{}
+	log.Println("[CloseApp]appStopChannelチャネルに通知！！")
 	log.Println("[CloseApp]END")
 }

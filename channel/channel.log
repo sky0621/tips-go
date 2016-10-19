@@ -24,3 +24,34 @@
 2016/10/20 04:28:01 [CloseApp]アプリ終了フラグ： true
 2016/10/20 04:28:01 [CloseApp]END
 2016/10/20 04:28:01 [ReceiveSignal]END
+2016/10/20 04:33:31 [NewSignalReceiver]START
+2016/10/20 04:33:31 [NewSignalReceiver]END
+2016/10/20 04:33:31 [main]END
+2016/10/20 04:33:31 [ReceiveSignal]START
+2016/10/20 04:33:31 [go func()]START
+2016/10/20 04:33:34 [ReceiveSignal]OSからシグナル受信！！！ -> appStopFuncをコールします。
+2016/10/20 04:33:34 [CloseApp]START
+2016/10/20 04:33:34 [CloseApp]アプリ終了フラグ： false
+2016/10/20 04:33:34 [CloseApp]locked!
+2016/10/20 04:33:34 [CloseApp]unlocked!
+2016/10/20 04:33:34 [CloseApp]アプリ終了フラグ： true
+2016/10/20 04:33:34 [CloseApp]END
+2016/10/20 04:33:34 [ReceiveSignal]END
+2016/10/20 04:33:34 [go func()]END
+2016/10/20 04:36:07 [NewSignalReceiver]START
+2016/10/20 04:36:07 [NewSignalReceiver]signal.Notify(signalChannel, syscall.SIGINT, syscall.SIGTERM)
+2016/10/20 04:36:07 [NewSignalReceiver]END
+2016/10/20 04:36:07 [main]END
+2016/10/20 04:36:07 [ReceiveSignal]START
+2016/10/20 04:36:07 [go func()]START
+2016/10/20 04:36:09 [ReceiveSignal]OSからシグナル受信！！！ -> closeAppをコールします。
+2016/10/20 04:36:09 [CloseApp]START
+2016/10/20 04:36:09 [CloseApp]アプリ終了フラグ： false
+2016/10/20 04:36:09 [CloseApp]locked!
+2016/10/20 04:36:09 [CloseApp]unlocked!
+2016/10/20 04:36:09 [CloseApp]アプリ終了フラグ： true
+2016/10/20 04:36:09 [CloseApp]appStopChannelチャネルに通知！！
+2016/10/20 04:36:09 [CloseApp]END
+2016/10/20 04:36:09 [ReceiveSignal]END
+2016/10/20 04:36:09 [go func()]appStopChannelチャネルから受信！！！！
+2016/10/20 04:36:09 [go func()]END
