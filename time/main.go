@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"time"
 )
@@ -15,15 +14,20 @@ func main() {
 	utcnow := now.UTC()
 	log.Println("UTCに変換：", utcnow)
 
-	log.Println("PM:", now.Format("3:04PM"))
-
-	str := "Thu May 24 22:56:30 JST 2001"
-	layout := "Mon Jan 2 15:04:05 MST 2006"
-	t, _ := time.Parse(layout, str)
-	fmt.Println(t) // => "2001-05-24 22:56:30 +0900 JST"
-
-	str = "2003/04/18"
-	layout = "2006/01/02"
-	t, _ = time.Parse(layout, str)
-	fmt.Println(t) // => "2003-04-18 00:00:00 +0000 UTC"
+	log.Println("＜現在日時を（用意された）いろんなフォーマットで表示＞")
+	log.Println("[ANSIC]", now.Format(time.ANSIC))
+	log.Println("[UnixDate]", now.Format(time.UnixDate))
+	log.Println("[RubyDate]", now.Format(time.RubyDate))
+	log.Println("[RFC822]", now.Format(time.RFC822))
+	log.Println("[RFC822Z]", now.Format(time.RFC822Z))
+	log.Println("[RFC850]", now.Format(time.RFC850))
+	log.Println("[RFC1123]", now.Format(time.RFC1123))
+	log.Println("[RFC1123Z]", now.Format(time.RFC1123Z))
+	log.Println("[RFC3339]", now.Format(time.RFC3339))
+	log.Println("[RFC3339Nano]", now.Format(time.RFC3339Nano))
+	log.Println("[Kitchen]", now.Format(time.Kitchen))
+	log.Println("[Stamp]", now.Format(time.Stamp))
+	log.Println("[StampMilli]", now.Format(time.StampMilli))
+	log.Println("[StampMicro]", now.Format(time.StampMicro))
+	log.Println("[StampNano]", now.Format(time.StampNano))
 }
