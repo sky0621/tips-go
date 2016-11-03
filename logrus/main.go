@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/Sirupsen/logrus"
 )
@@ -31,4 +32,14 @@ func main() {
 	logrus.Info("This is a info log.")
 	logrus.Warn("This is a warn log.")
 	logrus.Error("This is a error log.")
+
+	fmt.Println("　　　　　　　　　　　　　　")
+	fmt.Println("ログ出力先をファイルに変更")
+	logfile, err := os.Create("output.log")
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer logfile.Close()
+	logrus.SetOutput(logfile)
+	logrus.Warn("Output file.")
 }
