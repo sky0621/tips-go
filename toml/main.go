@@ -1,47 +1,39 @@
 package main
 
 import (
+	"io/ioutil"
 	"log"
+	"time"
 
 	"github.com/BurntSushi/toml"
 )
 
 func main() {
-	smpl01()
-	smpl02()
+	smpl()
 }
 
-// 事例１
-
-func smpl01() {
-	var smpl01 Sample01
+func smpl() {
+	var da []byte
+	var smpl Sample
 	var err error
-	_, err = toml.DecodeFile("sample01.toml", &smpl01)
+	da, err = ioutil.ReadFile("sample.toml")
 	if err != nil {
 		log.Println(err)
 	}
-	log.Printf("%#v", smpl01)
-}
+	log.Println(string(da))
 
-// Sample01 ...
-type Sample01 struct {
-	Title string
-}
-
-// 事例２
-
-func smpl02() {
-	var smpl02 Sample02
-	var err error
-	_, err = toml.DecodeFile("sample02.toml", &smpl02)
+	_, err = toml.DecodeFile("sample.toml", &smpl)
 	if err != nil {
 		log.Println(err)
 	}
-	log.Printf("%#v", smpl02)
+	log.Printf("%#v\n", smpl)
+	log.Println("============================================")
+	d := smpl.Owner.Dob
+	log.Printf("%04d/%02d/%02d %02d:%02d:%02d\n", d.Year(), d.Month(), d.Day(), d.Hour(), d.Minute(), d.Second())
 }
 
-// Sample02 ...
-type Sample02 struct {
+// Sample ...
+type Sample struct {
 	Title string
 	Owner Owner
 }
@@ -49,4 +41,5 @@ type Sample02 struct {
 // Owner ...
 type Owner struct {
 	Name string
+	Dob  time.Time
 }
