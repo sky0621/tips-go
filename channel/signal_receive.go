@@ -13,8 +13,8 @@ var signalChannel = make(chan os.Signal, 1)
 type signalReceiver struct {
 }
 
-// newSignalReceiver ... OSからのSIGINT/SIGTERM着信をチャネルに通知する設定をし、SignalReceiver構造体を初期化してポインタを返す。
-func newSignalReceiver() *signalReceiver {
+// newSignalReceiver2 ... OSからのSIGINT/SIGTERM着信をチャネルに通知する設定をし、SignalReceiver構造体を初期化してポインタを返す。
+func newSignalReceiver2() *signalReceiver {
 	log.Println("[NewSignalReceiver]START")
 	signal.Notify(signalChannel, syscall.SIGINT, syscall.SIGTERM)
 	log.Println("[NewSignalReceiver]signal.Notify(signalChannel, syscall.SIGINT, syscall.SIGTERM)")

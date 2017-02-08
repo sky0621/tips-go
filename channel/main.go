@@ -18,7 +18,7 @@ func main() {
 		fl.Close()
 	}()
 
-	signalReceiver := newSignalReceiver()
+	signalReceiver := newSignalReceiver2()
 	go signalReceiver.receiveSignal(closeApp)
 
 	// アプリ終了チャネルの待ち受け用ゴルーチン
