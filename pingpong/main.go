@@ -8,7 +8,7 @@ func main() {
 	quitc := make(chan int)
 	go pong(pingc, pongc, quitc)
 	go ping(3, pingc, pongc)
-	<- quitc
+	<-quitc
 }
 
 func ping(n int, ping, pong chan int) {
@@ -18,14 +18,14 @@ func ping(n int, ping, pong chan int) {
 			fmt.Println("ping finished")
 			return
 		}
-		<- pong
+		<-pong
 		n = n + 1
 	}
 }
 
 func pong(ping, pong, quit chan int) {
 	for {
-		n := <- pong
+		n := <-pong
 		if n == 0 {
 			fmt.Println("pong finished")
 			quit <- 0
@@ -35,4 +35,3 @@ func pong(ping, pong, quit chan int) {
 		ping <- n
 	}
 }
-
