@@ -1,0 +1,6 @@
+2017/08/26 00:02:21 [NewSignalReceiver]START
+2017/08/26 00:02:21 [NewSignalReceiver]signal.Notify(signalChannel, syscall.SIGINT, syscall.SIGTERM)
+2017/08/26 00:02:21 [NewSignalReceiver]END
+2017/08/26 00:02:21 [main]END
+2017/08/26 00:02:21 [ReceiveSignal]START
+2017/08/26 00:02:21 [go func()]START
