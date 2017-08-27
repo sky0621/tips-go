@@ -8,14 +8,15 @@ import (
 )
 
 func main() {
-	// OSシグナル受信時にコールされるまでクローズ関数を待機させるためのチャネル
-	stopChan := make(chan int, 1)
-
 	// OSシグナル待ち受けゴルーチン起動
-	r := NewSignalReceiverImpl(stopChan)
-	go r.ReceiveSignal(func(stopChan chan int) {
-		fmt.Println("Finish!!!")
-	})(stopChan)
+	r := NewSignalReceiverImpl()
+	go func() {
+		r.ReceiveSignal(func(stopChan chan int) {
+			// アプリ停止時用のチャネルへの受信を待機
+			<-stopChan
+			fmt.Println("Stop!!!")
+		})
+	}()
 }
 
 type CloseFunc func(stopChan chan int)
@@ -26,19 +27,20 @@ type SignalReceiver interface {
 
 type SignalReceiverImpl struct {
 	signalChan chan os.Signal
-	stopChan chan int
+	stopChan   chan int
 }
 
-func NewSignalReceiverImpl(stopChan chan int) SignalReceiver {
+func NewSignalReceiverImpl() SignalReceiver {
 	r := &SignalReceiverImpl{
 		signalChan: make(chan os.Signal, 1),
-		stopChan: stopChan,
+		stopChan:   make(chan int, 1),
 	}
 	signal.Notify(r.signalChan, syscall.SIGINT, syscall.SIGTERM)
 	return r
 }
 
+// OSからのシグナルを受信したら、パラメータであるCloseFunc関数を実行する！
 func (r *SignalReceiverImpl) ReceiveSignal(fn CloseFunc) {
 	<-r.signalChan
-	fn()
+	fn(r.stopChan)
 }
