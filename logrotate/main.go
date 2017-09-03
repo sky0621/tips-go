@@ -2,10 +2,13 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"time"
 
 	"math/rand"
+
+	"io"
 
 	"github.com/Sirupsen/logrus"
 	rotatelogs "github.com/lestrrat/go-file-rotatelogs"
@@ -16,21 +19,25 @@ func main() {
 	//mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {})
 
 	logf, err := rotatelogs.New(
-		"/data/logs/access_log.%Y%m%d%H%M",
-		rotatelogs.WithLinkName("/data/logs/access_log"),
-		rotatelogs.WithMaxAge(5*time.Minute),
-		rotatelogs.WithRotationTime(time.Minute),
+		"./access_log.%Y%m%d%H%M%S",
+		rotatelogs.WithLinkName("./access_log"),
+		rotatelogs.WithMaxAge(10*time.Minute),
+		rotatelogs.WithRotationTime(10*time.Second),
 	)
 	if err != nil {
 		log.Printf("failed to create rotatelogs: %s", err)
 		return
 	}
 
+	out := io.MultiWriter(os.Stdout, logf)
+
+	logrus.SetLevel(logrus.DebugLevel)
 	logrus.SetFormatter(&logrus.JSONFormatter{})
-	logrus.SetOutput(logf)
+	logrus.SetOutput(out)
 
 	for {
-		time.Sleep(20 * time.Second)
+		time.Sleep(3 * time.Second)
+		//fmt.Println("logrus.Debugln")
 
 		logrus.Debugln(rand.Int())
 	}
