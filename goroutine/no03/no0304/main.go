@@ -11,11 +11,18 @@ func main() {
 
 	ch := make(chan struct{}, 1)
 
-	wg.Add(1)
-	go sub("ping", ch, wg)
+	words := []string{
+		"ping",
+		"     pong",
+		"          pang",
+		"               peng",
+		"                    pung",
+	}
 
-	wg.Add(1)
-	go sub("     pong", ch, wg)
+	for _, word := range words {
+		wg.Add(1)
+		go sub(word, ch, wg)
+	}
 
 	// 最初のきっかけを与えてやる
 	ch <- struct{}{}
@@ -27,11 +34,7 @@ func sub(word string, ch chan struct{}, wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	for i := 0; i < 5; i++ {
-		select {
-		case <-ch:
-			fmt.Println(word)
-			time.Sleep(100 * time.Millisecond)
-			ch <- struct{}{}
-		}
+		fmt.Println(word)
+		time.Sleep(100 * time.Millisecond)
 	}
 }

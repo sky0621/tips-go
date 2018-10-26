@@ -2,28 +2,43 @@ package main
 
 import (
 	"fmt"
+	"sync"
 	"time"
 )
 
 func main() {
-	ch := make(chan struct{}, 2)
-	go ping(ch)
-	go pong(ch)
-	<-ch
+	wg := &sync.WaitGroup{}
+
+	ch := make(chan struct{}, 1)
+
+	words := []string{
+		"ping",
+		"     pong",
+		"          pang",
+		"               peng",
+		"                    pung",
+	}
+
+	for _, word := range words {
+		wg.Add(1)
+		go sub(word, ch, wg)
+	}
+
+	// 最初のきっかけを与えてやる
+	ch <- struct{}{}
+
+	wg.Wait()
 }
 
-func ping(ch chan struct{}) {
-	for i := 0; i < 5; i++ {
-		fmt.Println("ping")
-		time.Sleep(100 * time.Millisecond)
-	}
-	ch <- struct{}{}
-}
+func sub(word string, ch chan struct{}, wg *sync.WaitGroup) {
+	defer wg.Done()
 
-func pong(ch chan struct{}) {
 	for i := 0; i < 5; i++ {
-		fmt.Println("     pong")
-		time.Sleep(100 * time.Millisecond)
+		select {
+		case <-ch:
+			fmt.Println(word)
+			time.Sleep(100 * time.Millisecond)
+			ch <- struct{}{}
+		}
 	}
-	ch <- struct{}{}
 }

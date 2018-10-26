@@ -7,49 +7,28 @@ import (
 )
 
 func main() {
-	// メインでの待機には WaitGroup を使う
 	wg := &sync.WaitGroup{}
 
-	// あえて明示的に「1」を指定
-	pingCh := make(chan struct{}, 1)
-	pongCh := make(chan struct{}, 1)
+	ch := make(chan struct{}, 1)
 
 	wg.Add(1)
-	go ping(pingCh, pongCh, wg)
-	wg.Add(1)
-	go pong(pingCh, pongCh, wg)
+	go sub("ping", ch, wg)
 
-	// 最初のきっかけを与えてやる
-	pingCh <- struct{}{}
+	wg.Add(1)
+	go sub("     pong", ch, wg)
 
 	wg.Wait()
 }
 
-func ping(pingCh chan struct{}, pongCh chan struct{}, wg *sync.WaitGroup) {
+func sub(word string, ch chan struct{}, wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	for i := 0; i < 5; i++ {
-		fmt.Println("ping")
-		time.Sleep(100 * time.Millisecond)
-
 		select {
-		case <-pingCh:
-			pongCh <- struct{}{}
+		case <-ch:
+			fmt.Println(word)
+			time.Sleep(100 * time.Millisecond)
+			ch <- struct{}{}
 		}
 	}
-	fmt.Println("ping fin")
-}
-
-func pong(pingCh chan struct{}, pongCh chan struct{}, wg *sync.WaitGroup) {
-	defer wg.Done()
-
-	for i := 0; i < 5; i++ {
-		fmt.Println("     pong")
-		time.Sleep(100 * time.Millisecond)
-		select {
-		case <-pongCh:
-			pingCh <- struct{}{}
-		}
-	}
-	fmt.Println("pong fin")
 }
