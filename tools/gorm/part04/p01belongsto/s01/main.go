@@ -26,6 +26,7 @@ func main() {
 		panic(err)
 	}
 	defer db.Close()
+	db.LogMode(true)
 
 	//db.AutoMigrate(&User{}, &Profile{})
 	//
@@ -49,9 +50,41 @@ func main() {
 	//
 	//db.Model(&user).Related(&profile)
 	//fmt.Printf("user: {ID: %v, ProfileID: %v, Profile: {ID: %v, Name: %v}}\n", user.ID, user.ProfileID, user.Profile.ID, user.Profile.Name)
-	users := []*User{}
-	db.Find(&users)
-	for _, user := range users {
-		fmt.Printf("user: {ID: %v, Prifile: {ID: %v, Name: %v}}\n", user.ID, user.Profile.ID, user.Profile.Name)
+	//users := []*User{}
+	//db.Find(&users)
+	//for _, user := range users {
+	//	fmt.Printf("user: {ID: %v, Prifile: {ID: %v, Name: %v}}\n", user.ID, user.Profile.ID, user.Profile.Name)
+	//}
+	rows, err := db.Table("users").Select("users.id, users.profile_id, profiles.name").Joins("inner join profiles on profiles.id = users.profile_id").Rows()
+	if err != nil {
+		panic(err)
 	}
+	//bl := rows.NextResultSet()
+	//fmt.Println(bl)
+	for rows.Next() {
+		fmt.Println("a")
+		var re *Result
+		rows.Scan(&re)
+		fmt.Println(re)
+	}
+	var results []*Result
+	rows.Scan(&results)
+	for _, res := range results {
+		fmt.Printf("user: {ID: %v, Prifile: {ID: %v, Name: %v}}\n", res.ID, res.ProfileID, res.Name)
+	}
+
+	u1 := &User{}
+	db.Find(u1)
+	fmt.Printf("%#v\n", u1)
+
+	p1 := &Profile{}
+	db.Find(p1)
+	fmt.Printf("%#v\n", p1)
+
+}
+
+type Result struct {
+	ID        string
+	ProfileID string
+	Name      string
 }
