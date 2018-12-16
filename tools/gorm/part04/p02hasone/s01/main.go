@@ -33,18 +33,18 @@ func main() {
 	defer db.Close()
 	db.LogMode(true)
 
-	//db.AutoMigrate(&User{}, &CreditCard{})
-	//
-	//db.Create(
-	//	&User{
-	//		ID:           "u1",
-	//		CreditCardID: "c1",
-	//		CreditCard: CreditCard{
-	//			ID:     "c1",
-	//			Number: "xxxx-xxxx-xxxx-xxxx",
-	//		},
-	//	},
-	//)
+	db.AutoMigrate(&User{}, &CreditCard{})
+
+	db.Create(
+		&User{
+			ID:           "u1",
+			CreditCardID: "c1",
+			CreditCard: CreditCard{
+				ID:     "c1",
+				Number: "xxxx-xxxx-xxxx-xxxx",
+			},
+		},
+	)
 
 	r := &Result{}
 	db.Table("users").
