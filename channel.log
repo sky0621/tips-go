@@ -1,0 +1,17 @@
+2019/01/17 02:00:24 [NewSignalReceiver]START
+2019/01/17 02:00:24 [NewSignalReceiver]signal.Notify(signalChannel, syscall.SIGINT, syscall.SIGTERM)
+2019/01/17 02:00:24 [NewSignalReceiver]END
+2019/01/17 02:00:24 [main]END
+2019/01/17 02:00:24 [ReceiveSignal]START
+2019/01/17 02:00:24 [go func()]START
+2019/01/17 02:00:33 [ReceiveSignal]OSからシグナル受信！！！ -> closeAppをコールします。
+2019/01/17 02:00:33 [CloseApp]START
+2019/01/17 02:00:33 [CloseApp]アプリ終了フラグ： false
+2019/01/17 02:00:33 [CloseApp]locked!
+2019/01/17 02:00:33 [CloseApp]unlocked!
+2019/01/17 02:00:33 [CloseApp]アプリ終了フラグ： true
+2019/01/17 02:00:33 [CloseApp]appStopChannelチャネルに通知！！
+2019/01/17 02:00:33 [CloseApp]END
+2019/01/17 02:00:33 [ReceiveSignal]END
+2019/01/17 02:00:33 [go func()]appStopChannelチャネルから受信！！！！
+2019/01/17 02:00:33 [go func()]END
