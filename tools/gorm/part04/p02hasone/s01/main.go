@@ -9,13 +9,13 @@ import (
 )
 
 type User struct {
-	ID           string `gorm:primary_key`
+	ID           string `gorm:"primary_key"`
 	CreditCardID string
 	CreditCard   CreditCard `gorm:"foreignkey:ID;association_foreignkey:CreditCardID"`
 }
 
 type CreditCard struct {
-	ID     string `gorm:primary_key`
+	ID     string `gorm:"primary_key"`
 	Number string
 }
 

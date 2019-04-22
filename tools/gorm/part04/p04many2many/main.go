@@ -7,13 +7,13 @@ import (
 )
 
 type Organization struct {
-	ID    string `gorm:primary_key`
+	ID    string `gorm:"primary_key"`
 	Name  string
 	Users []User `gorm:"many2many:organizations_users"`
 }
 
 type User struct {
-	ID            string `gorm:primary_key`
+	ID            string `gorm:"primary_key"`
 	Name          string
 	Organizations []Organization `gorm:"many2many:organizations_users"`
 }

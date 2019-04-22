@@ -1,7 +1,7 @@
 package main
 
 import (
-	"tips-go/tools/gorm/part03/model"
+	"part05_migration/model"
 
 	"github.com/jinzhu/gorm"
 
@@ -22,9 +22,7 @@ func main() {
 	if err := db.DB().Ping(); err != nil {
 		panic(err)
 	}
-	db.Set("gorm:table_options", "ENGINE=InnoDB CHARSET=utf8").AutoMigrate(
-		&model.Foo{},
-		&model.Baa{},
-		&model.Baa{Kind: 1},
+	db.AutoMigrate(
+		&model.User{},
 	)
 }

@@ -9,13 +9,13 @@ import (
 )
 
 type User struct {
-	ID        string  `gorm:primary_key`
+	ID        string  `gorm:"primary_key"`
 	Profile   Profile `gorm:"foreignkey:ProfileID;association_foreignkey:Refer"`
 	ProfileID string
 }
 
 type Profile struct {
-	ID    string `gorm:primary_key`
+	ID    string `gorm:"primary_key"`
 	Refer string
 	Name  string
 }

@@ -9,13 +9,13 @@ import (
 )
 
 type Organization struct {
-	ID    string `gorm:primary_key`
+	ID    string `gorm:"primary_key"`
 	Name  string
 	Users []User `gorm:"foreignkey:OrganizationID"`
 }
 
 type User struct {
-	ID             string `gorm:primary_key`
+	ID             string `gorm:"primary_key"`
 	Name           string
 	OrganizationID string
 }
