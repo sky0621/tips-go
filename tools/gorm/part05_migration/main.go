@@ -24,5 +24,6 @@ func main() {
 	}
 	db.AutoMigrate(
 		&model.User{},
+		&model.Organization{},
 	)
 }
