@@ -11,4 +11,5 @@ require (
 	github.com/ogier/pflag v0.0.1 // indirect
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/syohex/byzanz-window v0.1.1 // indirect
+	golang.org/x/sync v0.0.0-20190412183630-56d357773e84 // indirect
 )

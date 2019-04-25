@@ -1,0 +1,4 @@
+development:
+  dialect: mysql
+  datasource: localuser:localpass@tcp(127.0.0.1)/localdb?charset=utf8&collation=utf8_bin&parseTime=true
+  dir: migrations

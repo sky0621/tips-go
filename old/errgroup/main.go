@@ -24,10 +24,18 @@ func main() {
 			// Fetch the URL.
 			fmt.Printf("start:[%s]\n", url)
 			resp, err := http.Get(url)
+			defer func() {
+				if resp == nil {
+					return
+				}
+				if resp.Body == nil {
+					return
+				}
+				if err := resp.Body.Close(); err != nil {
+					panic(err)
+				}
+			}()
 			fmt.Printf("end:  [%s]\n", url)
-			if err == nil {
-				resp.Body.Close()
-			}
 			return err
 		})
 	}
