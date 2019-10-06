@@ -1,0 +1,23 @@
+package main
+
+import (
+	"fmt"
+	"github.com/tealeg/xlsx"
+	"os"
+)
+
+func main() {
+	excelFileName := "テーブル定義書「商品」.xlsx"
+	xlFile, err := xlsx.OpenFile(excelFileName)
+	if err != nil {
+		os.Exit(-1)
+	}
+	for _, sheet := range xlFile.Sheets {
+		for _, row := range sheet.Rows {
+			for _, cell := range row.Cells {
+				text := cell.String()
+				fmt.Printf("%s\n", text)
+			}
+		}
+	}
+}

@@ -13,5 +13,6 @@ require (
 	github.com/onsi/gomega v1.5.0
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/syohex/byzanz-window v0.1.1 // indirect
+	github.com/tealeg/xlsx v1.0.3 // indirect
 	golang.org/x/sync v0.0.0-20190412183630-56d357773e84 // indirect
 )
