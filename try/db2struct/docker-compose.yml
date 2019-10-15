@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  db:
+    image: postgres
+    container_name: pg11
+    ports:
+      - "5432:5432"
+    environment:
+      - PG_USER=postgres
+      - PG_PASS=dbpass
+      - PG_DB=localdb
+      - DB_HOST=localhost
+    volumes:
+      - ./persistence/init:/docker-entrypoint-initdb.d
+      - ./persistence/data:/var/lib/postgresql/data/
