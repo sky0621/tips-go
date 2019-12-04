@@ -3,25 +3,53 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 	"time"
 
 	"github.com/pkg/profile"
 )
 
 func parse(filePath string) *BigJSON {
-	ba, err := ioutil.ReadFile(filePath)
+	f, err := os.Open(filePath)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	var bj *BigJSON
-	err = json.Unmarshal(ba, &bj)
-	if err != nil {
-		log.Fatal(err)
+	dec := json.NewDecoder(f)
+
+	bj := &BigJSON{}
+	for {
+		t, err := dec.Token()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if ele, ok := t.(string); ok {
+			if ele == "data" {
+				bj.Data = &Data{}
+				continue
+			}
+			if ele == "items" {
+				bj.Data.Items = []*Item{}
+				continue
+			}
+		}
+		if de, ok := t.(json.Delim); ok {
+			if de.String() == "[" {
+				break
+			}
+		}
 	}
 
+	for dec.More() {
+		var item *Item
+		err := dec.Decode(&item)
+		if err != nil {
+			log.Fatal(err)
+		}
+		bj.Data.Items = append(bj.Data.Items, item)
+	}
 	return bj
 }
 
