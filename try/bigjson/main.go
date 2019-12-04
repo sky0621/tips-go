@@ -34,28 +34,46 @@ func parse2(filePath string) *BigJSON {
 
 	dec := json.NewDecoder(f)
 
-	// 目的とする構造("items")が表れるまでトークン読み飛ばし
-	for i := 0; i < 5; i++ {
+	bj := &BigJSON{}
+	var isItems bool
+
+	for dec.More() {
 		t, err := dec.Token()
 		if err != nil {
 			log.Fatal(err)
 		}
-		if t == nil {
-			break
-		}
-		fmt.Printf("<Token> %T: %v\n", t, t)
-	}
+		fmt.Printf("[%T] %v\n", t, t)
 
-	var items []*Item
-	for dec.More() {
+		if ele, ok := t.(string); ok {
+			if ele == "data" {
+				bj.Data = &Data{}
+				continue
+			}
+			if ele == "items" {
+				bj.Data.Items = []*Item{}
+				isItems = true
+				continue
+			}
+		}
+
+		if !isItems {
+			continue
+		}
+
+		if de, ok := t.(json.Delim); ok {
+			if de.String() == "[" {
+				continue
+			}
+		}
+
 		var item *Item
-		err := dec.Decode(&item)
+		err = dec.Decode(&item)
 		if err != nil {
 			log.Fatal(err)
 		}
-		items = append(items, item)
+		bj.Data.Items = append(bj.Data.Items, item)
 	}
-	return &BigJSON{Data: &Data{Items: items}}
+	return bj
 }
 
 func main() {
