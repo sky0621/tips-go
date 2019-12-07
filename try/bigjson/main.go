@@ -10,38 +10,25 @@ import (
 	"github.com/pkg/profile"
 )
 
-func parse(filePath string) *BigJSON {
-	ba, err := ioutil.ReadFile(filePath)
+func main() {
+	// 使用メモリチェック準備
+	defer profile.Start(profile.MemProfile, profile.ProfilePath(".")).Stop()
+	st := time.Now()
+
+	// 125MBのファイルを読み込み
+	ba, err := ioutil.ReadFile("./data.json")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	var bj *BigJSON
+	// 125MBのデータをパース
 	err = json.Unmarshal(ba, &bj)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return bj
-}
-
-func main() {
-	defer profile.Start(profile.MemProfile, profile.ProfilePath(".")).Stop()
-	fmt.Println("Start")
-
-	st := time.Now()
-
-	bj := parse("./big.json")
-
 	fmt.Printf("%f秒\n", time.Now().Sub(st).Seconds())
-
-	for n, item := range bj.Data.Items {
-		// Itemsの一番最後の要素だけ試しに確認してみる。
-		if n == len(bj.Data.Items)-1 {
-			fmt.Printf("[%d] %#v\n", n, item)
-		}
-	}
-	fmt.Println("End")
 }
 
 type BigJSON struct {
