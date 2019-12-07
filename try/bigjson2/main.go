@@ -10,15 +10,45 @@ import (
 	"github.com/pkg/profile"
 )
 
-func parse(filePath string) *BigJSON {
-	f, err := os.Open(filePath)
+func main() {
+	// 使用メモリチェック準備
+	defer profile.Start(profile.MemProfile, profile.ProfilePath(".")).Stop()
+	st := time.Now()
+
+	f, err := os.Open("./data.json")
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer func() {
+		if err := f.Close(); err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	dec := json.NewDecoder(f)
 
 	bj := &BigJSON{}
+	// 以下のJSON構造をトークン毎（「 { 」、「 "data" 」、「 { 」、「 "items" 」、「 [ 」、・・・）に辿る。
+	// ★「 [ 」以降は Item 構造体にパースするObject構造が複数続くので、後続の dec.Decode() に任せる。
+	// {
+	//   "data": {
+	//     "items": [
+	//       {
+	//        "id": "id-0",
+	//        "name": "あいてむ0",
+	//        "price": 0,
+	//        "display": true
+	//      },
+	//        〜〜省略〜〜
+	//      {
+	//        "id": "id-999999",
+	//        "name": "あいてむ999999",
+	//        "price": 999999,
+	//        "display": true
+	//      }
+	//    ]
+	//  }
+	//}
 	for {
 		t, err := dec.Token()
 		if err != nil {
@@ -37,11 +67,13 @@ func parse(filePath string) *BigJSON {
 		}
 		if de, ok := t.(json.Delim); ok {
 			if de.String() == "[" {
+				// ここまで辿れば、後は後続の dec.Decode() に任せるため break
 				break
 			}
 		}
 	}
 
+	// ここに来た時点で、Item 構造体にパース可能なObject構造が複数続くので、ある分だけひたすらパース
 	for dec.More() {
 		var item *Item
 		err := dec.Decode(&item)
@@ -50,26 +82,8 @@ func parse(filePath string) *BigJSON {
 		}
 		bj.Data.Items = append(bj.Data.Items, item)
 	}
-	return bj
-}
-
-func main() {
-	defer profile.Start(profile.MemProfile, profile.ProfilePath(".")).Stop()
-	fmt.Println("Start")
-
-	st := time.Now()
-
-	bj := parse("./big.json")
 
 	fmt.Printf("%f秒\n", time.Now().Sub(st).Seconds())
-
-	for n, item := range bj.Data.Items {
-		// Itemsの一番最後の要素だけ試しに確認してみる。
-		if n == len(bj.Data.Items)-1 {
-			fmt.Printf("[%d] %#v\n", n, item)
-		}
-	}
-	fmt.Println("End")
 }
 
 type BigJSON struct {
