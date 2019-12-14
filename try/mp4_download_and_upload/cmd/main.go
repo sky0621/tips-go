@@ -3,9 +3,11 @@ package main
 import (
 	"context"
 	"flag"
-	"fmt"
+	"io"
 	"log"
 	"net/http"
+
+	"github.com/pkg/errors"
 
 	"google.golang.org/api/option"
 
@@ -21,6 +23,8 @@ func main() {
 func exec() (e error) {
 	credentialPath := flag.String("c", "credential file path", "~/keyfile/gcp.json")
 	mpath := flag.String("m", "download url path", "http://localhost:9000/sample.mp4")
+	writeBucket := flag.String("b", "write bucket", "http://localhost:7000/bucket")
+	objectName := flag.String("o", "object name", "sample.mp4")
 	flag.Parse()
 
 	res, err := http.Get(*mpath)
@@ -28,11 +32,7 @@ func exec() (e error) {
 		return err
 	}
 	defer func() {
-		if res != nil {
-			if err := res.Body.Close(); err != nil {
-				e = fmt.Errorf("[failed at response.body.close] %w", err)
-			}
-		}
+		e = close(res.Body, e)
 	}()
 
 	ctx := context.Background()
@@ -40,14 +40,41 @@ func exec() (e error) {
 	if err != nil {
 		return err
 	}
-	//wc := client.Bucket(bucket).Object(object).NewWriter(ctx)
-	//if _, err = io.Copy(wc, res.Body); err != nil {
-	//	return err
-	//}
-	//if err := wc.Close(); err != nil {
-	//	return err
-	//}
-	fmt.Println(client)
+	wc := client.Bucket(*writeBucket).Object(*objectName).NewWriter(ctx)
+	if _, err = io.Copy(wc, res.Body); err != nil {
+		return err
+	}
+	defer func() {
+		e = closeWriter(wc, e)
+	}()
 
 	return nil
+}
+
+func close(c io.Closer, e error) error {
+	if c == nil {
+		return e
+	}
+	err := c.Close()
+	if err == nil {
+		return e
+	}
+	if e == nil {
+		return err
+	}
+	return errors.Wrap(err, e.Error())
+}
+
+func closeWriter(w *storage.Writer, e error) error {
+	if w == nil {
+		return e
+	}
+	err := w.Close()
+	if err == nil {
+		return e
+	}
+	if e == nil {
+		return err
+	}
+	return errors.Wrap(err, e.Error())
 }
