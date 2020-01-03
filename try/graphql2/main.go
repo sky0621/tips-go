@@ -10,21 +10,24 @@ import (
 )
 
 func main() {
+	//org := os.Getenv("GRAPHQL_ORG")
 	src := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: os.Getenv("GRAPHQL_TOKEN")},
 	)
 	httpClient := oauth2.NewClient(context.Background(), src)
 
-	client := graphql.NewClient("http://localhost:5050/query", httpClient)
+	client := graphql.NewClient("https://api.github.com/graphql", httpClient)
 
 	var query struct {
-		User struct {
-			ID    graphql.String
-			Name  graphql.String
-			Todos []struct {
-				Text graphql.String
-			}
-		} `graphql:"user(id:\"57e85ed87bf64eb79caebb0aee2d79dc\")"`
+		Organization struct {
+			Repositories struct {
+				TotalCount graphql.Int
+				Nodes      []struct {
+					Name        graphql.String
+					Description graphql.String
+				}
+			} `graphql:"repositories(first:100)"`
+		} `graphql:"organization(login:\"\")"`
 	}
 
 	err := client.Query(context.Background(), &query, nil)
