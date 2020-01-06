@@ -10,11 +10,13 @@ import (
 )
 
 func main() {
-	//org := os.Getenv("GRAPHQL_ORG")
+	ctx := context.Background()
+
+	org := os.Getenv("GRAPHQL_ORG")
 	src := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: os.Getenv("GRAPHQL_TOKEN")},
 	)
-	httpClient := oauth2.NewClient(context.Background(), src)
+	httpClient := oauth2.NewClient(ctx, src)
 
 	client := graphql.NewClient("https://api.github.com/graphql", httpClient)
 
@@ -27,10 +29,13 @@ func main() {
 					Description graphql.String
 				}
 			} `graphql:"repositories(first:100)"`
-		} `graphql:"organization(login:\"\")"`
+		} `graphql:"organization(login:$org)"`
+	}
+	variables := map[string]interface{}{
+		"org": graphql.String(org),
 	}
 
-	err := client.Query(context.Background(), &query, nil)
+	err := client.Query(ctx, &query, variables)
 	if err != nil {
 		fmt.Println(err.Error())
 		return
