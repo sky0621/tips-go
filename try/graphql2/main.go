@@ -23,10 +23,16 @@ func main() {
 	var query struct {
 		Organization struct {
 			Repositories struct {
-				TotalCount graphql.Int
-				Nodes      []struct {
-					Name        graphql.String
-					Description graphql.String
+				Nodes []struct {
+					Name             graphql.String
+					Description      graphql.String
+					DefaultBranchRef struct {
+						Target struct {
+							History struct {
+								TotalCount graphql.Int
+							} `graphql:"history(since: \"2019-01-01T00:00:00+09:00\")"`
+						} `graphql:"... on Commit"`
+					}
 				}
 			} `graphql:"repositories(first:100)"`
 		} `graphql:"organization(login:$org)"`
@@ -41,5 +47,5 @@ func main() {
 		return
 	}
 
-	fmt.Printf("%#v", query)
+	fmt.Printf("%v", query)
 }
