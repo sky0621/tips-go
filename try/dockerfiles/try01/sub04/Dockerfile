@@ -1,0 +1,6 @@
+FROM golang:1.13.6-alpine3.11
+
+WORKDIR /a
+WORKDIR b
+WORKDIR c
+ENTRYPOINT pwd
