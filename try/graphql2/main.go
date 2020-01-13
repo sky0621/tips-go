@@ -3,49 +3,48 @@ package main
 import (
 	"context"
 	"fmt"
-	"os"
+	"log"
 
-	"github.com/shurcooL/graphql"
-	"golang.org/x/oauth2"
+	"github.com/machinebox/graphql"
 )
 
+const target = "https://api.github.com/graphql"
+
 func main() {
+	client := graphql.NewClient(target)
+
+	// make a request
+	req := graphql.NewRequest(`
+query { 
+  viewer { 
+    login
+  }
+}
+`)
+
+	// set any variables
+	//req.Var("key", "value")
+
+	// set header fields
+	req.Header.Set("Cache-Control", "no-cache")
+
+	// define a Context for the request
 	ctx := context.Background()
 
-	org := os.Getenv("GRAPHQL_ORG")
-	src := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: os.Getenv("GRAPHQL_TOKEN")},
-	)
-	httpClient := oauth2.NewClient(ctx, src)
-
-	client := graphql.NewClient("https://api.github.com/graphql", httpClient)
-
-	var query struct {
-		Organization struct {
-			Repositories struct {
-				Nodes []struct {
-					Name             graphql.String
-					Description      graphql.String
-					DefaultBranchRef struct {
-						Target struct {
-							History struct {
-								TotalCount graphql.Int
-							} `graphql:"history(since: \"2019-01-01T00:00:00+09:00\")"`
-						} `graphql:"... on Commit"`
-					}
-				}
-			} `graphql:"repositories(first:100)"`
-		} `graphql:"organization(login:$org)"`
-	}
-	variables := map[string]interface{}{
-		"org": graphql.String(org),
+	// run it and capture the response
+	var respData interface{}
+	if err := client.Run(ctx, req, respData); err != nil {
+		log.Fatal(err)
 	}
 
-	err := client.Query(ctx, &query, variables)
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
+	fmt.Printf("%#v\n", respData)
+}
 
-	fmt.Printf("%v", query)
+type response struct {
+	Name  string
+	Items struct {
+		Records []struct {
+			Title string
+		}
+	}
 }
