@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multiapp-pod
+spec:
+  containers:
+    - name: gowebapp1
+      image: index.docker.io/sky0621dhub/gowebapp1:latest
+      imagePullPolicy: Always
+    - name: gowebapp2
+      image: index.docker.io/sky0621dhub/gowebapp2:latest
+      imagePullPolicy: Always
