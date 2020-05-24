@@ -10,7 +10,7 @@ import (
 func main() {
 	e := fna.Exec()
 	if e != nil {
-		lastErr := xerrors.Errorf("main error occurred: %w", e)
+		lastErr := xerrors.Errorf("[after]main error occurred: %w", e)
 		fmt.Printf("%+v\n", lastErr)
 	}
 }
