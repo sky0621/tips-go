@@ -3,6 +3,8 @@ package client
 import (
 	"fmt"
 	"time"
+
+	"golang.org/x/xerrors"
 )
 
 type DBClient interface {
@@ -73,6 +75,7 @@ func (o Order) CollectItems() error {
 			{ID: "id00c", Name: "商品3"},
 		}
 		fmt.Println("[CollectItems]                         id005")
+		return xerrors.Errorf("failed to collect with id005")
 	}
 	return nil
 }
