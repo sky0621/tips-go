@@ -36,7 +36,7 @@ func (s *service) Exec() error {
 
 	fmt.Printf("START: %s\n", time.Now().Format(time.RFC3339))
 
-	for _, order := range orders {
+	for idx, order := range orders {
 		sr := subroutine{
 			dbClient:       s.dbClient,
 			orderAPIClient: client.NewOrderAPIClient(),
@@ -47,6 +47,8 @@ func (s *service) Exec() error {
 
 		// 3個までは詰められる（でも、それ以上はチャネルが空くまで詰められずにここで待機状態となる）
 		semaphore <- struct{}{}
+
+		fmt.Printf("loop-index: %d [ID:%s][Name:%s]\n", idx, o.ID, o.Name)
 
 		errGrp.Go(func() error {
 			select {
