@@ -1,16 +1,17 @@
 package main
 
 import (
-	"fmt"
+	svc "github.com/sky0621/tips-go/try/errgroup"
 
 	"github.com/sky0621/tips-go/try/errgroup/client"
 )
 
 func main() {
-	oc := client.NewOrderClient()
+	dc := client.NewDBClient()
+	oc := client.NewOrderAPIClient()
 	mc := client.NewMailClient()
-	s := svc.NewService(oc, mc)
+	s := svc.NewService(dc, oc, mc)
 	if err := s.Exec(); err != nil {
-		fmt.Errorf("failed to exec: %#v", err)
+		panic(err)
 	}
 }
