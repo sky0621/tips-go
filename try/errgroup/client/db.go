@@ -1,14 +1,15 @@
 package client
 
 import (
+	"context"
 	"fmt"
 	"time"
-
-	"golang.org/x/xerrors"
 )
 
 type DBClient interface {
-	CollectOrders() ([]*Order, error)
+	CollectOrders() ([]Order, error)
+	WriteRequesting(context.Context, Order) error
+	SaveOrderRequestStatus(context.Context, Order) error
 }
 
 type dbClient struct {
@@ -18,8 +19,9 @@ func NewDBClient() DBClient {
 	return &dbClient{}
 }
 
-func (c *dbClient) CollectOrders() ([]*Order, error) {
-	return []*Order{
+// MEMO: 「注文」情報取得DB検索機能のダミー実装
+func (c *dbClient) CollectOrders() ([]Order, error) {
+	return []Order{
 		{ID: "id001", Name: "注文1"},
 		{ID: "id002", Name: "注文2"},
 		{ID: "id003", Name: "注文3"},
@@ -29,53 +31,50 @@ func (c *dbClient) CollectOrders() ([]*Order, error) {
 }
 
 type Order struct {
-	ID    string
-	Name  string
-	Items []Item
-}
-
-type Item struct {
 	ID   string
 	Name string
 }
 
-func (o Order) CollectItems() error {
+// MEMO: 「注文」情報リクエスト中である旨を記録する機能のダミー実装
+func (c *dbClient) WriteRequesting(ctx context.Context, o Order) error {
 	switch o.ID {
 	case "id001":
-		o.Items = []Item{
-			{ID: "id00a", Name: "商品1"},
-			{ID: "id00b", Name: "商品2"},
-		}
-		time.Sleep(1000 * time.Millisecond)
-		fmt.Println("[CollectItems] id001")
+		time.Sleep(50 * time.Millisecond)
+		fmt.Println("[Write  ] id001")
 	case "id002":
-		o.Items = []Item{
-			{ID: "id00b", Name: "商品2"},
-		}
-		time.Sleep(1500 * time.Millisecond)
-		fmt.Println("[CollectItems]       id002")
+		time.Sleep(30 * time.Millisecond)
+		fmt.Println("[Write  ]       id002")
 	case "id003":
-		o.Items = []Item{
-			{ID: "id00c", Name: "商品3"},
-			{ID: "id00d", Name: "商品4"},
-			{ID: "id00e", Name: "商品5"},
-		}
-		time.Sleep(2000 * time.Millisecond)
-		fmt.Println("[CollectItems]             id003")
+		time.Sleep(80 * time.Millisecond)
+		fmt.Println("[Write  ]             id003")
 	case "id004":
-		o.Items = []Item{
-			{ID: "id00a", Name: "商品1"},
-			{ID: "id00d", Name: "商品4"},
-			{ID: "id00e", Name: "商品5"},
-		}
-		time.Sleep(800 * time.Millisecond)
-		fmt.Println("[CollectItems]                   id004")
+		time.Sleep(100 * time.Millisecond)
+		fmt.Println("[Write  ]                   id004")
 	case "id005":
-		o.Items = []Item{
-			{ID: "id00c", Name: "商品3"},
-		}
-		fmt.Println("[CollectItems]                         id005")
-		return xerrors.Errorf("failed to collect with id005")
+		time.Sleep(65 * time.Millisecond)
+		fmt.Println("[Write  ]                         id005")
+	}
+	return nil
+}
+
+// MEMO: 「注文」情報のリクエスト結果保存機能のダミー実装
+func (c *dbClient) SaveOrderRequestStatus(ctx context.Context, o Order) error {
+	switch o.ID {
+	case "id001":
+		time.Sleep(25 * time.Millisecond)
+		fmt.Println("[Save   ] id001")
+	case "id002":
+		time.Sleep(60 * time.Millisecond)
+		fmt.Println("[Save   ]       id002")
+	case "id003":
+		time.Sleep(40 * time.Millisecond)
+		fmt.Println("[Save   ]             id003")
+	case "id004":
+		time.Sleep(55 * time.Millisecond)
+		fmt.Println("[Save   ]                   id004")
+	case "id005":
+		time.Sleep(35 * time.Millisecond)
+		fmt.Println("[Save   ]                         id005")
 	}
 	return nil
 }

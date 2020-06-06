@@ -9,11 +9,7 @@ import (
 )
 
 func main() {
-	dc := client.NewDBClient()
-	oc := client.NewOrderAPIClient()
-	mc := client.NewMailClient()
-	s := svc.NewService(dc, oc, mc)
-	if err := s.Exec(); err != nil {
+	if err := svc.NewService(client.NewDBClient()).Exec(); err != nil {
 		fmt.Printf("failed to exec service: %+v", err)
 	}
 }
