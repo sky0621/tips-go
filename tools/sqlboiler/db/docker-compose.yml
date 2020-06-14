@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  db:
+    restart: always
+    image: postgres:12-alpine
+    container_name: fs-mng-backend-db-container
+    ports:
+      - "21340:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=localpass
+      - PGPASSWORD=localpass
+      - POSTGRES_DB=boilerdb
+      - DATABASE_HOST=localhost
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d/

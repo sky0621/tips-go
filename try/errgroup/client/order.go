@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"time"
+
+	"golang.org/x/xerrors"
 )
 
 type OrderAPIClient interface {
@@ -27,9 +29,8 @@ func (c *orderAPIClient) Request(ctx context.Context, o Order) error {
 		time.Sleep(12 * time.Second)
 		fmt.Println("[Request]       id002")
 	case "id003":
-		//return xerrors.New("failed to Request")
-		time.Sleep(10 * time.Second)
-		fmt.Println("[Request]             id003")
+		time.Sleep(15 * time.Second)
+		return xerrors.New("failed to Request")
 	case "id004":
 		time.Sleep(8 * time.Second)
 		fmt.Println("[Request]                   id004")
