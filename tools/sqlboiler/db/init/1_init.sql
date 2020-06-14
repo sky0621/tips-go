@@ -1,5 +1,3 @@
-CREATE SEQUENCE IF NOT EXISTS reviews_id_seq;
-
 CREATE TABLE IF NOT EXISTS seller (
   company_id bigint NOT NULL,
   id         bigserial NOT NULL,
@@ -15,12 +13,14 @@ CREATE TABLE IF NOT EXISTS contents (
 );
 INSERT INTO contents VALUES (1, 'コンテンツA');
 
+CREATE SEQUENCE IF NOT EXISTS reviews_id_seq;
 CREATE TABLE IF NOT EXISTS reviews (
   content_id bigint REFERENCES contents(id) NOT NULL,
   seller_id  bigint NOT NULL,
-  reviews_id bigint DEFAULT nextval('reviews_id_seq'),
+  reviews_id bigint,
   result     integer NOT NULL,
   UNIQUE(reviews_id),
   PRIMARY KEY (content_id, seller_id)
 );
+ALTER TABLE reviews ALTER COLUMN reviews_id SET DEFAULT nextval('reviews_id_seq');
 INSERT INTO reviews(content_id, seller_id, result) VALUES (1, 1, 1);

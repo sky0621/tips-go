@@ -1,41 +1,103 @@
 package main
 
 import (
-	"database/sql"
+	"context"
+	"fmt"
 	"time"
 
+	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
+	"github.com/sky0621/tips-go/try/sqlboiler/src/models"
 	"github.com/volatiletech/sqlboiler/boil"
+	"github.com/volatiletech/sqlboiler/queries/qm"
 )
 
 func main() {
-	/*
-	 * DB接続準備
-	 */
-	var db *sql.DB
-	{
-		dataSourceName := "dbname=boilerdb user=postgres password=localpass sslmode=false port=21340"
-		var err error
-		db, err = sql.Open("postgres", dataSourceName)
-		if err != nil {
-			panic(err)
-		}
-		defer func() {
-			if db != nil {
-				if err := db.Close(); err != nil {
-					panic(err)
-				}
+	dbx, err := setupDB()
+	if err != nil {
+		panic(err)
+	}
+	defer func() {
+		if dbx != nil {
+			if err := dbx.Close(); err != nil {
+				panic(err)
 			}
-		}()
-
-		boil.DebugMode = true
-
-		var loc *time.Location
-		loc, err = time.LoadLocation("Asia/Tokyo")
-		if err != nil {
-			panic(err)
 		}
-		boil.SetLocation(loc)
+	}()
+
+	if err := exec(context.Background(), dbx); err != nil {
+		panic(err)
+	}
+}
+
+// DB接続準備
+func setupDB() (*sqlx.DB, error) {
+	dataSourceName := "dbname=boilerdb user=postgres password=localpass sslmode=disable port=21340"
+	dbx, err := sqlx.Open("postgres", dataSourceName)
+	if err != nil {
+		return nil, err
 	}
 
+	boil.DebugMode = true
+
+	var loc *time.Location
+	loc, err = time.LoadLocation("Asia/Tokyo")
+	if err != nil {
+		return nil, err
+	}
+	boil.SetLocation(loc)
+
+	return dbx, nil
+}
+
+func exec(ctx context.Context, dbx *sqlx.DB) error {
+	tx, err := dbx.Begin()
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if tx != nil {
+			if err := tx.Commit(); err != nil {
+				panic(err)
+			}
+		}
+	}()
+
+	sql := `UPDATE reviews SET reviews_id=nextval('reviews_id_seq'), result=$1 WHERE content_id=$2 AND seller_id=$3`
+	res, err := tx.Exec(sql, 14, 1, 1)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("%#v\n", res)
+
+	//r := models.Review{
+	//	ContentID: 1,
+	//	SellerID:  1,
+	//	ReviewsID: ,
+	//	Result:    2,
+	//}
+	//wl := boil.Whitelist(
+	//	models.ReviewColumns.ReviewsID,
+	//	models.ReviewColumns.Result,
+	//)
+	//cnt, err := r.Update(ctx, tx, wl)
+	//if err != nil {
+	//	return err
+	//}
+	//if cnt != 1 {
+	//	return errors.New("cnt != 1")
+	//}
+	qm.SQL("UPDATE reviews SET reviews_id=nextval('reviews_id_seq'), result=$1 WHERE content_id=$2 AND seller_id=$3",
+		15, 1, 1)
+
+	review, err := models.Reviews(
+		models.ReviewWhere.ContentID.EQ(1),
+		models.ReviewWhere.SellerID.EQ(1),
+	).One(ctx, tx)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("%#v\n", review)
+
+	return nil
 }
