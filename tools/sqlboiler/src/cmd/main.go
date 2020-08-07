@@ -64,29 +64,12 @@ func exec(ctx context.Context, dbx *sqlx.DB) error {
 	}()
 
 	sql := `UPDATE reviews SET reviews_id=nextval('reviews_id_seq'), result=$1 WHERE content_id=$2 AND seller_id=$3`
-	res, err := tx.Exec(sql, 14, 1, 1)
+	res, err := tx.Exec(sql, 3, 1, 1)
 	if err != nil {
 		return err
 	}
 	fmt.Printf("%#v\n", res)
 
-	//r := models.Review{
-	//	ContentID: 1,
-	//	SellerID:  1,
-	//	ReviewsID: ,
-	//	Result:    2,
-	//}
-	//wl := boil.Whitelist(
-	//	models.ReviewColumns.ReviewsID,
-	//	models.ReviewColumns.Result,
-	//)
-	//cnt, err := r.Update(ctx, tx, wl)
-	//if err != nil {
-	//	return err
-	//}
-	//if cnt != 1 {
-	//	return errors.New("cnt != 1")
-	//}
 	qm.SQL("UPDATE reviews SET reviews_id=nextval('reviews_id_seq'), result=$1 WHERE content_id=$2 AND seller_id=$3",
 		15, 1, 1)
 
