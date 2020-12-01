@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/jmoiron/sqlx"
@@ -26,6 +27,19 @@ func main() {
 		}
 	}()
 	log.Println("Yes")
+
+	db.SetMaxOpenConns(80)
+	db.SetMaxIdleConns(80)
+	db.SetConnMaxLifetime(10 * time.Second)
+
+	go func() {
+		for {
+			time.Sleep(1 * time.Second)
+			st := db.Stats()
+			log.Printf("{MaxOpenConnections: %d, OpenConnections: %d, InUse: %d, Idle: %d}",
+				st.MaxOpenConnections, st.OpenConnections, st.InUse, st.Idle)
+		}
+	}()
 
 	r := chi.NewRouter()
 	r.HandleFunc("/customers", func(w http.ResponseWriter, r *http.Request) {
