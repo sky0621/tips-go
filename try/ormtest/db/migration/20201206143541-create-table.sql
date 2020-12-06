@@ -7,7 +7,6 @@ CREATE TABLE customer (
   age int NOT NULL,
   nickname varchar(64),
   memo text,
-  is_active boolean NOT NULL DEFAULT true,
   PRIMARY KEY (id)
 );
 

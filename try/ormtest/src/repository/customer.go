@@ -30,7 +30,6 @@ type Customer struct {
 	Age       int         `boil:"age" json:"age" toml:"age" yaml:"age"`
 	Nickname  null.String `boil:"nickname" json:"nickname,omitempty" toml:"nickname" yaml:"nickname,omitempty"`
 	Memo      null.String `boil:"memo" json:"memo,omitempty" toml:"memo" yaml:"memo,omitempty"`
-	IsActive  bool        `boil:"is_active" json:"is_active" toml:"is_active" yaml:"is_active"`
 
 	R *customerR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L customerL  `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -43,7 +42,6 @@ var CustomerColumns = struct {
 	Age       string
 	Nickname  string
 	Memo      string
-	IsActive  string
 }{
 	ID:        "id",
 	FirstName: "first_name",
@@ -51,7 +49,6 @@ var CustomerColumns = struct {
 	Age:       "age",
 	Nickname:  "nickname",
 	Memo:      "memo",
-	IsActive:  "is_active",
 }
 
 // Generated where
@@ -148,15 +145,6 @@ func (w whereHelpernull_String) GTE(x null.String) qm.QueryMod {
 	return qmhelper.Where(w.field, qmhelper.GTE, x)
 }
 
-type whereHelperbool struct{ field string }
-
-func (w whereHelperbool) EQ(x bool) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
-func (w whereHelperbool) NEQ(x bool) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
-func (w whereHelperbool) LT(x bool) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
-func (w whereHelperbool) LTE(x bool) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
-func (w whereHelperbool) GT(x bool) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
-func (w whereHelperbool) GTE(x bool) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
-
 var CustomerWhere = struct {
 	ID        whereHelperint64
 	FirstName whereHelperstring
@@ -164,7 +152,6 @@ var CustomerWhere = struct {
 	Age       whereHelperint
 	Nickname  whereHelpernull_String
 	Memo      whereHelpernull_String
-	IsActive  whereHelperbool
 }{
 	ID:        whereHelperint64{field: "\"customer\".\"id\""},
 	FirstName: whereHelperstring{field: "\"customer\".\"first_name\""},
@@ -172,7 +159,6 @@ var CustomerWhere = struct {
 	Age:       whereHelperint{field: "\"customer\".\"age\""},
 	Nickname:  whereHelpernull_String{field: "\"customer\".\"nickname\""},
 	Memo:      whereHelpernull_String{field: "\"customer\".\"memo\""},
-	IsActive:  whereHelperbool{field: "\"customer\".\"is_active\""},
 }
 
 // CustomerRels is where relationship names are stored.
@@ -192,9 +178,9 @@ func (*customerR) NewStruct() *customerR {
 type customerL struct{}
 
 var (
-	customerAllColumns            = []string{"id", "first_name", "last_name", "age", "nickname", "memo", "is_active"}
+	customerAllColumns            = []string{"id", "first_name", "last_name", "age", "nickname", "memo"}
 	customerColumnsWithoutDefault = []string{"first_name", "last_name", "age", "nickname", "memo"}
-	customerColumnsWithDefault    = []string{"id", "is_active"}
+	customerColumnsWithDefault    = []string{"id"}
 	customerPrimaryKeyColumns     = []string{"id"}
 )
 

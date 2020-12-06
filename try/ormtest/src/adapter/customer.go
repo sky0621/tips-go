@@ -32,7 +32,6 @@ func (a *customerAdapter) Customers(ctx context.Context) ([]*ormtest.Customer, e
 			Age:      model.Age,
 			Nickname: model.Nickname.String,
 			Memo:     model.Memo.String,
-			IsActive: model.IsActive,
 		})
 	}
 	return results, nil
