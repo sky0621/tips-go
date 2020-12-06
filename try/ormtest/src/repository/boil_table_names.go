@@ -5,8 +5,6 @@ package repository
 
 var TableNames = struct {
 	Customer string
-	Todo     string
 }{
 	Customer: "customer",
-	Todo:     "todo",
 }

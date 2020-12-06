@@ -14,4 +14,5 @@ type Customer struct {
 	Age      int    `json:"age"`
 	Nickname string `json:"nickname,omitempty"`
 	Memo     string `json:"memo,omitempty"`
+	IsActive bool   `json:"isActive"`
 }

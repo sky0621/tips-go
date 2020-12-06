@@ -7,17 +7,9 @@ CREATE TABLE customer (
   age int NOT NULL,
   nickname varchar(64),
   memo text,
-  PRIMARY KEY (id)
-);
-
-CREATE TABLE todo (
-  id bigserial NOT NULL,
-  task varchar(64) NOT NULL,
-  has_deadline boolean NOT NULL DEFAULT false,
-  user_id bigint NOT NULL REFERENCES customer(id),
+  is_active boolean NOT NULL DEFAULT true,
   PRIMARY KEY (id)
 );
 
 -- +migrate Down
 DROP TABLE customer;
-DROP TABLE todo;
