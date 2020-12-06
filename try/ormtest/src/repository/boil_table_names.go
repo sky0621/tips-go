@@ -4,11 +4,9 @@
 package repository
 
 var TableNames = struct {
-	Customer  string
-	Migration string
-	Todo      string
+	Customer string
+	Todo     string
 }{
-	Customer:  "customer",
-	Migration: "migration",
-	Todo:      "todo",
+	Customer: "customer",
+	Todo:     "todo",
 }

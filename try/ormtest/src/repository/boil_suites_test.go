@@ -13,75 +13,62 @@ import "testing"
 // Separating the tests thusly grants avoidance of Postgres deadlocks.
 func TestParent(t *testing.T) {
 	t.Run("Customers", testCustomers)
-	t.Run("Migrations", testMigrations)
 	t.Run("Todos", testTodos)
 }
 
 func TestDelete(t *testing.T) {
 	t.Run("Customers", testCustomersDelete)
-	t.Run("Migrations", testMigrationsDelete)
 	t.Run("Todos", testTodosDelete)
 }
 
 func TestQueryDeleteAll(t *testing.T) {
 	t.Run("Customers", testCustomersQueryDeleteAll)
-	t.Run("Migrations", testMigrationsQueryDeleteAll)
 	t.Run("Todos", testTodosQueryDeleteAll)
 }
 
 func TestSliceDeleteAll(t *testing.T) {
 	t.Run("Customers", testCustomersSliceDeleteAll)
-	t.Run("Migrations", testMigrationsSliceDeleteAll)
 	t.Run("Todos", testTodosSliceDeleteAll)
 }
 
 func TestExists(t *testing.T) {
 	t.Run("Customers", testCustomersExists)
-	t.Run("Migrations", testMigrationsExists)
 	t.Run("Todos", testTodosExists)
 }
 
 func TestFind(t *testing.T) {
 	t.Run("Customers", testCustomersFind)
-	t.Run("Migrations", testMigrationsFind)
 	t.Run("Todos", testTodosFind)
 }
 
 func TestBind(t *testing.T) {
 	t.Run("Customers", testCustomersBind)
-	t.Run("Migrations", testMigrationsBind)
 	t.Run("Todos", testTodosBind)
 }
 
 func TestOne(t *testing.T) {
 	t.Run("Customers", testCustomersOne)
-	t.Run("Migrations", testMigrationsOne)
 	t.Run("Todos", testTodosOne)
 }
 
 func TestAll(t *testing.T) {
 	t.Run("Customers", testCustomersAll)
-	t.Run("Migrations", testMigrationsAll)
 	t.Run("Todos", testTodosAll)
 }
 
 func TestCount(t *testing.T) {
 	t.Run("Customers", testCustomersCount)
-	t.Run("Migrations", testMigrationsCount)
 	t.Run("Todos", testTodosCount)
 }
 
 func TestHooks(t *testing.T) {
 	t.Run("Customers", testCustomersHooks)
-	t.Run("Migrations", testMigrationsHooks)
 	t.Run("Todos", testTodosHooks)
 }
 
 func TestInsert(t *testing.T) {
 	t.Run("Customers", testCustomersInsert)
 	t.Run("Customers", testCustomersInsertWhitelist)
-	t.Run("Migrations", testMigrationsInsert)
-	t.Run("Migrations", testMigrationsInsertWhitelist)
 	t.Run("Todos", testTodosInsert)
 	t.Run("Todos", testTodosInsertWhitelist)
 }
@@ -136,30 +123,25 @@ func TestToManyRemove(t *testing.T) {}
 
 func TestReload(t *testing.T) {
 	t.Run("Customers", testCustomersReload)
-	t.Run("Migrations", testMigrationsReload)
 	t.Run("Todos", testTodosReload)
 }
 
 func TestReloadAll(t *testing.T) {
 	t.Run("Customers", testCustomersReloadAll)
-	t.Run("Migrations", testMigrationsReloadAll)
 	t.Run("Todos", testTodosReloadAll)
 }
 
 func TestSelect(t *testing.T) {
 	t.Run("Customers", testCustomersSelect)
-	t.Run("Migrations", testMigrationsSelect)
 	t.Run("Todos", testTodosSelect)
 }
 
 func TestUpdate(t *testing.T) {
 	t.Run("Customers", testCustomersUpdate)
-	t.Run("Migrations", testMigrationsUpdate)
 	t.Run("Todos", testTodosUpdate)
 }
 
 func TestSliceUpdateAll(t *testing.T) {
 	t.Run("Customers", testCustomersSliceUpdateAll)
-	t.Run("Migrations", testMigrationsSliceUpdateAll)
 	t.Run("Todos", testTodosSliceUpdateAll)
 }

@@ -7,3 +7,4 @@ cd "${SCRIPT_DIR}" && cd ../db
 # https://github.com/rubenv/sql-migrate
 #go get -v github.com/rubenv/sql-migrate/...
 sql-migrate up -env="local"
+sql-migrate up -env="localtest"

@@ -8,3 +8,6 @@ pkgname  = "repository"
   user   = "postgres"
   pass   = "yuckyjuice"
   sslmode= "disable"
+  blacklist = [
+    "migration",
+  ]
