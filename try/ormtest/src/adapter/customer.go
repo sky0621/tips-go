@@ -24,7 +24,7 @@ func (a *customerAdapter) Customers(ctx context.Context) ([]*ormtest.Customer, e
 	if err != nil {
 		return nil, err
 	}
-	var results []*ormtest.Customer
+	results := []*ormtest.Customer{}
 	for _, model := range models {
 		results = append(results, &ormtest.Customer{
 			ID:       model.ID,
