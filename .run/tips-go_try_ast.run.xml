@@ -1,0 +1,24 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="tips-go/try/ast" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="tips-go" />
+    <working_directory value="$PROJECT_DIR$/try/ast" />
+    <envs>
+      <env name="SEARCH_ROOT" value="$PROJECT_DIR$/../../ultraimpression/potato/src/agency/graphql/" />
+    </envs>
+    <EXTENSION ID="net.ashald.envfile">
+      <option name="IS_ENABLED" value="false" />
+      <option name="IS_SUBST" value="false" />
+      <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+      <option name="IS_IGNORE_MISSING_FILES" value="false" />
+      <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+      <ENTRIES>
+        <ENTRY IS_ENABLED="true" PARSER="runconfig" />
+      </ENTRIES>
+    </EXTENSION>
+    <kind value="PACKAGE" />
+    <filePath value="$PROJECT_DIR$/try/ast/main.go" />
+    <package value="github.com/sky0621/tips-go/try/ast" />
+    <directory value="$PROJECT_DIR$" />
+    <method v="2" />
+  </configuration>
+</component>
