@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  db:
+    restart: always
+    image: postgres:13.4-buster
+    container_name: localpgsample01-container
+    ports:
+      - "11411:5432"
+    environment:
+      - DATABASE_HOST=localhost
+      - POSTGRES_DB=localpgsample01
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=yuckyjuice
+      - PGPASSWORD=yuckyjuice
+    volumes:
+      - ./local/data:/docker-entrypoint-initdb.d/
