@@ -2,31 +2,41 @@ package main
 
 import "fmt"
 
-type One struct {
-	ID   int
-	Name string
-}
-
-func (One) doWhat(s string) string {
-	return s + "One"
-}
-
-type Two struct {
-	ID      float32
-	IsAdmin bool
-}
-
-func (Two) doWhat(s string) string {
-	return s + "Two"
-}
-
-type Signal interface {
-	One | Two
-
-	doWhat(s string) string
-}
-
 func main() {
+	//sample1();
+	//sample2()
+	//sample3()
+	sample4()
+}
+
+func sample4() {
+	fmt.Println(formatString("one"))
+	var ms MyStr
+	ms = "MyStr"
+	fmt.Println(ms)
+	fmt.Println(formatStringImpl(ms))
+}
+
+func sample3() {
+	type Favorite struct {
+		Food string
+	}
+	var f Favorite
+	if err := JsonDecode([]byte(`{"food": "中本"}`), &f); err != nil {
+		fmt.Errorf(err.Error())
+	}
+	fmt.Println(f)
+}
+
+func sample2() {
+	var v Vector[int]
+	v.Push(3)
+	fmt.Println(v)
+	v.Push(25)
+	fmt.Println(v)
+}
+
+func sample1() {
 	fmt.Println(addInts(1, 2))
 	fmt.Println(addFloats(2.2, 3.3))
 	fmt.Println(addString("a", "b"))

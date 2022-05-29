@@ -10,3 +10,7 @@ func something[V Signal](v V) {
 	fmt.Println(v)
 	fmt.Println(v.doWhat("xxxx"))
 }
+
+func a[V string | int](p V) V {
+	return p
+}
