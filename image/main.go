@@ -1,9 +1,8 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
-	_ "image/gif"
-	_ "image/png"
 	"io"
 	"log"
 	"os"
@@ -23,7 +22,23 @@ func main() {
 	toDir := os.Args[2]
 	log.Println(toDir)
 
+	fileList, err := os.Create(filepath.Join(toDir, "fileList.txt"))
+	if err != nil {
+		log.Println(err)
+		os.Exit(-1)
+	}
+	defer func() {
+		if err := fileList.Close(); err != nil {
+			log.Fatal(err)
+		}
+	}()
+
 	existsSet := mapset.NewSet[string]()
+
+	fileListScanner := bufio.NewScanner(fileList)
+	for fileListScanner.Scan() {
+		existsSet.Add(fileListScanner.Text())
+	}
 
 	if err := filepath.WalkDir(fromDir, func(path string, d os.DirEntry, err error) error {
 		if err != nil {
@@ -93,5 +108,12 @@ func main() {
 		return nil
 	}); err != nil {
 		log.Fatal(err)
+	}
+
+	for _, s := range existsSet.ToSlice() {
+		_, err := fileList.WriteString(fmt.Sprintf("%s\n", s))
+		if err != nil {
+			log.Println(err)
+		}
 	}
 }
