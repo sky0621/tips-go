@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	_ "image/gif"
 	_ "image/png"
 	"io"
@@ -8,8 +9,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-
-	"github.com/google/uuid"
 
 	mapset "github.com/deckarep/golang-set/v2"
 )
@@ -59,7 +58,6 @@ func main() {
 		}()
 
 		mTime := fi.ModTime().Format("2006-01-02T15h04m05s")
-		log.Println(mTime)
 
 		key := fi.Name() + mTime
 		if existsSet.Contains(key) {
@@ -73,7 +71,7 @@ func main() {
 
 		ext := filepath.Ext(fi.Name())
 
-		outFileName := mTime + "_" + uuid.NewString() + ext
+		outFileName := fmt.Sprintf("%s%s", mTime, ext)
 		log.Println(outFileName)
 
 		outFile, err := os.Create(filepath.Join(toDir, outFileName))
@@ -96,13 +94,4 @@ func main() {
 	}); err != nil {
 		log.Fatal(err)
 	}
-}
-
-func contains(m string, a []string) bool {
-	for _, i := range a {
-		if i == m {
-			return true
-		}
-	}
-	return false
 }
