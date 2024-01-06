@@ -1,4 +1,5 @@
 # tips-go
-test
-hotfix02
-feature01
+
+```
+go mod init github.com/sky0621/tips-go/xxxx
+```
