@@ -14,6 +14,8 @@ import (
 	mapset "github.com/deckarep/golang-set/v2"
 )
 
+const fileListName = "fileList.txt"
+
 func main() {
 	if len(os.Args) < 3 {
 		os.Exit(-1)
@@ -22,7 +24,7 @@ func main() {
 	fromDir := os.Args[1]
 	toDir := os.Args[2]
 
-	fileList, err := os.Create(filepath.Join(toDir, "fileList.txt"))
+	fileList, err := os.Create(filepath.Join(toDir, fileListName))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -78,6 +80,32 @@ func exec(path string, existsSet mapset.Set[string], toDir string, fi fs.FileInf
 		return nil
 	}
 
+	/*
+	 * Output Directory
+	 */
+	outDirName := getOutputDirName(fi.ModTime())
+	if err := createOutputDir(toDir, outDirName); err != nil {
+		log.Println(err)
+		return nil
+	}
+
+	/*
+	 * Output File
+	 */
+	outFile, err := os.Create(filepath.Join(toDir, outDirName, createOutFileName(fi)))
+	if err != nil {
+		log.Println(err)
+		return nil
+	}
+	defer func() {
+		if err := outFile.Close(); err != nil {
+			log.Println(err)
+		}
+	}()
+
+	/*
+	 * Input File
+	 */
 	f, err := os.Open(path)
 	if err != nil {
 		log.Println(err)
@@ -89,17 +117,9 @@ func exec(path string, existsSet mapset.Set[string], toDir string, fi fs.FileInf
 		}
 	}()
 
-	outFile, err := os.Create(filepath.Join(toDir, createOutFileName(fi)))
-	if err != nil {
-		log.Println(err)
-		return nil
-	}
-	defer func() {
-		if err := outFile.Close(); err != nil {
-			log.Println(err)
-		}
-	}()
-
+	/*
+	 * Copy
+	 */
 	if _, err := io.Copy(outFile, f); err != nil {
 		log.Println(err)
 		return nil
@@ -109,7 +129,7 @@ func exec(path string, existsSet mapset.Set[string], toDir string, fi fs.FileInf
 }
 
 func addExists(existsSet mapset.Set[string], fi fs.FileInfo) bool {
-	key := fi.Name() + formatModTime(fi.ModTime())
+	key := fmt.Sprintf("%s%s%d", fi.Name(), formatModTime(fi.ModTime()), fi.Size())
 	if existsSet.Contains(key) {
 		log.Println("=====================")
 		log.Println("EXISTS:", key)
@@ -125,5 +145,17 @@ func formatModTime(modTime time.Time) string {
 }
 
 func createOutFileName(fi fs.FileInfo) string {
-	return fmt.Sprintf("%s%s", formatModTime(fi.ModTime()), filepath.Ext(fi.Name()))
+	return fmt.Sprintf("%s_%d%s", formatModTime(fi.ModTime()), fi.Size(), filepath.Ext(fi.Name()))
+}
+
+func getOutputDirName(modTime time.Time) string {
+	return modTime.Format("200601")
+}
+
+func createOutputDir(toDir string, outDirName string) error {
+	outDir := filepath.Join(toDir, outDirName)
+	if f, err := os.Stat(outDir); os.IsNotExist(err) || !f.IsDir() {
+		return os.Mkdir(outDir, fs.ModePerm)
+	}
+	return nil
 }
