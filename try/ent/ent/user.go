@@ -10,7 +10,7 @@ import (
 	"github.com/sky0621/tips-go/try/ent/ent/user"
 )
 
-// User is the model entity for the User schema.
+// User is the usecase entity for the User schema.
 type User struct {
 	config
 	// ID of the ent.

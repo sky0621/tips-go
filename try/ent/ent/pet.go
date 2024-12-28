@@ -10,7 +10,7 @@ import (
 	"github.com/sky0621/tips-go/try/ent/ent/pet"
 )
 
-// Pet is the model entity for the Pet schema.
+// Pet is the usecase entity for the Pet schema.
 type Pet struct {
 	config
 	// ID of the ent.
