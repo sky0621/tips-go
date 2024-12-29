@@ -2,17 +2,18 @@ package usecase
 
 import "dig/domain"
 
-type UserUseCase interface {
+type UserUsecase interface {
 	GetUser(id int) (*domain.User, error)
 }
 
-type userUseCase struct {
+type userUsecase struct {
+	r domain.UserRepository
 }
 
-func (u *userUseCase) GetUser(id int) (*domain.User, error) {
-	return &domain.User{}, nil
+func (u *userUsecase) GetUser(id int) (*domain.User, error) {
+	return u.r.GetUser(id)
 }
 
-func NewUserUseCase() UserUseCase {
-	return &userUseCase{}
+func NewUserUsecase(r domain.UserRepository) UserUsecase {
+	return &userUsecase{r}
 }
