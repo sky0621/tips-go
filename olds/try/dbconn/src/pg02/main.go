@@ -60,9 +60,9 @@ func main() {
 					log.Fatal(err)
 				}
 				//cs = append(cs, c)
-				//log.Printf("%#+v", c)
+				//log_with_caller_line.Printf("%#+v", c)
 			}
-			//log.Println(len(cs))
+			//log_with_caller_line.Println(len(cs))
 		}(wg)
 	}
 	wg.Wait()

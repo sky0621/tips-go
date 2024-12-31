@@ -1,16 +1,12 @@
 package main
 
 import (
-	"flag"
-	"fmt"
-	"github.com/signintech/gopdf"
 	"log"
+
+	"github.com/signintech/gopdf"
 )
 
 func main() {
-	flag.Parse()
-	args := flag.Args()
-	fmt.Println(args)
 	pdf := gopdf.GoPdf{}
 	pdf.Start(gopdf.Config{PageSize: *gopdf.PageSizeA4})
 	if err := pdf.AddTTFFont("Ubuntu-L", "./Ubuntu-L.ttf"); err != nil {
@@ -21,10 +17,14 @@ func main() {
 		log.Fatal(err)
 	}
 
-	pdf.AddPage()
-	pdf.Cell(nil, "A1")
-	pdf.AddPage()
-	pdf.Cell(nil, "A2")
+	for _, text := range []string{"text01", "text02", "text03"} {
+		pdf.AddPage()
+		if err := pdf.Cell(nil, text); err != nil {
+			log.Fatal(err)
+		}
+	}
 
-	pdf.WritePdf("sample.pdf")
+	if err := pdf.WritePdf("sample.gopdf"); err != nil {
+		log.Fatal(err)
+	}
 }

@@ -44,7 +44,7 @@ func main() {
 
 	//al, err := apachelog.New("")
 	//if err != nil {
-	//	log.Printf("failed to apachelog.New: %s", err)
+	//	log_with_caller_line.Printf("failed to apachelog.New: %s", err)
 	//	return
 	//}
 

@@ -1,6 +1,6 @@
 package domain
 
-import "tips-go/try/log/logger"
+import "github.com/sky0621/tips-go/experiment/log_with_caller_line/logger"
 
 type User interface {
 	Hello()

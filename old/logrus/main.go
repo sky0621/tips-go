@@ -28,14 +28,14 @@ func main() {
 	fmt.Println("　　　　　　　　　　　　　　")
 	fmt.Println("ログレベルを WARN にセットすると、DEBUG や INFO は出なくなる")
 	logrus.SetLevel(logrus.WarnLevel)
-	logrus.Debug("This is a debug log.")
-	logrus.Info("This is a info log.")
-	logrus.Warn("This is a warn log.")
-	logrus.Error("This is a error log.")
+	logrus.Debug("This is a debug log_with_caller_line.")
+	logrus.Info("This is a info log_with_caller_line.")
+	logrus.Warn("This is a warn log_with_caller_line.")
+	logrus.Error("This is a error log_with_caller_line.")
 
 	fmt.Println("　　　　　　　　　　　　　　")
 	fmt.Println("ログ出力先をファイルに変更")
-	logfile, err := os.Create("output.log")
+	logfile, err := os.Create("output.log_with_caller_line")
 	if err != nil {
 		fmt.Println(err)
 	}
