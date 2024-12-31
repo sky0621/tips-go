@@ -1,5 +1,3 @@
-module github.com/sky0621/tips-go/tools/mockery
+module github.com/sky0621/tips-go/how2use/library/other/mockery
 
-require github.com/stretchr/testify v1.4.0
-
-go 1.13
+go 1.23.4
