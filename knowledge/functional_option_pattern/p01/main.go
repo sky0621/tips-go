@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/sky0621/tips-go/experiment/functional_option_pattern/p01/server"
+	"github.com/sky0621/tips-go/knowledge/functional_option_pattern/p01/server"
 )
 
 func main() {

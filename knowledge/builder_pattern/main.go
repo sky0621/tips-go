@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/sky0621/tips-go/experiment/builder_pattern/server"
+	"github.com/sky0621/tips-go/knowledge/builder_pattern/server"
 )
 
 func main() {
