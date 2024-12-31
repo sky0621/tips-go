@@ -36,6 +36,9 @@ func main() {
 	fmt.Println(a)
 	fmt.Println(o)
 	fmt.Println(g)
+
+	ub := g.updatedBy
+	fmt.Println(ub)
 }
 
 type Audit struct {
