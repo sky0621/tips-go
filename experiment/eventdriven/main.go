@@ -16,7 +16,7 @@ const (
 type Event struct {
 	Kind      Kind
 	Data      any
-	Timestamp time.Time
+	Timestamp string
 }
 
 type EventBus struct {
@@ -50,25 +50,39 @@ func main() {
 	eventBus := NewEventBus()
 
 	userAdded := make(chan Event)
-	//	userEdited := make(chan Event)
+	userEdited := make(chan Event)
 	userDeleted := make(chan Event)
 
 	go show(userAdded)
-	//	go show(userEdited)
+	go show(userEdited)
 	go show(userDeleted)
 
 	eventBus.Subscribe(Add, userAdded)
-	//	eventBus.Subscribe(Edit, userEdited)
+	eventBus.Subscribe(Edit, userEdited)
 	eventBus.Subscribe(Delete, userDeleted)
 
 	eventBus.Publish(Event{
-		Kind: Add, Data: "user A added", Timestamp: time.Now(),
+		Kind: Add, Data: "user A added", Timestamp: time.Now().Format(time.RFC3339Nano),
 	})
 	eventBus.Publish(Event{
-		Kind: Edit, Data: "user A edited", Timestamp: time.Now(),
+		Kind: Edit, Data: "user A edited", Timestamp: time.Now().Format(time.RFC3339Nano),
 	})
 	eventBus.Publish(Event{
-		Kind: Delete, Data: "user A deleted", Timestamp: time.Now(),
+		Kind: Delete, Data: "user A deleted", Timestamp: time.Now().Format(time.RFC3339Nano),
+	})
+
+	eventBus.Publish(Event{
+		Kind: Add, Data: "user B added", Timestamp: time.Now().Format(time.RFC3339Nano),
+	})
+	eventBus.Publish(Event{
+		Kind: Edit, Data: "user B edited", Timestamp: time.Now().Format(time.RFC3339Nano),
+	})
+
+	eventBus.Publish(Event{
+		Kind: Add, Data: "user C added", Timestamp: time.Now().Format(time.RFC3339Nano),
+	})
+	eventBus.Publish(Event{
+		Kind: Delete, Data: "user C deleted", Timestamp: time.Now().Format(time.RFC3339Nano),
 	})
 
 	time.Sleep(3 * time.Second)
