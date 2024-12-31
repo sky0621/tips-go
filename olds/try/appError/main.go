@@ -6,17 +6,17 @@ func main() {
 	e := throwAppError()
 	switch t := e.(type) {
 	case *AppError:
-		fmt.Printf("<app> %s", t.Error())
+		fmt.Printf("<app> %s\n", t.Error())
 	case *UserError:
-		fmt.Printf("<user> %s", t.Error())
+		fmt.Printf("<user> %s\n", t.Error())
 	}
 
 	e2 := throwUserError()
 	switch t := e2.(type) {
 	case *AppError:
-		fmt.Printf("<app> %s", t.Error())
+		fmt.Printf("<app> %s\n", t.Error())
 	case *UserError:
-		fmt.Printf("<user> %s", t.Error())
+		fmt.Printf("<user> %s\n", t.Error())
 	}
 }
 
@@ -33,7 +33,7 @@ type AppError struct {
 }
 
 func (e *AppError) Error() string {
-	return fmt.Sprintf("[APP_ERROR] %s", e.msg)
+	return fmt.Sprintf("[APP_ERROR] %s\n", e.msg)
 }
 
 type UserError struct {
@@ -41,5 +41,5 @@ type UserError struct {
 }
 
 func (e *UserError) Error() string {
-	return fmt.Sprintf("[USER_ERROR] %s", e.msg)
+	return fmt.Sprintf("[USER_ERROR] %s\n", e.msg)
 }

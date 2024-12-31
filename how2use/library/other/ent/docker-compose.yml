@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  db:
+    restart: always
+    image: mysql:8
+    container_name: localpgsample01-container
+    ports:
+      - "18001:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: yuckyjuice
+      MYSQL_DATABASE: localmysqlent01
+      MYSQL_USER:
+      MYSQL_PASSWORD: yuckyjuice
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./docker/db/data:/var/lib/mysql
+      - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./docker/db/sql:/docker-entrypoint-initdb.d
