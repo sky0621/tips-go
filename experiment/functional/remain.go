@@ -1,4 +1,4 @@
-package fp
+package functional
 
 // Remain ...
 func Remain(ary []int) []int {

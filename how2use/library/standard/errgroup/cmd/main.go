@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 
-	svc "github.com/sky0621/tips-go/try/errgroup"
+	"github.com/sky0621/tips-go/how2use/library/standard/errgroup/client"
 
-	"github.com/sky0621/tips-go/try/errgroup/client"
+	svc "github.com/sky0621/tips-go/how2use/library/standard/errgroup"
 )
 
 func main() {

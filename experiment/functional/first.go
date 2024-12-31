@@ -1,4 +1,4 @@
-package fp
+package functional
 
 // First ...
 func First(ary []int) int {

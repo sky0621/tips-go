@@ -1,4 +1,4 @@
-package fp
+package functional
 
 // Add ... [x + 1], [y - 1] repeat (if y > 0)
 func Add(x, y int) int {

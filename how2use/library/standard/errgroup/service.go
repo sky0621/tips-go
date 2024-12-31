@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/sky0621/tips-go/try/errgroup/client"
+	"github.com/sky0621/tips-go/how2use/library/standard/errgroup/client"
+
 	"golang.org/x/sync/errgroup"
 	"golang.org/x/xerrors"
 )

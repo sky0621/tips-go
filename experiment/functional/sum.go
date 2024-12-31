@@ -1,4 +1,4 @@
-package fp
+package functional
 
 // Sum ...
 // [1, 2, 3]
