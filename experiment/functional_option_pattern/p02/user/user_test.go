@@ -12,11 +12,30 @@ func WithID(id int) UserOption {
 	}
 }
 
+func WithName(name string) UserOption {
+	return func(u *User) {
+		u.Name = name
+	}
+}
+
+func WithAge(age int) UserOption {
+	return func(u *User) {
+		u.Age = age
+	}
+}
+
+func WithEmail(email string) UserOption {
+	return func(u *User) {
+		u.Email = email
+	}
+}
+
 func createTestUser(options ...UserOption) User {
 	u := User{
 		ID:      1,
 		Name:    "TestUser",
 		Age:     20,
+		Email:   "test@example.com",
 		Hobbies: []string{"Hobby1", "Hobby2", "Hobby3"},
 	}
 	for _, option := range options {
@@ -39,6 +58,21 @@ func TestAddUser(t *testing.T) {
 		{
 			testName:  "準正常系（ID不正）",
 			user:      createTestUser(WithID(0)),
+			wantError: true,
+		},
+		{
+			testName:  "準正常系（Name不正）",
+			user:      createTestUser(WithName("")),
+			wantError: true,
+		},
+		{
+			testName:  "準正常系（Age不正）",
+			user:      createTestUser(WithAge(0)),
+			wantError: true,
+		},
+		{
+			testName:  "準正常系（Email不正）",
+			user:      createTestUser(WithEmail("test.co.jp")),
 			wantError: true,
 		},
 	}
