@@ -1,0 +1,17 @@
+goos: darwin
+goarch: arm64
+pkg: github.com/sky0621/tips-go/how2use/test/compare_benchmark/sample
+cpu: Apple M2
+BenchmarkAfter
+BenchmarkAfter-8   	   10000	    355978 ns/op	  201509 B/op	    9747 allocs/op
+BenchmarkAfter-8   	   10000	    354608 ns/op	  201511 B/op	    9747 allocs/op
+BenchmarkAfter-8   	   10000	    367845 ns/op	  201510 B/op	    9747 allocs/op
+BenchmarkAfter-8   	   10000	    356303 ns/op	  201510 B/op	    9747 allocs/op
+BenchmarkAfter-8   	   10000	    356279 ns/op	  201510 B/op	    9747 allocs/op
+BenchmarkAfter-8   	   10000	    356994 ns/op	  201511 B/op	    9747 allocs/op
+BenchmarkAfter-8   	   10000	    356945 ns/op	  201511 B/op	    9747 allocs/op
+BenchmarkAfter-8   	   10000	    357598 ns/op	  201511 B/op	    9747 allocs/op
+BenchmarkAfter-8   	   10000	    359018 ns/op	  201510 B/op	    9747 allocs/op
+BenchmarkAfter-8   	   10000	    358937 ns/op	  201511 B/op	    9747 allocs/op
+PASS
+ok  	github.com/sky0621/tips-go/how2use/test/compare_benchmark/sample	36.000s
