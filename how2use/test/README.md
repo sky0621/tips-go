@@ -18,18 +18,22 @@ go test -v
 go test -short
 ```
 
-## parallel
+## coverage
 
 ```
-
+go test -cover
 ```
 
-```
+### output
 
 ```
-
+go test -cover -coverprofile=cover.out
 ```
 
+#### to HTML
+
+```
+go tool cover -html=cover.out -o cover.html
 ```
 
 ```
