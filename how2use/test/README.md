@@ -66,3 +66,15 @@ go test -v -bench .
 ```
 go test -v -bench BenchmarkDoSomething
 ```
+
+### メモリアロケーション量
+
+```
+go test -v -benchmem -bench BenchmarkDoSomething
+```
+
+### 回数を指定
+
+```
+go test -v -count 5 -bench BenchmarkDoSomething
+```
