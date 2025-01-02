@@ -1,6 +1,6 @@
 # test
 
-## simple
+## シンプル
 
 ```
 go test
@@ -12,13 +12,13 @@ go test
 go test -v
 ```
 
-## skip
+## スキップコードを入れた分をスキップ
 
 ```
 go test -v -short
 ```
 
-## coverage
+## カバレッジ
 
 ```
 go test -v -cover
@@ -35,9 +35,15 @@ go test -v -cover -coverprofile=cover.out
 ```
 go tool cover -html=cover.out -o cover.html
 ```
-## Fuzzing
+## 自動でランダム値をインプットしてひたすらテスト
 
 ### バグを見つけてクラッシュするまでエンドレスで実行し続ける
+
+```
+go test -v -fuzz .
+```
+
+### テストケース指定
 
 ```
 go test -v -fuzz FuzzDoSomething
@@ -47,4 +53,16 @@ go test -v -fuzz FuzzDoSomething
 
 ```
 go test -v -fuzz FuzzDoSomething -fuzztime 10s
+```
+
+## ベンチマーク
+
+```
+go test -v -bench .
+```
+
+### テストケース指定
+
+```
+go test -v -bench BenchmarkDoSomething
 ```
