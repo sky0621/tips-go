@@ -15,14 +15,14 @@
 
 `Star`および`Watch`はGitHub上のもの。
 
-| Name                                                                       | 最終<br>更新日  | Star  | Watch | Release/Tag | Licence      | 開発元                        | Doc                                   |
-|----------------------------------------------------------------------------|------------|-------|-------|-------------|--------------|----------------------------|---------------------------------------|  
-| [GORM](https://github.com/go-gorm/gorm)                                    | 2024/12/6  | 37.2k | 495   | v1.25.12    | MIT          | ？                        | https://gorm.io/ja_JP/docs/index.html |
-| [ent](https://github.com/ent/ent)                                          | 2024/12/31 | 15.8k | 154   | v0.14.1     | Apache-2.0   | Meta社                      | https://entgo.io/ja/                  |
-| ~~[SQL Boiler](https://github.com/volatiletech/sqlboiler)~~<br>メンテナンスモード   | 2024/12/11 | 6.8k  | 77    | v4.17.1     | BSD-3-Clause | Volatile Technologies Inc. | -                                     |
-| [Bun](https://github.com/uptrace/bun)                                      | 2025/01/01 | 3.9k  | 28    | v1.2.7      | BSD-2-Clause | ？                          | https://bun.uptrace.dev/                                      |
-| ~~[xorm](https://github.com/go-xorm/xorm?tab=readme-ov-file)~~<br>Giteaに移行 | 2019/10/15 | 6.7k  | 265   | v0.5.6      | BSD-3-Clause | ？                          | https://xorm.io/                                                              |
-| [sqlc](https://github.com/sqlc-dev/sqlc)                                   | 2024/12/28 | 13.9k | 82    | v1.27.0     | MIT          | ？                          | https://sqlc.dev/                                                                              |
+| 名称<br>(リンク)                                                                | 最終<br>更新日  | Star  | Watch | 最新<br>Version | License      | 開発元                        | ドキュメント                                |
+|----------------------------------------------------------------------------|------------|-------|-------|---------------|--------------|----------------------------|---------------------------------------|  
+| [GORM](https://github.com/go-gorm/gorm)                                    | 2024/12/6  | 37.2k | 495   | v1.25.12      | MIT          | ？                        | https://gorm.io/ja_JP/docs/index.html |
+| [ent](https://github.com/ent/ent)                                          | 2024/12/31 | 15.8k | 154   | v0.14.1       | Apache-2.0   | Meta社                      | https://entgo.io/ja/                  |
+| ~~[SQL Boiler](https://github.com/volatiletech/sqlboiler)~~<br>メンテナンスモード   | 2024/12/11 | 6.8k  | 77    | v4.17.1       | BSD-3-Clause | Volatile Technologies Inc. | -                                     |
+| [Bun](https://github.com/uptrace/bun)                                      | 2025/01/01 | 3.9k  | 28    | v1.2.7        | BSD-2-Clause | ？                          | https://bun.uptrace.dev/              |
+| ~~[xorm](https://github.com/go-xorm/xorm?tab=readme-ov-file)~~<br>Giteaに移行 | 2019/10/15 | 6.7k  | 265   | v0.5.6        | BSD-3-Clause | ？                          | https://xorm.io/                      |
+| [sqlc](https://github.com/sqlc-dev/sqlc)                                   | 2024/12/28 | 13.9k | 82    | v1.27.0       | MIT          | ？                          | https://sqlc.dev/                     |
 
 ## 定性情報
 
