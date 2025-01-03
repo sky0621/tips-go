@@ -279,7 +279,7 @@ func (uq *UserQuery) GroupBy(field string, fields ...string) *UserGroupBy {
 	return grbuild
 }
 
-// Select allows the selection one or more fields/columns for the given query,
+// Select allows the library_selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
 //
 // Example:
