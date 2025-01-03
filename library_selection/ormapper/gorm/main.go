@@ -29,6 +29,6 @@ func main() {
 	case "C":
 		crud.Insert(db)
 	default:
-		//
+		crud.Select(db)
 	}
 }
