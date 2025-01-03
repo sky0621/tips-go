@@ -8,7 +8,7 @@
 
 - GitサーバはGitHubのみ。
 
-## 定量情報
+## 定量的な比較表
 
 `Star`および`Watch`はGitHub上のもの。
 
@@ -25,7 +25,7 @@
 | **[Go Kit](https://github.com/go-kit/kit)**                         | 2024-03-13 | 26.7k | 676  | v0.13.0 | MIT          | 個人/コミュニティ | [gokit.io](https://gokit.io)                            |
 | **[Gorilla/mux](https://github.com/gorilla/mux)**                   | 2024-06-20 | 21k   | 309  | v1.8.1  | BSD-3-Clause | 個人/コミュニティ | [gorillatoolkit.org](https://www.gorillatoolkit.org)     |
 
-## 定性情報
+## 定性的な比較表
 
 ### Gin, Echo, Fiber, Beego, Chi
 
