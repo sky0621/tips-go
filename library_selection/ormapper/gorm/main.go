@@ -28,6 +28,12 @@ func main() {
 	switch command {
 	case "C":
 		crud.Insert(db)
+	case "U":
+		crud.Update(db)
+	case "D":
+		crud.Delete(db)
+	case "T":
+		crud.Transaction(db)
 	default:
 		crud.Select(db)
 	}
