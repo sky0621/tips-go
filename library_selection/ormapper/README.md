@@ -26,6 +26,8 @@
 
 ### GitHub Star History
 
+[startchart.cc](https://starchart.cc/)を使用。
+
 #### GORM
 ![GORM](./GitHubStarHistory/gorm.png)
 

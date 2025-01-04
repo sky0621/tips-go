@@ -18,6 +18,19 @@
 | [google/wire](https://github.com/google/wire)  | 2024-02-08 | 13.2k | 110  | v0.6.0        | Apache 2.0 | Google            | [GoDoc](https://pkg.go.dev/github.com/google/wire)      |
 | [samber/do](https://github.com/samber/do)      | 2024-11-26 | 1.9k  | 23   | v1.6.0        | MIT        | -（個人）           | [GitHub README](https://github.com/samber/do)           |
 
+### GitHub Star History
+
+[startchart.cc](https://starchart.cc/)を使用。
+
+#### dig
+![dig](./GitHubStarHistory/dig.png)
+
+#### wire
+![wire](./GitHubStarHistory/wire.png)
+
+#### do
+![do](./GitHubStarHistory/do.png)
+
 ## 定性的な比較表
 
 | 観点                      | [dig](https://github.com/uber-go/dig)                                                     | [wire](https://github.com/google/wire)                                                         | [do](https://github.com/samber/do)                                              |
