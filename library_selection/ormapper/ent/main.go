@@ -35,11 +35,11 @@ func main() {
 	case "C":
 		crud.Insert(ctx, client)
 	case "U":
-		//crud.Update(ctx, client)
+		crud.Update(ctx, client)
 	case "D":
-		//crud.Delete(ctx, client)
+		crud.Delete(ctx, client)
 	case "T":
-		//crud.Transaction(ctx, client)
+		crud.Transaction(ctx, client)
 	default:
 		crud.Select(ctx, client)
 	}
