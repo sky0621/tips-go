@@ -20,6 +20,22 @@
 | [Apex/log](https://github.com/apex/log)                          | 2020-08-18 | 1.4k  | 37    | v1.9.0  | MIT     | Apex, TJ Holowaychuk (個人) | [pkg.go.dev/github.com/apex/log](https://pkg.go.dev/github.com/apex/log)                                |
 | [go-kit/kit (log)](https://github.com/go-kit/kit/tree/master/log)| 2021-08-19 | 26.7k | 676   | v0.13.0 | MIT     | 個人/コミュニティ            | [pkg.go.dev/github.com/go-kit/kit/log](https://pkg.go.dev/github.com/go-kit/kit/log)                    |
 
+### GitHub Star History
+
+[startchart.cc](https://starchart.cc/)を使用。
+
+#### Logrus
+![logrus](./GitHubStarHistory/logrus.png)
+
+#### Zap
+![zap](./GitHubStarHistory/zap.png)
+
+#### Zerolog
+![zerolog](./GitHubStarHistory/zerolog.png)
+
+#### Apex/log
+![apexlog](./GitHubStarHistory/apexlog.png)
+
 ## 定性的な比較表
 
 | 観点                 | Logrus                                                                                           | Zap                                                                                   | Zerolog                                                                                                    | Apex/log                                                                                  | go-kit/kit(log)                                                                                                   |
