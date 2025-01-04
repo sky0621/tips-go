@@ -325,15 +325,15 @@ func (c *CommentClient) GetX(ctx context.Context, id int) *Comment {
 	return obj
 }
 
-// QueryUser queries the user edge of a Comment.
-func (c *CommentClient) QueryUser(co *Comment) *UserQuery {
+// QueryUsers queries the users edge of a Comment.
+func (c *CommentClient) QueryUsers(co *Comment) *UserQuery {
 	query := (&UserClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := co.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(comment.Table, comment.FieldID, id),
 			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, comment.UserTable, comment.UserColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, comment.UsersTable, comment.UsersColumn),
 		)
 		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
 		return fromV, nil
@@ -341,15 +341,15 @@ func (c *CommentClient) QueryUser(co *Comment) *UserQuery {
 	return query
 }
 
-// QueryPost queries the post edge of a Comment.
-func (c *CommentClient) QueryPost(co *Comment) *PostQuery {
+// QueryPosts queries the posts edge of a Comment.
+func (c *CommentClient) QueryPosts(co *Comment) *PostQuery {
 	query := (&PostClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := co.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(comment.Table, comment.FieldID, id),
 			sqlgraph.To(post.Table, post.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, comment.PostTable, comment.PostColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, comment.PostsTable, comment.PostsColumn),
 		)
 		fromV = sqlgraph.Neighbors(co.driver.Dialect(), step)
 		return fromV, nil
@@ -490,15 +490,15 @@ func (c *PostClient) GetX(ctx context.Context, id int) *Post {
 	return obj
 }
 
-// QueryUser queries the user edge of a Post.
-func (c *PostClient) QueryUser(po *Post) *UserQuery {
+// QueryUsers queries the users edge of a Post.
+func (c *PostClient) QueryUsers(po *Post) *UserQuery {
 	query := (&UserClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := po.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(post.Table, post.FieldID, id),
 			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, post.UserTable, post.UserColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, post.UsersTable, post.UsersColumn),
 		)
 		fromV = sqlgraph.Neighbors(po.driver.Dialect(), step)
 		return fromV, nil

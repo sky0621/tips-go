@@ -25,7 +25,7 @@ type PostQuery struct {
 	order        []post.OrderOption
 	inters       []Interceptor
 	predicates   []predicate.Post
-	withUser     *UserQuery
+	withUsers    *UserQuery
 	withComments *CommentQuery
 	withFKs      bool
 	// intermediate query (i.e. traversal path).
@@ -64,8 +64,8 @@ func (pq *PostQuery) Order(o ...post.OrderOption) *PostQuery {
 	return pq
 }
 
-// QueryUser chains the current query on the "user" edge.
-func (pq *PostQuery) QueryUser() *UserQuery {
+// QueryUsers chains the current query on the "users" edge.
+func (pq *PostQuery) QueryUsers() *UserQuery {
 	query := (&UserClient{config: pq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := pq.prepareQuery(ctx); err != nil {
@@ -78,7 +78,7 @@ func (pq *PostQuery) QueryUser() *UserQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(post.Table, post.FieldID, selector),
 			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, post.UserTable, post.UserColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, post.UsersTable, post.UsersColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(pq.driver.Dialect(), step)
 		return fromU, nil
@@ -300,7 +300,7 @@ func (pq *PostQuery) Clone() *PostQuery {
 		order:        append([]post.OrderOption{}, pq.order...),
 		inters:       append([]Interceptor{}, pq.inters...),
 		predicates:   append([]predicate.Post{}, pq.predicates...),
-		withUser:     pq.withUser.Clone(),
+		withUsers:    pq.withUsers.Clone(),
 		withComments: pq.withComments.Clone(),
 		// clone intermediate query.
 		sql:  pq.sql.Clone(),
@@ -308,14 +308,14 @@ func (pq *PostQuery) Clone() *PostQuery {
 	}
 }
 
-// WithUser tells the query-builder to eager-load the nodes that are connected to
-// the "user" edge. The optional arguments are used to configure the query builder of the edge.
-func (pq *PostQuery) WithUser(opts ...func(*UserQuery)) *PostQuery {
+// WithUsers tells the query-builder to eager-load the nodes that are connected to
+// the "users" edge. The optional arguments are used to configure the query builder of the edge.
+func (pq *PostQuery) WithUsers(opts ...func(*UserQuery)) *PostQuery {
 	query := (&UserClient{config: pq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	pq.withUser = query
+	pq.withUsers = query
 	return pq
 }
 
@@ -410,11 +410,11 @@ func (pq *PostQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Post, e
 		withFKs     = pq.withFKs
 		_spec       = pq.querySpec()
 		loadedTypes = [2]bool{
-			pq.withUser != nil,
+			pq.withUsers != nil,
 			pq.withComments != nil,
 		}
 	)
-	if pq.withUser != nil {
+	if pq.withUsers != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -438,9 +438,9 @@ func (pq *PostQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Post, e
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-	if query := pq.withUser; query != nil {
-		if err := pq.loadUser(ctx, query, nodes, nil,
-			func(n *Post, e *User) { n.Edges.User = e }); err != nil {
+	if query := pq.withUsers; query != nil {
+		if err := pq.loadUsers(ctx, query, nodes, nil,
+			func(n *Post, e *User) { n.Edges.Users = e }); err != nil {
 			return nil, err
 		}
 	}
@@ -454,7 +454,7 @@ func (pq *PostQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Post, e
 	return nodes, nil
 }
 
-func (pq *PostQuery) loadUser(ctx context.Context, query *UserQuery, nodes []*Post, init func(*Post), assign func(*Post, *User)) error {
+func (pq *PostQuery) loadUsers(ctx context.Context, query *UserQuery, nodes []*Post, init func(*Post), assign func(*Post, *User)) error {
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*Post)
 	for i := range nodes {

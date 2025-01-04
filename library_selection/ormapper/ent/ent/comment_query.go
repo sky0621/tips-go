@@ -24,8 +24,8 @@ type CommentQuery struct {
 	order      []comment.OrderOption
 	inters     []Interceptor
 	predicates []predicate.Comment
-	withUser   *UserQuery
-	withPost   *PostQuery
+	withUsers  *UserQuery
+	withPosts  *PostQuery
 	withFKs    bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -63,8 +63,8 @@ func (cq *CommentQuery) Order(o ...comment.OrderOption) *CommentQuery {
 	return cq
 }
 
-// QueryUser chains the current query on the "user" edge.
-func (cq *CommentQuery) QueryUser() *UserQuery {
+// QueryUsers chains the current query on the "users" edge.
+func (cq *CommentQuery) QueryUsers() *UserQuery {
 	query := (&UserClient{config: cq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := cq.prepareQuery(ctx); err != nil {
@@ -77,7 +77,7 @@ func (cq *CommentQuery) QueryUser() *UserQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(comment.Table, comment.FieldID, selector),
 			sqlgraph.To(user.Table, user.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, comment.UserTable, comment.UserColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, comment.UsersTable, comment.UsersColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
 		return fromU, nil
@@ -85,8 +85,8 @@ func (cq *CommentQuery) QueryUser() *UserQuery {
 	return query
 }
 
-// QueryPost chains the current query on the "post" edge.
-func (cq *CommentQuery) QueryPost() *PostQuery {
+// QueryPosts chains the current query on the "posts" edge.
+func (cq *CommentQuery) QueryPosts() *PostQuery {
 	query := (&PostClient{config: cq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := cq.prepareQuery(ctx); err != nil {
@@ -99,7 +99,7 @@ func (cq *CommentQuery) QueryPost() *PostQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(comment.Table, comment.FieldID, selector),
 			sqlgraph.To(post.Table, post.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, comment.PostTable, comment.PostColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, comment.PostsTable, comment.PostsColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(cq.driver.Dialect(), step)
 		return fromU, nil
@@ -299,33 +299,33 @@ func (cq *CommentQuery) Clone() *CommentQuery {
 		order:      append([]comment.OrderOption{}, cq.order...),
 		inters:     append([]Interceptor{}, cq.inters...),
 		predicates: append([]predicate.Comment{}, cq.predicates...),
-		withUser:   cq.withUser.Clone(),
-		withPost:   cq.withPost.Clone(),
+		withUsers:  cq.withUsers.Clone(),
+		withPosts:  cq.withPosts.Clone(),
 		// clone intermediate query.
 		sql:  cq.sql.Clone(),
 		path: cq.path,
 	}
 }
 
-// WithUser tells the query-builder to eager-load the nodes that are connected to
-// the "user" edge. The optional arguments are used to configure the query builder of the edge.
-func (cq *CommentQuery) WithUser(opts ...func(*UserQuery)) *CommentQuery {
+// WithUsers tells the query-builder to eager-load the nodes that are connected to
+// the "users" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CommentQuery) WithUsers(opts ...func(*UserQuery)) *CommentQuery {
 	query := (&UserClient{config: cq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	cq.withUser = query
+	cq.withUsers = query
 	return cq
 }
 
-// WithPost tells the query-builder to eager-load the nodes that are connected to
-// the "post" edge. The optional arguments are used to configure the query builder of the edge.
-func (cq *CommentQuery) WithPost(opts ...func(*PostQuery)) *CommentQuery {
+// WithPosts tells the query-builder to eager-load the nodes that are connected to
+// the "posts" edge. The optional arguments are used to configure the query builder of the edge.
+func (cq *CommentQuery) WithPosts(opts ...func(*PostQuery)) *CommentQuery {
 	query := (&PostClient{config: cq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	cq.withPost = query
+	cq.withPosts = query
 	return cq
 }
 
@@ -409,11 +409,11 @@ func (cq *CommentQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comm
 		withFKs     = cq.withFKs
 		_spec       = cq.querySpec()
 		loadedTypes = [2]bool{
-			cq.withUser != nil,
-			cq.withPost != nil,
+			cq.withUsers != nil,
+			cq.withPosts != nil,
 		}
 	)
-	if cq.withUser != nil || cq.withPost != nil {
+	if cq.withUsers != nil || cq.withPosts != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -437,22 +437,22 @@ func (cq *CommentQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Comm
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-	if query := cq.withUser; query != nil {
-		if err := cq.loadUser(ctx, query, nodes, nil,
-			func(n *Comment, e *User) { n.Edges.User = e }); err != nil {
+	if query := cq.withUsers; query != nil {
+		if err := cq.loadUsers(ctx, query, nodes, nil,
+			func(n *Comment, e *User) { n.Edges.Users = e }); err != nil {
 			return nil, err
 		}
 	}
-	if query := cq.withPost; query != nil {
-		if err := cq.loadPost(ctx, query, nodes, nil,
-			func(n *Comment, e *Post) { n.Edges.Post = e }); err != nil {
+	if query := cq.withPosts; query != nil {
+		if err := cq.loadPosts(ctx, query, nodes, nil,
+			func(n *Comment, e *Post) { n.Edges.Posts = e }); err != nil {
 			return nil, err
 		}
 	}
 	return nodes, nil
 }
 
-func (cq *CommentQuery) loadUser(ctx context.Context, query *UserQuery, nodes []*Comment, init func(*Comment), assign func(*Comment, *User)) error {
+func (cq *CommentQuery) loadUsers(ctx context.Context, query *UserQuery, nodes []*Comment, init func(*Comment), assign func(*Comment, *User)) error {
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*Comment)
 	for i := range nodes {
@@ -484,7 +484,7 @@ func (cq *CommentQuery) loadUser(ctx context.Context, query *UserQuery, nodes []
 	}
 	return nil
 }
-func (cq *CommentQuery) loadPost(ctx context.Context, query *PostQuery, nodes []*Comment, init func(*Comment), assign func(*Comment, *Post)) error {
+func (cq *CommentQuery) loadPosts(ctx context.Context, query *PostQuery, nodes []*Comment, init func(*Comment), assign func(*Comment, *Post)) error {
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*Comment)
 	for i := range nodes {

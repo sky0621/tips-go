@@ -41,10 +41,10 @@ type CommentMutation struct {
 	created_at    *time.Time
 	updated_at    *time.Time
 	clearedFields map[string]struct{}
-	user          *int
-	cleareduser   bool
-	post          *int
-	clearedpost   bool
+	users         *int
+	clearedusers  bool
+	posts         *int
+	clearedposts  bool
 	done          bool
 	oldValue      func(context.Context) (*Comment, error)
 	predicates    []predicate.Comment
@@ -256,82 +256,82 @@ func (m *CommentMutation) ResetUpdatedAt() {
 	m.updated_at = nil
 }
 
-// SetUserID sets the "user" edge to the User entity by id.
-func (m *CommentMutation) SetUserID(id int) {
-	m.user = &id
+// SetUsersID sets the "users" edge to the User entity by id.
+func (m *CommentMutation) SetUsersID(id int) {
+	m.users = &id
 }
 
-// ClearUser clears the "user" edge to the User entity.
-func (m *CommentMutation) ClearUser() {
-	m.cleareduser = true
+// ClearUsers clears the "users" edge to the User entity.
+func (m *CommentMutation) ClearUsers() {
+	m.clearedusers = true
 }
 
-// UserCleared reports if the "user" edge to the User entity was cleared.
-func (m *CommentMutation) UserCleared() bool {
-	return m.cleareduser
+// UsersCleared reports if the "users" edge to the User entity was cleared.
+func (m *CommentMutation) UsersCleared() bool {
+	return m.clearedusers
 }
 
-// UserID returns the "user" edge ID in the mutation.
-func (m *CommentMutation) UserID() (id int, exists bool) {
-	if m.user != nil {
-		return *m.user, true
+// UsersID returns the "users" edge ID in the mutation.
+func (m *CommentMutation) UsersID() (id int, exists bool) {
+	if m.users != nil {
+		return *m.users, true
 	}
 	return
 }
 
-// UserIDs returns the "user" edge IDs in the mutation.
+// UsersIDs returns the "users" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// UserID instead. It exists only for internal usage by the builders.
-func (m *CommentMutation) UserIDs() (ids []int) {
-	if id := m.user; id != nil {
+// UsersID instead. It exists only for internal usage by the builders.
+func (m *CommentMutation) UsersIDs() (ids []int) {
+	if id := m.users; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetUser resets all changes to the "user" edge.
-func (m *CommentMutation) ResetUser() {
-	m.user = nil
-	m.cleareduser = false
+// ResetUsers resets all changes to the "users" edge.
+func (m *CommentMutation) ResetUsers() {
+	m.users = nil
+	m.clearedusers = false
 }
 
-// SetPostID sets the "post" edge to the Post entity by id.
-func (m *CommentMutation) SetPostID(id int) {
-	m.post = &id
+// SetPostsID sets the "posts" edge to the Post entity by id.
+func (m *CommentMutation) SetPostsID(id int) {
+	m.posts = &id
 }
 
-// ClearPost clears the "post" edge to the Post entity.
-func (m *CommentMutation) ClearPost() {
-	m.clearedpost = true
+// ClearPosts clears the "posts" edge to the Post entity.
+func (m *CommentMutation) ClearPosts() {
+	m.clearedposts = true
 }
 
-// PostCleared reports if the "post" edge to the Post entity was cleared.
-func (m *CommentMutation) PostCleared() bool {
-	return m.clearedpost
+// PostsCleared reports if the "posts" edge to the Post entity was cleared.
+func (m *CommentMutation) PostsCleared() bool {
+	return m.clearedposts
 }
 
-// PostID returns the "post" edge ID in the mutation.
-func (m *CommentMutation) PostID() (id int, exists bool) {
-	if m.post != nil {
-		return *m.post, true
+// PostsID returns the "posts" edge ID in the mutation.
+func (m *CommentMutation) PostsID() (id int, exists bool) {
+	if m.posts != nil {
+		return *m.posts, true
 	}
 	return
 }
 
-// PostIDs returns the "post" edge IDs in the mutation.
+// PostsIDs returns the "posts" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// PostID instead. It exists only for internal usage by the builders.
-func (m *CommentMutation) PostIDs() (ids []int) {
-	if id := m.post; id != nil {
+// PostsID instead. It exists only for internal usage by the builders.
+func (m *CommentMutation) PostsIDs() (ids []int) {
+	if id := m.posts; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetPost resets all changes to the "post" edge.
-func (m *CommentMutation) ResetPost() {
-	m.post = nil
-	m.clearedpost = false
+// ResetPosts resets all changes to the "posts" edge.
+func (m *CommentMutation) ResetPosts() {
+	m.posts = nil
+	m.clearedposts = false
 }
 
 // Where appends a list predicates to the CommentMutation builder.
@@ -502,11 +502,11 @@ func (m *CommentMutation) ResetField(name string) error {
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *CommentMutation) AddedEdges() []string {
 	edges := make([]string, 0, 2)
-	if m.user != nil {
-		edges = append(edges, comment.EdgeUser)
+	if m.users != nil {
+		edges = append(edges, comment.EdgeUsers)
 	}
-	if m.post != nil {
-		edges = append(edges, comment.EdgePost)
+	if m.posts != nil {
+		edges = append(edges, comment.EdgePosts)
 	}
 	return edges
 }
@@ -515,12 +515,12 @@ func (m *CommentMutation) AddedEdges() []string {
 // name in this mutation.
 func (m *CommentMutation) AddedIDs(name string) []ent.Value {
 	switch name {
-	case comment.EdgeUser:
-		if id := m.user; id != nil {
+	case comment.EdgeUsers:
+		if id := m.users; id != nil {
 			return []ent.Value{*id}
 		}
-	case comment.EdgePost:
-		if id := m.post; id != nil {
+	case comment.EdgePosts:
+		if id := m.posts; id != nil {
 			return []ent.Value{*id}
 		}
 	}
@@ -542,11 +542,11 @@ func (m *CommentMutation) RemovedIDs(name string) []ent.Value {
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *CommentMutation) ClearedEdges() []string {
 	edges := make([]string, 0, 2)
-	if m.cleareduser {
-		edges = append(edges, comment.EdgeUser)
+	if m.clearedusers {
+		edges = append(edges, comment.EdgeUsers)
 	}
-	if m.clearedpost {
-		edges = append(edges, comment.EdgePost)
+	if m.clearedposts {
+		edges = append(edges, comment.EdgePosts)
 	}
 	return edges
 }
@@ -555,10 +555,10 @@ func (m *CommentMutation) ClearedEdges() []string {
 // was cleared in this mutation.
 func (m *CommentMutation) EdgeCleared(name string) bool {
 	switch name {
-	case comment.EdgeUser:
-		return m.cleareduser
-	case comment.EdgePost:
-		return m.clearedpost
+	case comment.EdgeUsers:
+		return m.clearedusers
+	case comment.EdgePosts:
+		return m.clearedposts
 	}
 	return false
 }
@@ -567,11 +567,11 @@ func (m *CommentMutation) EdgeCleared(name string) bool {
 // if that edge is not defined in the schema.
 func (m *CommentMutation) ClearEdge(name string) error {
 	switch name {
-	case comment.EdgeUser:
-		m.ClearUser()
+	case comment.EdgeUsers:
+		m.ClearUsers()
 		return nil
-	case comment.EdgePost:
-		m.ClearPost()
+	case comment.EdgePosts:
+		m.ClearPosts()
 		return nil
 	}
 	return fmt.Errorf("unknown Comment unique edge %s", name)
@@ -581,11 +581,11 @@ func (m *CommentMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *CommentMutation) ResetEdge(name string) error {
 	switch name {
-	case comment.EdgeUser:
-		m.ResetUser()
+	case comment.EdgeUsers:
+		m.ResetUsers()
 		return nil
-	case comment.EdgePost:
-		m.ResetPost()
+	case comment.EdgePosts:
+		m.ResetPosts()
 		return nil
 	}
 	return fmt.Errorf("unknown Comment edge %s", name)
@@ -602,8 +602,8 @@ type PostMutation struct {
 	created_at      *time.Time
 	updated_at      *time.Time
 	clearedFields   map[string]struct{}
-	user            *int
-	cleareduser     bool
+	users           *int
+	clearedusers    bool
 	comments        map[int]struct{}
 	removedcomments map[int]struct{}
 	clearedcomments bool
@@ -854,43 +854,43 @@ func (m *PostMutation) ResetUpdatedAt() {
 	m.updated_at = nil
 }
 
-// SetUserID sets the "user" edge to the User entity by id.
-func (m *PostMutation) SetUserID(id int) {
-	m.user = &id
+// SetUsersID sets the "users" edge to the User entity by id.
+func (m *PostMutation) SetUsersID(id int) {
+	m.users = &id
 }
 
-// ClearUser clears the "user" edge to the User entity.
-func (m *PostMutation) ClearUser() {
-	m.cleareduser = true
+// ClearUsers clears the "users" edge to the User entity.
+func (m *PostMutation) ClearUsers() {
+	m.clearedusers = true
 }
 
-// UserCleared reports if the "user" edge to the User entity was cleared.
-func (m *PostMutation) UserCleared() bool {
-	return m.cleareduser
+// UsersCleared reports if the "users" edge to the User entity was cleared.
+func (m *PostMutation) UsersCleared() bool {
+	return m.clearedusers
 }
 
-// UserID returns the "user" edge ID in the mutation.
-func (m *PostMutation) UserID() (id int, exists bool) {
-	if m.user != nil {
-		return *m.user, true
+// UsersID returns the "users" edge ID in the mutation.
+func (m *PostMutation) UsersID() (id int, exists bool) {
+	if m.users != nil {
+		return *m.users, true
 	}
 	return
 }
 
-// UserIDs returns the "user" edge IDs in the mutation.
+// UsersIDs returns the "users" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// UserID instead. It exists only for internal usage by the builders.
-func (m *PostMutation) UserIDs() (ids []int) {
-	if id := m.user; id != nil {
+// UsersID instead. It exists only for internal usage by the builders.
+func (m *PostMutation) UsersIDs() (ids []int) {
+	if id := m.users; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetUser resets all changes to the "user" edge.
-func (m *PostMutation) ResetUser() {
-	m.user = nil
-	m.cleareduser = false
+// ResetUsers resets all changes to the "users" edge.
+func (m *PostMutation) ResetUsers() {
+	m.users = nil
+	m.clearedusers = false
 }
 
 // AddCommentIDs adds the "comments" edge to the Comment entity by ids.
@@ -1132,8 +1132,8 @@ func (m *PostMutation) ResetField(name string) error {
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *PostMutation) AddedEdges() []string {
 	edges := make([]string, 0, 2)
-	if m.user != nil {
-		edges = append(edges, post.EdgeUser)
+	if m.users != nil {
+		edges = append(edges, post.EdgeUsers)
 	}
 	if m.comments != nil {
 		edges = append(edges, post.EdgeComments)
@@ -1145,8 +1145,8 @@ func (m *PostMutation) AddedEdges() []string {
 // name in this mutation.
 func (m *PostMutation) AddedIDs(name string) []ent.Value {
 	switch name {
-	case post.EdgeUser:
-		if id := m.user; id != nil {
+	case post.EdgeUsers:
+		if id := m.users; id != nil {
 			return []ent.Value{*id}
 		}
 	case post.EdgeComments:
@@ -1185,8 +1185,8 @@ func (m *PostMutation) RemovedIDs(name string) []ent.Value {
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *PostMutation) ClearedEdges() []string {
 	edges := make([]string, 0, 2)
-	if m.cleareduser {
-		edges = append(edges, post.EdgeUser)
+	if m.clearedusers {
+		edges = append(edges, post.EdgeUsers)
 	}
 	if m.clearedcomments {
 		edges = append(edges, post.EdgeComments)
@@ -1198,8 +1198,8 @@ func (m *PostMutation) ClearedEdges() []string {
 // was cleared in this mutation.
 func (m *PostMutation) EdgeCleared(name string) bool {
 	switch name {
-	case post.EdgeUser:
-		return m.cleareduser
+	case post.EdgeUsers:
+		return m.clearedusers
 	case post.EdgeComments:
 		return m.clearedcomments
 	}
@@ -1210,8 +1210,8 @@ func (m *PostMutation) EdgeCleared(name string) bool {
 // if that edge is not defined in the schema.
 func (m *PostMutation) ClearEdge(name string) error {
 	switch name {
-	case post.EdgeUser:
-		m.ClearUser()
+	case post.EdgeUsers:
+		m.ClearUsers()
 		return nil
 	}
 	return fmt.Errorf("unknown Post unique edge %s", name)
@@ -1221,8 +1221,8 @@ func (m *PostMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *PostMutation) ResetEdge(name string) error {
 	switch name {
-	case post.EdgeUser:
-		m.ResetUser()
+	case post.EdgeUsers:
+		m.ResetUsers()
 		return nil
 	case post.EdgeComments:
 		m.ResetComments()

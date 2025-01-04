@@ -64,42 +64,42 @@ func (cu *CommentUpdate) SetUpdatedAt(t time.Time) *CommentUpdate {
 	return cu
 }
 
-// SetUserID sets the "user" edge to the User entity by ID.
-func (cu *CommentUpdate) SetUserID(id int) *CommentUpdate {
-	cu.mutation.SetUserID(id)
+// SetUsersID sets the "users" edge to the User entity by ID.
+func (cu *CommentUpdate) SetUsersID(id int) *CommentUpdate {
+	cu.mutation.SetUsersID(id)
 	return cu
 }
 
-// SetNillableUserID sets the "user" edge to the User entity by ID if the given value is not nil.
-func (cu *CommentUpdate) SetNillableUserID(id *int) *CommentUpdate {
+// SetNillableUsersID sets the "users" edge to the User entity by ID if the given value is not nil.
+func (cu *CommentUpdate) SetNillableUsersID(id *int) *CommentUpdate {
 	if id != nil {
-		cu = cu.SetUserID(*id)
+		cu = cu.SetUsersID(*id)
 	}
 	return cu
 }
 
-// SetUser sets the "user" edge to the User entity.
-func (cu *CommentUpdate) SetUser(u *User) *CommentUpdate {
-	return cu.SetUserID(u.ID)
+// SetUsers sets the "users" edge to the User entity.
+func (cu *CommentUpdate) SetUsers(u *User) *CommentUpdate {
+	return cu.SetUsersID(u.ID)
 }
 
-// SetPostID sets the "post" edge to the Post entity by ID.
-func (cu *CommentUpdate) SetPostID(id int) *CommentUpdate {
-	cu.mutation.SetPostID(id)
+// SetPostsID sets the "posts" edge to the Post entity by ID.
+func (cu *CommentUpdate) SetPostsID(id int) *CommentUpdate {
+	cu.mutation.SetPostsID(id)
 	return cu
 }
 
-// SetNillablePostID sets the "post" edge to the Post entity by ID if the given value is not nil.
-func (cu *CommentUpdate) SetNillablePostID(id *int) *CommentUpdate {
+// SetNillablePostsID sets the "posts" edge to the Post entity by ID if the given value is not nil.
+func (cu *CommentUpdate) SetNillablePostsID(id *int) *CommentUpdate {
 	if id != nil {
-		cu = cu.SetPostID(*id)
+		cu = cu.SetPostsID(*id)
 	}
 	return cu
 }
 
-// SetPost sets the "post" edge to the Post entity.
-func (cu *CommentUpdate) SetPost(p *Post) *CommentUpdate {
-	return cu.SetPostID(p.ID)
+// SetPosts sets the "posts" edge to the Post entity.
+func (cu *CommentUpdate) SetPosts(p *Post) *CommentUpdate {
+	return cu.SetPostsID(p.ID)
 }
 
 // Mutation returns the CommentMutation object of the builder.
@@ -107,15 +107,15 @@ func (cu *CommentUpdate) Mutation() *CommentMutation {
 	return cu.mutation
 }
 
-// ClearUser clears the "user" edge to the User entity.
-func (cu *CommentUpdate) ClearUser() *CommentUpdate {
-	cu.mutation.ClearUser()
+// ClearUsers clears the "users" edge to the User entity.
+func (cu *CommentUpdate) ClearUsers() *CommentUpdate {
+	cu.mutation.ClearUsers()
 	return cu
 }
 
-// ClearPost clears the "post" edge to the Post entity.
-func (cu *CommentUpdate) ClearPost() *CommentUpdate {
-	cu.mutation.ClearPost()
+// ClearPosts clears the "posts" edge to the Post entity.
+func (cu *CommentUpdate) ClearPosts() *CommentUpdate {
+	cu.mutation.ClearPosts()
 	return cu
 }
 
@@ -173,12 +173,12 @@ func (cu *CommentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := cu.mutation.UpdatedAt(); ok {
 		_spec.SetField(comment.FieldUpdatedAt, field.TypeTime, value)
 	}
-	if cu.mutation.UserCleared() {
+	if cu.mutation.UsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   comment.UserTable,
-			Columns: []string{comment.UserColumn},
+			Table:   comment.UsersTable,
+			Columns: []string{comment.UsersColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
@@ -186,12 +186,12 @@ func (cu *CommentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := cu.mutation.UserIDs(); len(nodes) > 0 {
+	if nodes := cu.mutation.UsersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   comment.UserTable,
-			Columns: []string{comment.UserColumn},
+			Table:   comment.UsersTable,
+			Columns: []string{comment.UsersColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
@@ -202,12 +202,12 @@ func (cu *CommentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if cu.mutation.PostCleared() {
+	if cu.mutation.PostsCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   comment.PostTable,
-			Columns: []string{comment.PostColumn},
+			Table:   comment.PostsTable,
+			Columns: []string{comment.PostsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(post.FieldID, field.TypeInt),
@@ -215,12 +215,12 @@ func (cu *CommentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := cu.mutation.PostIDs(); len(nodes) > 0 {
+	if nodes := cu.mutation.PostsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   comment.PostTable,
-			Columns: []string{comment.PostColumn},
+			Table:   comment.PostsTable,
+			Columns: []string{comment.PostsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(post.FieldID, field.TypeInt),
@@ -285,42 +285,42 @@ func (cuo *CommentUpdateOne) SetUpdatedAt(t time.Time) *CommentUpdateOne {
 	return cuo
 }
 
-// SetUserID sets the "user" edge to the User entity by ID.
-func (cuo *CommentUpdateOne) SetUserID(id int) *CommentUpdateOne {
-	cuo.mutation.SetUserID(id)
+// SetUsersID sets the "users" edge to the User entity by ID.
+func (cuo *CommentUpdateOne) SetUsersID(id int) *CommentUpdateOne {
+	cuo.mutation.SetUsersID(id)
 	return cuo
 }
 
-// SetNillableUserID sets the "user" edge to the User entity by ID if the given value is not nil.
-func (cuo *CommentUpdateOne) SetNillableUserID(id *int) *CommentUpdateOne {
+// SetNillableUsersID sets the "users" edge to the User entity by ID if the given value is not nil.
+func (cuo *CommentUpdateOne) SetNillableUsersID(id *int) *CommentUpdateOne {
 	if id != nil {
-		cuo = cuo.SetUserID(*id)
+		cuo = cuo.SetUsersID(*id)
 	}
 	return cuo
 }
 
-// SetUser sets the "user" edge to the User entity.
-func (cuo *CommentUpdateOne) SetUser(u *User) *CommentUpdateOne {
-	return cuo.SetUserID(u.ID)
+// SetUsers sets the "users" edge to the User entity.
+func (cuo *CommentUpdateOne) SetUsers(u *User) *CommentUpdateOne {
+	return cuo.SetUsersID(u.ID)
 }
 
-// SetPostID sets the "post" edge to the Post entity by ID.
-func (cuo *CommentUpdateOne) SetPostID(id int) *CommentUpdateOne {
-	cuo.mutation.SetPostID(id)
+// SetPostsID sets the "posts" edge to the Post entity by ID.
+func (cuo *CommentUpdateOne) SetPostsID(id int) *CommentUpdateOne {
+	cuo.mutation.SetPostsID(id)
 	return cuo
 }
 
-// SetNillablePostID sets the "post" edge to the Post entity by ID if the given value is not nil.
-func (cuo *CommentUpdateOne) SetNillablePostID(id *int) *CommentUpdateOne {
+// SetNillablePostsID sets the "posts" edge to the Post entity by ID if the given value is not nil.
+func (cuo *CommentUpdateOne) SetNillablePostsID(id *int) *CommentUpdateOne {
 	if id != nil {
-		cuo = cuo.SetPostID(*id)
+		cuo = cuo.SetPostsID(*id)
 	}
 	return cuo
 }
 
-// SetPost sets the "post" edge to the Post entity.
-func (cuo *CommentUpdateOne) SetPost(p *Post) *CommentUpdateOne {
-	return cuo.SetPostID(p.ID)
+// SetPosts sets the "posts" edge to the Post entity.
+func (cuo *CommentUpdateOne) SetPosts(p *Post) *CommentUpdateOne {
+	return cuo.SetPostsID(p.ID)
 }
 
 // Mutation returns the CommentMutation object of the builder.
@@ -328,15 +328,15 @@ func (cuo *CommentUpdateOne) Mutation() *CommentMutation {
 	return cuo.mutation
 }
 
-// ClearUser clears the "user" edge to the User entity.
-func (cuo *CommentUpdateOne) ClearUser() *CommentUpdateOne {
-	cuo.mutation.ClearUser()
+// ClearUsers clears the "users" edge to the User entity.
+func (cuo *CommentUpdateOne) ClearUsers() *CommentUpdateOne {
+	cuo.mutation.ClearUsers()
 	return cuo
 }
 
-// ClearPost clears the "post" edge to the Post entity.
-func (cuo *CommentUpdateOne) ClearPost() *CommentUpdateOne {
-	cuo.mutation.ClearPost()
+// ClearPosts clears the "posts" edge to the Post entity.
+func (cuo *CommentUpdateOne) ClearPosts() *CommentUpdateOne {
+	cuo.mutation.ClearPosts()
 	return cuo
 }
 
@@ -424,12 +424,12 @@ func (cuo *CommentUpdateOne) sqlSave(ctx context.Context) (_node *Comment, err e
 	if value, ok := cuo.mutation.UpdatedAt(); ok {
 		_spec.SetField(comment.FieldUpdatedAt, field.TypeTime, value)
 	}
-	if cuo.mutation.UserCleared() {
+	if cuo.mutation.UsersCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   comment.UserTable,
-			Columns: []string{comment.UserColumn},
+			Table:   comment.UsersTable,
+			Columns: []string{comment.UsersColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
@@ -437,12 +437,12 @@ func (cuo *CommentUpdateOne) sqlSave(ctx context.Context) (_node *Comment, err e
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := cuo.mutation.UserIDs(); len(nodes) > 0 {
+	if nodes := cuo.mutation.UsersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   comment.UserTable,
-			Columns: []string{comment.UserColumn},
+			Table:   comment.UsersTable,
+			Columns: []string{comment.UsersColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
@@ -453,12 +453,12 @@ func (cuo *CommentUpdateOne) sqlSave(ctx context.Context) (_node *Comment, err e
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if cuo.mutation.PostCleared() {
+	if cuo.mutation.PostsCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   comment.PostTable,
-			Columns: []string{comment.PostColumn},
+			Table:   comment.PostsTable,
+			Columns: []string{comment.PostsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(post.FieldID, field.TypeInt),
@@ -466,12 +466,12 @@ func (cuo *CommentUpdateOne) sqlSave(ctx context.Context) (_node *Comment, err e
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := cuo.mutation.PostIDs(); len(nodes) > 0 {
+	if nodes := cuo.mutation.PostsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   comment.PostTable,
-			Columns: []string{comment.PostColumn},
+			Table:   comment.PostsTable,
+			Columns: []string{comment.PostsColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(post.FieldID, field.TypeInt),

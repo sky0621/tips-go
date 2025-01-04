@@ -9,6 +9,8 @@ import (
 	"entgo.io/ent/schema/field"
 )
 
+const UserTable = "users"
+
 // User holds the schema definition for the User entity.
 type User struct {
 	ent.Schema
@@ -26,7 +28,9 @@ func (User) Fields() []ent.Field {
 // Edges of the User.
 func (User) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("posts", Post.Type),
-		edge.To("comments", Comment.Type),
+		// users : posts = 1 : N
+		edge.To(PostTable, Post.Type),
+		// users : comments = 1 : N
+		edge.To(CommentTable, Comment.Type),
 	}
 }

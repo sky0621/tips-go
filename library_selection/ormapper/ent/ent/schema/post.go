@@ -9,6 +9,8 @@ import (
 	"entgo.io/ent/schema/field"
 )
 
+const PostTable = "posts"
+
 // Post holds the schema definition for the Post entity.
 type Post struct {
 	ent.Schema
@@ -27,7 +29,8 @@ func (Post) Fields() []ent.Field {
 // Edges of the Post.
 func (Post) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("user", User.Type).Ref("posts").Unique(),
-		edge.To("comments", Comment.Type),
+		edge.From(UserTable, User.Type).Ref(PostTable).Unique(),
+		// posts : comments = 1 : N
+		edge.To(CommentTable, Comment.Type),
 	}
 }

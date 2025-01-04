@@ -3,11 +3,12 @@ package schema
 import (
 	"time"
 
-	"entgo.io/ent/schema/edge"
-
 	"entgo.io/ent"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
+
+const CommentTable = "comments"
 
 // Comment holds the schema definition for the Comment entity.
 type Comment struct {
@@ -26,7 +27,7 @@ func (Comment) Fields() []ent.Field {
 // Edges of the Comment.
 func (Comment) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("user", User.Type).Ref("comments").Unique(),
-		edge.From("post", Post.Type).Ref("comments").Unique(),
+		edge.From(UserTable, User.Type).Ref(CommentTable).Unique(),
+		edge.From(PostTable, Post.Type).Ref(CommentTable).Unique(),
 	}
 }

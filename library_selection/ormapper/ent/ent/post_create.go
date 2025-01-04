@@ -62,23 +62,23 @@ func (pc *PostCreate) SetNillableUpdatedAt(t *time.Time) *PostCreate {
 	return pc
 }
 
-// SetUserID sets the "user" edge to the User entity by ID.
-func (pc *PostCreate) SetUserID(id int) *PostCreate {
-	pc.mutation.SetUserID(id)
+// SetUsersID sets the "users" edge to the User entity by ID.
+func (pc *PostCreate) SetUsersID(id int) *PostCreate {
+	pc.mutation.SetUsersID(id)
 	return pc
 }
 
-// SetNillableUserID sets the "user" edge to the User entity by ID if the given value is not nil.
-func (pc *PostCreate) SetNillableUserID(id *int) *PostCreate {
+// SetNillableUsersID sets the "users" edge to the User entity by ID if the given value is not nil.
+func (pc *PostCreate) SetNillableUsersID(id *int) *PostCreate {
 	if id != nil {
-		pc = pc.SetUserID(*id)
+		pc = pc.SetUsersID(*id)
 	}
 	return pc
 }
 
-// SetUser sets the "user" edge to the User entity.
-func (pc *PostCreate) SetUser(u *User) *PostCreate {
-	return pc.SetUserID(u.ID)
+// SetUsers sets the "users" edge to the User entity.
+func (pc *PostCreate) SetUsers(u *User) *PostCreate {
+	return pc.SetUsersID(u.ID)
 }
 
 // AddCommentIDs adds the "comments" edge to the Comment entity by IDs.
@@ -197,12 +197,12 @@ func (pc *PostCreate) createSpec() (*Post, *sqlgraph.CreateSpec) {
 		_spec.SetField(post.FieldUpdatedAt, field.TypeTime, value)
 		_node.UpdatedAt = value
 	}
-	if nodes := pc.mutation.UserIDs(); len(nodes) > 0 {
+	if nodes := pc.mutation.UsersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   post.UserTable,
-			Columns: []string{post.UserColumn},
+			Table:   post.UsersTable,
+			Columns: []string{post.UsersColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt),
