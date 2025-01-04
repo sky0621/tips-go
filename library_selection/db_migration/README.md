@@ -22,6 +22,22 @@
 | [rubenv/sql-migrate](https://github.com/rubenv/sql-migrate)  |     2024-12-12     | 3.3k   |  36   |    v1.7.1     | MIT     | 個人/コミュニティ    | [README](https://github.com/rubenv/sql-migrate#readme)               |
 | [amacneil/dbmate](https://github.com/amacneil/dbmate)        |     2024-12-20     | 5.6k   |  31   |    v2.24.2    | MIT     | 個人/コミュニティ    | [README](https://github.com/amacneil/dbmate#readme)                  |
 
+### GitHub Star History
+
+[startchart.cc](https://starchart.cc/)を使用。
+
+#### migrate
+![migrate](./GitHubStarHistory/migrate.png)
+
+#### goose
+![goose](./GitHubStarHistory/goose.png)
+
+#### sql-migrate
+![sql-migrate](./GitHubStarHistory/sql-migrate.png)
+
+#### dbmate
+![dbmate](./GitHubStarHistory/dbmate.png)
+
 ## 定性的な比較表
 
 | 観点                                             |                         golang-migrate<br>/migrate                         |                        pressly<br>/goose                         |                rubenv<br>/sql-migrate                |                          amacneil<br>/dbmate                           |
