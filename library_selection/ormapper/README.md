@@ -24,6 +24,20 @@
 | ~~[xorm](https://github.com/go-xorm/xorm?tab=readme-ov-file)~~<br>Giteaに移行 | 2019-10-15 | 6.7k  | 265   | v0.5.6        | BSD-3-Clause | ？                          | https://xorm.io/                      |
 | [sqlc](https://github.com/sqlc-dev/sqlc)                                   | 2024-12-28 | 13.9k | 82    | v1.27.0       | MIT          | ？                          | https://sqlc.dev/                     |
 
+### GitHub Star History
+
+#### GORM
+![GORM](./GitHubStarHistory/gorm.png)
+
+#### ent
+![ent](./GitHubStarHistory/ent.png)
+
+#### Bun
+![Bun](./GitHubStarHistory/bun.png)
+
+#### sqlc
+![sqlc](./GitHubStarHistory/sqlc.png)
+
 ## 定性的な比較表
 
 | 観点                   | GORM                                                         | ent                                                                                     | Bun                                                                                   | sqlc                                                                                          |
