@@ -4,11 +4,9 @@ import (
 	"database/sql"
 	"log"
 
-	"github.com/sky0621/tips-go/library_selection/ormapper/bun/migration"
-
-	"github.com/sky0621/tips-go/library_selection/ormapper/bun/dsn"
-
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/sky0621/tips-go/library_selection/ormapper/bun/dsn"
+	"github.com/sky0621/tips-go/library_selection/ormapper/bun/migration"
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/mysqldialect"
 )
