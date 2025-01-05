@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  db:
+    restart: always
+    image: mysql:9
+    container_name: tips-go-library_selection-ormapper-sqlc-container
+    ports:
+      - "18304:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: yuckyjuice
+      MYSQL_DATABASE: sqlcmysql01
+      MYSQL_USER: localuser
+      MYSQL_PASSWORD: yuckyjuice
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./docker/data:/var/lib/mysql
+      - ./docker/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./docker/sql:/docker-entrypoint-initdb.d
