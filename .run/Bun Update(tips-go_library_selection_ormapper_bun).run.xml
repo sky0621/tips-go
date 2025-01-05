@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Bun Update(tips-go/library_selection/ormapper/bun)" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="tips-go" />
+    <working_directory value="$PROJECT_DIR$/library_selection/ormapper/bun" />
+    <parameters value="U" />
+    <kind value="PACKAGE" />
+    <package value="github.com/sky0621/tips-go/library_selection/ormapper/bun" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/library_selection/ormapper/bun/main.go" />
+    <method v="2" />
+  </configuration>
+</component>

@@ -18,4 +18,9 @@ func Select(ctx context.Context, db *bun.DB) {
 	fmt.Println("-- 単一テーブル(users)の全件取得 --")
 	fmt.Println(allUsers)
 
+	var allUsersWithPostsWithComments []models.User
+	if err := db.NewSelect().Model(&allUsersWithPostsWithComments).Relation("Posts").Scan(ctx); err != nil {
+	}
+	fmt.Println("-- リレーションテーブル込みの全件取得 --")
+	fmt.Println(allUsersWithPostsWithComments)
 }
