@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	dbfile := "./test.db"
+	dbfile := "./test.infra"
 	os.Remove(dbfile)
 	db, err := sql.Open("sqlite3", dbfile)
 	if err != nil {

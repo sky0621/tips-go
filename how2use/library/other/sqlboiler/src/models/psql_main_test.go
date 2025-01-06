@@ -77,7 +77,7 @@ func (p *pgTester) setup() error {
 
 	// if no testing DB passed
 	if len(p.testDBName) == 0 {
-		// Create a randomized db name.
+		// Create a randomized infra name.
 		p.testDBName = randomize.StableDBName(p.dbName)
 	}
 

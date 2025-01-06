@@ -9,7 +9,7 @@ services:
       - "23456:5432"
     environment:
       - DATABASE_HOST=localhost
-      - POSTGRES_DB=tips-go-try-dbconn-db
+      - POSTGRES_DB=tips-go-try-dbconn-infra
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=yuckyjuice
       - PGPASSWORD=yuckyjuice

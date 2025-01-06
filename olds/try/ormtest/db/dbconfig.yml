@@ -1,6 +1,6 @@
 local:
   dialect: postgres
-  datasource: host=localhost port=22456 dbname=tips-go-try-ormtest-db user=postgres password=yuckyjuice sslmode=disable
+  datasource: host=localhost port=22456 dbname=tips-go-try-ormtest-infra user=postgres password=yuckyjuice sslmode=disable
   dir: migration
   table: migration
 localtest:

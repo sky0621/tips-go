@@ -8,7 +8,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-// db:movies-persistence
+// infra:movies-persistence
 // collection:movies
 
 type man struct {
@@ -53,7 +53,7 @@ func main() {
 }
 
 func pattern01(session *mgo.Session) {
-	c := session.DB("some-db-name").C("man")
+	c := session.DB("some-infra-name").C("man")
 
 	if err := c.Insert(man{
 		ID:   bson.NewObjectId(),

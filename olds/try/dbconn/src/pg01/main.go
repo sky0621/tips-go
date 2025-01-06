@@ -13,7 +13,7 @@ import (
 
 func main() {
 	// MEMO: ローカルでしか使わないので、ベタ書き
-	dsn := "host=localhost port=23456 dbname=tips-go-try-dbconn-db user=postgres password=yuckyjuice sslmode=disable"
+	dsn := "host=localhost port=23456 dbname=tips-go-try-dbconn-infra user=postgres password=yuckyjuice sslmode=disable"
 	db, err := sqlx.Connect("postgres", dsn)
 	if err != nil {
 		log.Fatal(err)

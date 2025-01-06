@@ -1,5 +1,0 @@
-# generate
-
-```
-sqlc generate
-```

@@ -1,5 +1,5 @@
 local:
   dialect: postgres
-  datasource: host=localhost port=23456 dbname=tips-go-try-dbconn-db user=postgres password=yuckyjuice sslmode=disable
+  datasource: host=localhost port=23456 dbname=tips-go-try-dbconn-infra user=postgres password=yuckyjuice sslmode=disable
   dir: migration
   table: migration

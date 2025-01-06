@@ -28,7 +28,7 @@ func main() {
 
 	db.AutoMigrate(&User{}, &Organization{})
 
-	//ts := db.Begin()
+	//ts := infra.Begin()
 	//defer ts.Commit()
 	//
 	//ts.Create(

@@ -1,13 +1,16 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"flag"
-	"fmt"
 	"log"
+
+	"github.com/sky0621/tips-go/library_selection/ormapper/sqlc/crud"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/sky0621/tips-go/library_selection/ormapper/sqlc/dsn"
+	"github.com/sky0621/tips-go/library_selection/ormapper/sqlc/infra"
 )
 
 func main() {
@@ -29,5 +32,20 @@ func main() {
 		}
 	}(db)
 
-	fmt.Println(command)
+	q := infra.New(db)
+
+	ctx := context.Background()
+
+	switch command {
+	case "C":
+		crud.Insert(ctx, q)
+	case "U":
+		crud.Update(ctx, q)
+	case "D":
+		crud.Delete(ctx, q)
+	case "T":
+		crud.Transaction(ctx, q)
+	default:
+		crud.Select(ctx, q)
+	}
 }

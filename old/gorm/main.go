@@ -14,7 +14,7 @@ type Product struct {
 }
 
 func main() {
-	db, err := gorm.Open("sqlite3", "test.db")
+	db, err := gorm.Open("sqlite3", "test.infra")
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -36,5 +36,5 @@ func main() {
 	db.Model(&product).Update("Price", 2000)
 
 	// Delete - delete product
-	// db.Delete(&product)
+	// infra.Delete(&product)
 }

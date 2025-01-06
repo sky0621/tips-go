@@ -35,9 +35,9 @@ func main() {
 	defer db.Close()
 	db.LogMode(true)
 
-	//db.AutoMigrate(&User{}, &Organization{})
+	//infra.AutoMigrate(&User{}, &Organization{})
 	//
-	//ts := db.Begin()
+	//ts := infra.Begin()
 	//defer ts.Commit()
 	//
 	//ts.Create(

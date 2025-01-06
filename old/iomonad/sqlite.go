@@ -27,7 +27,7 @@ func NewSqliteClient(dbname string) SqliteClient {
 }
 
 func (c *SqliteClientImpl) Create() error {
-	dbfile := "./test.db"
+	dbfile := "./test.infra"
 	os.Remove(dbfile)
 	db, err := sql.Open("sqlite3", dbfile)
 	if err != nil {
@@ -80,7 +80,7 @@ func (c *SqliteClientImpl) Create() error {
 }
 
 func (c *SqliteClientImpl) Create() error {
-	dbfile := "./test.db"
+	dbfile := "./test.infra"
 	os.Remove(dbfile)
 	db, err := sql.Open("sqlite3", dbfile)
 	if err != nil {
