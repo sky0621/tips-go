@@ -69,7 +69,7 @@ func (q *Queries) ListCommentsByPost(ctx context.Context, postID sql.NullInt64) 
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Comment
+	items := []Comment{}
 	for rows.Next() {
 		var i Comment
 		if err := rows.Scan(

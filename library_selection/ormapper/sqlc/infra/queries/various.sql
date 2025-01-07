@@ -58,3 +58,16 @@ WHERE
     )
 ORDER BY
     p.id;
+
+-- name: GetUsersByIDs :many
+SELECT
+    id,
+    name
+FROM
+    users
+WHERE
+    FIND_IN_SET(id, ?);
+
+-- name: MaxUsersID :one
+SELECT MAX(id) AS maxId
+FROM users;

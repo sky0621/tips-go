@@ -7,3 +7,5 @@ sql:
       go:
         package: "infra"
         out: "."
+        emit_empty_slices: true
+        emit_interface: true

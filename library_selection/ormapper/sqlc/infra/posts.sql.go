@@ -69,7 +69,7 @@ func (q *Queries) ListPostsByUser(ctx context.Context, userID sql.NullInt64) ([]
 		return nil, err
 	}
 	defer rows.Close()
-	var items []Post
+	items := []Post{}
 	for rows.Next() {
 		var i Post
 		if err := rows.Scan(

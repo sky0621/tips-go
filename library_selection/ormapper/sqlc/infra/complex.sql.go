@@ -53,7 +53,7 @@ func (q *Queries) ListUserWithPostAndComments(ctx context.Context) ([]ListUserWi
 		return nil, err
 	}
 	defer rows.Close()
-	var items []ListUserWithPostAndCommentsRow
+	items := []ListUserWithPostAndCommentsRow{}
 	for rows.Next() {
 		var i ListUserWithPostAndCommentsRow
 		if err := rows.Scan(

@@ -10,6 +10,44 @@ import (
 	"database/sql"
 )
 
+const getUsersByIDs = `-- name: GetUsersByIDs :many
+SELECT
+    id,
+    name
+FROM
+    users
+WHERE
+    FIND_IN_SET(id, ?)
+`
+
+type GetUsersByIDsRow struct {
+	ID   int64
+	Name string
+}
+
+func (q *Queries) GetUsersByIDs(ctx context.Context, findINSET string) ([]GetUsersByIDsRow, error) {
+	rows, err := q.db.QueryContext(ctx, getUsersByIDs, findINSET)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []GetUsersByIDsRow{}
+	for rows.Next() {
+		var i GetUsersByIDsRow
+		if err := rows.Scan(&i.ID, &i.Name); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listRecentCommentByPosts = `-- name: ListRecentCommentByPosts :many
 SELECT
     p.id AS post_id,
@@ -51,7 +89,7 @@ func (q *Queries) ListRecentCommentByPosts(ctx context.Context) ([]ListRecentCom
 		return nil, err
 	}
 	defer rows.Close()
-	var items []ListRecentCommentByPostsRow
+	items := []ListRecentCommentByPostsRow{}
 	for rows.Next() {
 		var i ListRecentCommentByPostsRow
 		if err := rows.Scan(
@@ -106,7 +144,7 @@ func (q *Queries) ListUsersWithPostAndCommentCount(ctx context.Context) ([]ListU
 		return nil, err
 	}
 	defer rows.Close()
-	var items []ListUsersWithPostAndCommentCountRow
+	items := []ListUsersWithPostAndCommentCountRow{}
 	for rows.Next() {
 		var i ListUsersWithPostAndCommentCountRow
 		if err := rows.Scan(
@@ -161,7 +199,7 @@ func (q *Queries) ListUsersWithRecentPostAndCommentCount(ctx context.Context) ([
 		return nil, err
 	}
 	defer rows.Close()
-	var items []ListUsersWithRecentPostAndCommentCountRow
+	items := []ListUsersWithRecentPostAndCommentCountRow{}
 	for rows.Next() {
 		var i ListUsersWithRecentPostAndCommentCountRow
 		if err := rows.Scan(
@@ -181,4 +219,16 @@ func (q *Queries) ListUsersWithRecentPostAndCommentCount(ctx context.Context) ([
 		return nil, err
 	}
 	return items, nil
+}
+
+const maxUsersID = `-- name: MaxUsersID :one
+SELECT MAX(id) AS maxId
+FROM users
+`
+
+func (q *Queries) MaxUsersID(ctx context.Context) (interface{}, error) {
+	row := q.db.QueryRowContext(ctx, maxUsersID)
+	var maxid interface{}
+	err := row.Scan(&maxid)
+	return maxid, err
 }
