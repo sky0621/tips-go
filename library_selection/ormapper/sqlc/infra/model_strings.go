@@ -72,3 +72,27 @@ func (u ListUsersWithPostAndCommentCountRow) String() string {
 	builder.WriteString("}")
 	return builder.String()
 }
+
+func (u ListUsersWithRecentPostAndCommentCountRow) String() string {
+	var builder strings.Builder
+	builder.WriteString("{")
+	builder.WriteString(fmt.Sprintf("UserID: %d, ", u.UserID))
+	builder.WriteString(fmt.Sprintf("UserName: %s, ", u.UserName))
+	builder.WriteString(fmt.Sprintf("RecentPosts: %d, ", u.RecentPosts))
+	builder.WriteString(fmt.Sprintf("RecentComments: %d", u.RecentComments))
+	builder.WriteString("}")
+	return builder.String()
+}
+
+func (c ListRecentCommentByPostsRow) String() string {
+	var builder strings.Builder
+	builder.WriteString("{")
+	builder.WriteString(fmt.Sprintf("PostID: %d, ", c.PostID))
+	builder.WriteString(fmt.Sprintf("PostTitle: %s, ", c.PostTitle))
+	builder.WriteString(fmt.Sprintf("AuthorName: %s, ", c.AuthorName))
+	builder.WriteString(fmt.Sprintf("LatestCommentContent: %v, ", c.LatestCommentContent))
+	builder.WriteString(fmt.Sprintf("LatestCommenterName: %v, ", c.LatestCommenterName))
+	builder.WriteString(fmt.Sprintf("LatestCommentCreatedAt: %v, ", c.LatestCommentCreatedAt))
+	builder.WriteString("}")
+	return builder.String()
+}
