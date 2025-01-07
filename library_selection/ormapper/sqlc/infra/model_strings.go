@@ -61,3 +61,14 @@ func (u ListUserWithPostAndCommentsRow) String() string {
 	builder.WriteString("}")
 	return builder.String()
 }
+
+func (u ListUsersWithPostAndCommentCountRow) String() string {
+	var builder strings.Builder
+	builder.WriteString("{")
+	builder.WriteString(fmt.Sprintf("UserID: %d, ", u.UserID))
+	builder.WriteString(fmt.Sprintf("UserName: %s, ", u.UserName))
+	builder.WriteString(fmt.Sprintf("PostCount: %d, ", u.PostCount))
+	builder.WriteString(fmt.Sprintf("CommentCount: %d", u.CommentCount))
+	builder.WriteString("}")
+	return builder.String()
+}
