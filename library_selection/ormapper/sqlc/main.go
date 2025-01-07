@@ -44,7 +44,9 @@ func main() {
 	case "D":
 		crud.Delete(ctx, q)
 	case "T":
-		crud.Transaction(ctx, q)
+		crud.Transaction(ctx, db)
+	case "V":
+		crud.Various(ctx, q)
 	default:
 		crud.Select(ctx, q)
 	}
