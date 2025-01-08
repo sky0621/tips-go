@@ -59,15 +59,18 @@ WHERE
 ORDER BY
     p.id;
 
--- name: GetUsersByIDs :many
-SELECT
-    id,
-    name
-FROM
-    users
-WHERE
-    FIND_IN_SET(id, ?);
+-- name: ListUsersByIDs :many
+SELECT * FROM users
+WHERE id IN (?);
+
+# https://docs.sqlc.dev/en/latest/howto/select.html#mysql-and-sqlite
+# -- name: ListUsersByIDs :many
+# SELECT * FROM users
+# WHERE id IN (sqlc.slice('ids'));
 
 -- name: MaxUsersID :one
 SELECT MAX(id) AS maxId
 FROM users;
+
+-- name: ListPostsByLikeTitle :many
+SELECT * FROM posts p WHERE p.title LIKE ?

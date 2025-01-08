@@ -13,19 +13,20 @@ type Querier interface {
 	CreateComment(ctx context.Context, arg CreateCommentParams) (int64, error)
 	CreatePost(ctx context.Context, arg CreatePostParams) (int64, error)
 	CreateUser(ctx context.Context, name string) (int64, error)
-	CreateUsersBatch(ctx context.Context, arg CreateUsersBatchParams) (int64, error)
+	CreateUsersBatch(ctx context.Context, arg CreateUsersBatchParams) (sql.Result, error)
 	DeleteComment(ctx context.Context, id int64) error
 	DeletePost(ctx context.Context, id int64) error
 	DeleteUser(ctx context.Context, id int64) error
 	GetComment(ctx context.Context, id int64) (Comment, error)
 	GetPost(ctx context.Context, id int64) (Post, error)
 	GetUser(ctx context.Context, id int64) (User, error)
-	GetUsersByIDs(ctx context.Context, findINSET string) ([]GetUsersByIDsRow, error)
 	ListCommentsByPost(ctx context.Context, postID sql.NullInt64) ([]Comment, error)
+	ListPostsByLikeTitle(ctx context.Context, title string) ([]Post, error)
 	ListPostsByUser(ctx context.Context, userID sql.NullInt64) ([]Post, error)
 	ListRecentCommentByPosts(ctx context.Context) ([]ListRecentCommentByPostsRow, error)
 	ListUserWithPostAndComments(ctx context.Context) ([]ListUserWithPostAndCommentsRow, error)
 	ListUsers(ctx context.Context) ([]User, error)
+	ListUsersByIDs(ctx context.Context, id int64) ([]User, error)
 	ListUsersWithPostAndCommentCount(ctx context.Context) ([]ListUsersWithPostAndCommentCountRow, error)
 	ListUsersWithRecentPostAndCommentCount(ctx context.Context) ([]ListUsersWithRecentPostAndCommentCountRow, error)
 	MaxUsersID(ctx context.Context) (interface{}, error)

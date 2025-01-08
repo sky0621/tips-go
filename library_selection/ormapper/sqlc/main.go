@@ -47,6 +47,8 @@ func main() {
 		crud.Transaction(ctx, db)
 	case "V":
 		crud.Various(ctx, q)
+	case "B":
+		crud.InsertBatch(ctx, q)
 	default:
 		crud.Select(ctx, q)
 	}

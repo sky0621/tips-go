@@ -7,9 +7,10 @@ package infra
 
 import (
 	"context"
+	"database/sql"
 )
 
-const createUsersBatch = `-- name: CreateUsersBatch :execlastid
+const createUsersBatch = `-- name: CreateUsersBatch :execresult
 INSERT INTO users (name, created_at, updated_at) VALUES
    (?, NOW(), NOW()),
    (?, NOW(), NOW()),
@@ -26,16 +27,12 @@ type CreateUsersBatchParams struct {
 	Name_5 string
 }
 
-func (q *Queries) CreateUsersBatch(ctx context.Context, arg CreateUsersBatchParams) (int64, error) {
-	result, err := q.db.ExecContext(ctx, createUsersBatch,
+func (q *Queries) CreateUsersBatch(ctx context.Context, arg CreateUsersBatchParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, createUsersBatch,
 		arg.Name,
 		arg.Name_2,
 		arg.Name_3,
 		arg.Name_4,
 		arg.Name_5,
 	)
-	if err != nil {
-		return 0, err
-	}
-	return result.LastInsertId()
 }

@@ -10,31 +10,27 @@ import (
 	"database/sql"
 )
 
-const getUsersByIDs = `-- name: GetUsersByIDs :many
-SELECT
-    id,
-    name
-FROM
-    users
-WHERE
-    FIND_IN_SET(id, ?)
+const listPostsByLikeTitle = `-- name: ListPostsByLikeTitle :many
+SELECT id, title, content, user_id, created_at, updated_at FROM posts p WHERE p.title LIKE ?
 `
 
-type GetUsersByIDsRow struct {
-	ID   int64
-	Name string
-}
-
-func (q *Queries) GetUsersByIDs(ctx context.Context, findINSET string) ([]GetUsersByIDsRow, error) {
-	rows, err := q.db.QueryContext(ctx, getUsersByIDs, findINSET)
+func (q *Queries) ListPostsByLikeTitle(ctx context.Context, title string) ([]Post, error) {
+	rows, err := q.db.QueryContext(ctx, listPostsByLikeTitle, title)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []GetUsersByIDsRow{}
+	items := []Post{}
 	for rows.Next() {
-		var i GetUsersByIDsRow
-		if err := rows.Scan(&i.ID, &i.Name); err != nil {
+		var i Post
+		if err := rows.Scan(
+			&i.ID,
+			&i.Title,
+			&i.Content,
+			&i.UserID,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
@@ -99,6 +95,39 @@ func (q *Queries) ListRecentCommentByPosts(ctx context.Context) ([]ListRecentCom
 			&i.LatestCommentContent,
 			&i.LatestCommenterName,
 			&i.LatestCommentCreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listUsersByIDs = `-- name: ListUsersByIDs :many
+SELECT id, name, created_at, updated_at FROM users
+WHERE id IN (?)
+`
+
+func (q *Queries) ListUsersByIDs(ctx context.Context, id int64) ([]User, error) {
+	rows, err := q.db.QueryContext(ctx, listUsersByIDs, id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []User{}
+	for rows.Next() {
+		var i User
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.CreatedAt,
+			&i.UpdatedAt,
 		); err != nil {
 			return nil, err
 		}
@@ -222,6 +251,11 @@ func (q *Queries) ListUsersWithRecentPostAndCommentCount(ctx context.Context) ([
 }
 
 const maxUsersID = `-- name: MaxUsersID :one
+# https://docs.sqlc.dev/en/latest/howto/select.html#mysql-and-sqlite
+# -- name: ListUsersByIDs :many
+# SELECT * FROM users
+# WHERE id IN (sqlc.slice('ids'));
+
 SELECT MAX(id) AS maxId
 FROM users
 `

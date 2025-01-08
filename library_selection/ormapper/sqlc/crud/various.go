@@ -39,4 +39,15 @@ func Various(ctx context.Context, q *infra.Queries) {
 	for _, row3 := range rows3 {
 		fmt.Println(row3)
 	}
+
+	fmt.Println()
+
+	posts, err := q.ListPostsByLikeTitle(ctx, "%Post")
+	if err != nil {
+		return
+	}
+	fmt.Println("-- title指定でposts取得 --")
+	for _, post := range posts {
+		fmt.Printf("ID: %d, Title: %s\n", post.ID, post.Title)
+	}
 }
