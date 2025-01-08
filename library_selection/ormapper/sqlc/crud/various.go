@@ -44,10 +44,32 @@ func Various(ctx context.Context, q *infra.Queries) {
 
 	posts, err := q.ListPostsByLikeTitle(ctx, "%Post")
 	if err != nil {
-		return
+		log.Fatal(err)
 	}
 	fmt.Println("-- title指定でposts取得 --")
 	for _, post := range posts {
 		fmt.Printf("ID: %d, Title: %s\n", post.ID, post.Title)
+	}
+
+	fmt.Println()
+
+	ds, err := q.ListUsersByIDs(ctx, 1)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("-- id指定でusers取得 --")
+	for _, d := range ds {
+		fmt.Printf("ID: %d, Name: %s\n", d.ID, d.Name)
+	}
+
+	fmt.Println()
+
+	ds2, err := q.ListUsersByIDs2(ctx, []int64{1, 2, 3, 4, 5, 6, 99})
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("-- id指定でusers取得2 --")
+	for _, d := range ds2 {
+		fmt.Printf("ID: %d, Name: %s\n", d.ID, d.Name)
 	}
 }
