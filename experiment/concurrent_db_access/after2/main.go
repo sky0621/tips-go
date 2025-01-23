@@ -3,50 +3,47 @@ package main
 import (
 	"errors"
 	"fmt"
-	"sync"
 	"time"
 )
 
 func main() {
 	start := time.Now()
 
-	var wg sync.WaitGroup
-
+	userChan := make(chan User, 1)
+	groupChan := make(chan Group, 1)
+	todosChan := make(chan Todos, 1)
 	errChan := make(chan error, 3)
 
-	var user User
-	var group Group
-	var todos Todos
-	var err error
-
-	wg.Add(1)
 	go func() {
-		defer wg.Done()
-		user, err = getUser()
+		user, err := getUser()
 		if err != nil {
 			errChan <- err
 		}
+		userChan <- user
 	}()
 
-	wg.Add(1)
 	go func() {
-		defer wg.Done()
-		group, err = getGroup()
+		group, err := getGroup()
 		if err != nil {
 			errChan <- err
 		}
+		groupChan <- group
 	}()
 
-	wg.Add(1)
 	go func() {
-		defer wg.Done()
-		todos, err = listTodo()
+		todos, err := listTodo()
 		if err != nil {
 			errChan <- err
 		}
+		todosChan <- todos
 	}()
 
-	wg.Wait()
+	user := <-userChan
+	group := <-groupChan
+	todos := <-todosChan
+	close(userChan)
+	close(groupChan)
+	close(todosChan)
 	close(errChan)
 
 	var errList []error

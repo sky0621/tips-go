@@ -55,7 +55,7 @@ type Group struct {
 
 func getGroup() (Group, error) {
 	time.Sleep(2 * time.Second)
-	return Group{ID: 1, Name: "John"}, nil
+	return Group{ID: 1, Name: "GroupA"}, nil
 }
 
 type Todos []Todo
