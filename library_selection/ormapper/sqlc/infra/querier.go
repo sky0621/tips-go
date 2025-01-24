@@ -29,6 +29,7 @@ type Querier interface {
 	ListUsersByIDs(ctx context.Context, id int64) ([]User, error)
 	ListUsersWithPostAndCommentCount(ctx context.Context) ([]ListUsersWithPostAndCommentCountRow, error)
 	ListUsersWithRecentPostAndCommentCount(ctx context.Context) ([]ListUsersWithRecentPostAndCommentCountRow, error)
+	ListWithComplexQuery(ctx context.Context, arg ListWithComplexQueryParams) ([]ListWithComplexQueryRow, error)
 	MaxUsersID(ctx context.Context) (interface{}, error)
 	UpdatePost(ctx context.Context, arg UpdatePostParams) error
 	UpdateUserName(ctx context.Context, arg UpdateUserNameParams) error

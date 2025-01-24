@@ -83,3 +83,58 @@ func (q *Queries) ListUserWithPostAndComments(ctx context.Context) ([]ListUserWi
 	}
 	return items, nil
 }
+
+const listWithComplexQuery = `-- name: ListWithComplexQuery :many
+WITH
+    c AS (SELECT id, content, user_id, post_id, created_at, updated_at FROM comments WHERE comments.user_id = ?),
+    p AS (SELECT id, title, content, user_id, created_at, updated_at FROM posts WHERE posts.user_id = ?)
+SELECT
+    c.user_id AS user_id,
+    p.id AS post_id,
+    c.content AS comment_content,
+    p.content AS post_content,
+    p.title AS post_title
+FROM c INNER JOIN p ON p.user_id = c.user_id
+`
+
+type ListWithComplexQueryParams struct {
+	UserID   sql.NullInt64
+	UserID_2 sql.NullInt64
+}
+
+type ListWithComplexQueryRow struct {
+	UserID         sql.NullInt64
+	PostID         int64
+	CommentContent sql.NullString
+	PostContent    sql.NullString
+	PostTitle      string
+}
+
+func (q *Queries) ListWithComplexQuery(ctx context.Context, arg ListWithComplexQueryParams) ([]ListWithComplexQueryRow, error) {
+	rows, err := q.db.QueryContext(ctx, listWithComplexQuery, arg.UserID, arg.UserID_2)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListWithComplexQueryRow{}
+	for rows.Next() {
+		var i ListWithComplexQueryRow
+		if err := rows.Scan(
+			&i.UserID,
+			&i.PostID,
+			&i.CommentContent,
+			&i.PostContent,
+			&i.PostTitle,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}

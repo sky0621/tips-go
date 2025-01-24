@@ -16,3 +16,15 @@ SELECT
 FROM users
 INNER JOIN posts ON posts.user_id = users.id
 INNER JOIN comments ON comments.user_id = users.id AND comments.post_id = posts.id;
+
+-- name: ListWithComplexQuery :many
+WITH
+    c AS (SELECT * FROM comments WHERE comments.user_id = ?),
+    p AS (SELECT * FROM posts WHERE posts.user_id = ?)
+SELECT
+    c.user_id AS user_id,
+    p.id AS post_id,
+    c.content AS comment_content,
+    p.content AS post_content,
+    p.title AS post_title
+FROM c INNER JOIN p ON p.user_id = c.user_id;

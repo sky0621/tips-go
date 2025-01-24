@@ -49,6 +49,8 @@ func main() {
 		crud.Various(ctx, q)
 	case "B":
 		crud.InsertBatch(ctx, q)
+	case "CM":
+		crud.Complex(ctx, q)
 	default:
 		crud.Select(ctx, q)
 	}
