@@ -73,4 +73,9 @@ SELECT MAX(id) AS maxId
 FROM users;
 
 -- name: ListPostsByLikeTitle :many
-SELECT * FROM posts p WHERE p.title LIKE ?
+SELECT * FROM posts p WHERE p.title LIKE ?;
+
+-- name: Relations :many
+SELECT * FROM users u
+    INNER JOIN posts p ON p.user_id = u.id
+    INNER JOIN comments c ON c.user_id = u.id AND c.post_id = p.id;

@@ -72,4 +72,12 @@ func Various(ctx context.Context, q *infra.Queries) {
 	for _, d := range ds2 {
 		fmt.Printf("ID: %d, Name: %s\n", d.ID, d.Name)
 	}
+
+	relations, err := q.Relations(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	for _, r := range relations {
+		fmt.Printf("ID: %d, Name: %s\n", r.ID, r.Name)
+	}
 }

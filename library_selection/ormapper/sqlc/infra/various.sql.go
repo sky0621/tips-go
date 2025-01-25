@@ -8,6 +8,7 @@ package infra
 import (
 	"context"
 	"database/sql"
+	"time"
 )
 
 const listPostsByLikeTitle = `-- name: ListPostsByLikeTitle :many
@@ -265,4 +266,69 @@ func (q *Queries) MaxUsersID(ctx context.Context) (interface{}, error) {
 	var maxid interface{}
 	err := row.Scan(&maxid)
 	return maxid, err
+}
+
+const relations = `-- name: Relations :many
+SELECT u.id, name, u.created_at, u.updated_at, p.id, title, p.content, p.user_id, p.created_at, p.updated_at, c.id, c.content, c.user_id, post_id, c.created_at, c.updated_at FROM users u
+    INNER JOIN posts p ON p.user_id = u.id
+    INNER JOIN comments c ON c.user_id = u.id AND c.post_id = p.id
+`
+
+type RelationsRow struct {
+	ID          int64
+	Name        string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	ID_2        int64
+	Title       string
+	Content     sql.NullString
+	UserID      sql.NullInt64
+	CreatedAt_2 time.Time
+	UpdatedAt_2 time.Time
+	ID_3        int64
+	Content_2   sql.NullString
+	UserID_2    sql.NullInt64
+	PostID      sql.NullInt64
+	CreatedAt_3 time.Time
+	UpdatedAt_3 time.Time
+}
+
+func (q *Queries) Relations(ctx context.Context) ([]RelationsRow, error) {
+	rows, err := q.db.QueryContext(ctx, relations)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []RelationsRow{}
+	for rows.Next() {
+		var i RelationsRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.ID_2,
+			&i.Title,
+			&i.Content,
+			&i.UserID,
+			&i.CreatedAt_2,
+			&i.UpdatedAt_2,
+			&i.ID_3,
+			&i.Content_2,
+			&i.UserID_2,
+			&i.PostID,
+			&i.CreatedAt_3,
+			&i.UpdatedAt_3,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
