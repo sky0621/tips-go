@@ -6,7 +6,7 @@ https://entgo.io/ja/docs/getting-started/
 ## スキーマのガワを自動生成
 
 ```
-go run -mod=mod entgo.io/ent/cmd/ent new User
+go run -mod=mod entgo.io/ent/cmd/ent new Todo
 ```
 
 ## 実装したスキーマに該当するソース群を自動生成 

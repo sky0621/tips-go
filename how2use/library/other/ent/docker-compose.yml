@@ -3,18 +3,18 @@ version: '3'
 services:
   db:
     restart: always
-    image: mysql:8
-    container_name: localpgsample01-container
+    image: mysql:9
+    container_name: tips-go-how2use-library-other-ent-container
     ports:
-      - "18001:3306"
+      - "18101:3306"
     environment:
       MYSQL_ROOT_PASSWORD: yuckyjuice
-      MYSQL_DATABASE: localmysqlent01
+      MYSQL_DATABASE: entdb
       MYSQL_USER:
       MYSQL_PASSWORD: yuckyjuice
       TZ: 'Asia/Tokyo'
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
-      - ./docker/infra/data:/var/lib/mysql
-      - ./docker/infra/my.cnf:/etc/mysql/conf.d/my.cnf
-      - ./docker/infra/sql:/docker-entrypoint-initdb.d
+      - ./docker/data:/var/lib/mysql
+      - ./docker/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./docker/sql:/docker-entrypoint-initdb.d
