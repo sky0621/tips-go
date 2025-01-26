@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	client, err := ent.Open("mysql", "root:yuckyjuice@tcp(localhost:18101)/entdb")
+	client, err := ent.Open("mysql", "root:yuckyjuice@tcp(localhost:18101)/entdb?parseTime=true")
 	if err != nil {
 		log.Fatalf("failed connecting to mysql: %v", err)
 	}
