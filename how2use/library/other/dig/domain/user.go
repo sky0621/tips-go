@@ -7,4 +7,5 @@ type User struct {
 
 type UserRepository interface {
 	GetUser(id int) (*User, error)
+	AddUser(name string) (*User, error)
 }
