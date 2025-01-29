@@ -23,6 +23,7 @@ type User struct {
 
 type AddUserInput struct {
 	Name string
+	Age  int
 }
 
 func (u *userService) GetUserByID(ctx context.Context, id int) (*User, error) {
@@ -48,7 +49,10 @@ func (u *userService) GetUserByID(ctx context.Context, id int) (*User, error) {
 func (u *userService) AddUser(ctx context.Context, user AddUserInput) error {
 	fmt.Printf("[AddUser] userService: %+v\n", user)
 	if user.Name == "" {
-		return ErrInvalidInput(ErrorAttribute{Key: "name", Value: ""})
+		return ErrInvalidInput(
+			ErrorAttribute{Key: "name", Value: ""},
+			ErrorAttribute{Key: "age", Value: user.Age},
+		)
 	}
 	return nil
 }

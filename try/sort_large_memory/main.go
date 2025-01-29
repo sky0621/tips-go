@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	// データ数
+	// データ数: 1億
 	const numElements = 100000000
 
 	// ランダムなデータを生成
