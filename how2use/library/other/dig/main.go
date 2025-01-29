@@ -21,7 +21,7 @@ func main() {
 	}
 }
 
-func getUser(u handler.UserHandler) {
+func getUser(u handler.User) {
 	user, err := u.GetUser(333)
 	if err != nil {
 		log.Fatal(err)
@@ -32,8 +32,8 @@ func getUser(u handler.UserHandler) {
 func BuildContainer() (*dig.Container, error) {
 	dependencies := []any{
 		infra.NewUserRepository,
-		usecase.NewUserUsecase,
-		handler.NewUserHandler,
+		usecase.NewUser,
+		handler.NewUser,
 	}
 	container := dig.New()
 	for _, dependency := range dependencies {
