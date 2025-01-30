@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS users(
+    id INTEGER NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP
+);
