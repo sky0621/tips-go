@@ -8,6 +8,6 @@ import (
 
 func main() {
 	fmt.Println("mockery")
-	t:=&mocks.ProgrammingLanguage{}
+	t := &mocks.ProgrammingLanguage{}
 	fmt.Println(t.GetName())
 }

@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/tealeg/xlsx"
 	"os"
+
+	"github.com/tealeg/xlsx"
 )
 
 func main() {
