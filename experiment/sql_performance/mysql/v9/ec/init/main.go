@@ -2,8 +2,10 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"math/rand"
+	"sync"
 	"time"
 
 	"github.com/sky0621/tips-go/experiment/sql_performance/mysql/v9/ec/dsn"
@@ -20,17 +22,32 @@ func main() {
 	}
 	defer db.Close()
 
-	count := 1000000
-	insertUsers(db, count)
-	insertProducts(db, count)
-	insertOrders(db, count)
-	insertOrderItems(db, count)
-	insertPayments(db, count)
+	start := time.Now()
 
+	var wg sync.WaitGroup
+
+	count := 1000000
+
+	wg.Add(1)
+	go insertUsers(&wg, db, count)
+	wg.Add(1)
+	go insertProducts(&wg, db, count)
+	wg.Add(1)
+	go insertOrders(&wg, db, count)
+	wg.Add(1)
+	go insertOrderItems(&wg, db, count)
+	wg.Add(1)
+	go insertPayments(&wg, db, count)
+
+	wg.Wait()
+
+	elapsed := time.Since(start)
+	fmt.Printf("Elapsed time: %s\n", elapsed)
 	log.Println("データの挿入が完了しました。")
 }
 
-func insertUsers(db *sql.DB, count int) {
+func insertUsers(wg *sync.WaitGroup, db *sql.DB, count int) {
+	defer wg.Done()
 	log.Println("ユーザーを挿入中...")
 	stmt, _ := db.Prepare("INSERT INTO Users (name, email, password_hash) VALUES (?, ?, ?)")
 	for i := 0; i < count; i++ {
@@ -42,7 +59,8 @@ func insertUsers(db *sql.DB, count int) {
 	log.Println("ユーザー挿入完了。")
 }
 
-func insertProducts(db *sql.DB, count int) {
+func insertProducts(wg *sync.WaitGroup, db *sql.DB, count int) {
+	defer wg.Done()
 	log.Println("商品を挿入中...")
 	stmt, _ := db.Prepare("INSERT INTO Products (name, description, price, stock_quantity) VALUES (?, ?, ?, ?)")
 	for i := 0; i < count; i++ {
@@ -54,7 +72,8 @@ func insertProducts(db *sql.DB, count int) {
 	log.Println("商品挿入完了。")
 }
 
-func insertOrders(db *sql.DB, count int) {
+func insertOrders(wg *sync.WaitGroup, db *sql.DB, count int) {
+	defer wg.Done()
 	log.Println("注文を挿入中...")
 	stmt, _ := db.Prepare("INSERT INTO Orders (user_id, total_price, status, order_date) VALUES (?, ?, ?, ?)")
 	for i := 0; i < count; i++ {
@@ -72,7 +91,8 @@ func insertOrders(db *sql.DB, count int) {
 	log.Println("注文挿入完了。")
 }
 
-func insertOrderItems(db *sql.DB, count int) {
+func insertOrderItems(wg *sync.WaitGroup, db *sql.DB, count int) {
+	defer wg.Done()
 	log.Println("注文詳細を挿入中...")
 	stmt, _ := db.Prepare("INSERT INTO Order_Items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)")
 	for i := 0; i < count; i++ {
@@ -89,7 +109,8 @@ func insertOrderItems(db *sql.DB, count int) {
 	log.Println("注文詳細挿入完了。")
 }
 
-func insertPayments(db *sql.DB, count int) {
+func insertPayments(wg *sync.WaitGroup, db *sql.DB, count int) {
+	defer wg.Done()
 	log.Println("支払い情報を挿入中...")
 	stmt, _ := db.Prepare("INSERT INTO Payments (order_id, payment_method, payment_status) VALUES (?, ?, ?)")
 	for i := 0; i < count; i++ {
