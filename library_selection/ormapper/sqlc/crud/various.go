@@ -80,4 +80,11 @@ func Various(ctx context.Context, q *infra.Queries) {
 	for _, r := range relations {
 		fmt.Printf("ID: %d, Name: %s\n", r.ID, r.Name)
 	}
+
+	id, err := q.MaxUsersID(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("-- usersからMAX(id)を取得 --")
+	fmt.Println(id)
 }

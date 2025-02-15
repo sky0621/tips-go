@@ -53,10 +53,49 @@
 | **マイグレーション機能有無** | - ◎（AutoMigrateなど標準機能あり）                               | - ◎（ent migration機能あり）                                                            | - ◎（bun migrationコマンドあり）                                                          | - ×（標準はなし、外部ツールか手動で対応）                                                     |
 | **ユースケース**         | - **初学者や比較的シンプルなプロジェクト**<br>- ドキュメント・日本語記事が多く導入障壁低い | - **複雑なリレーション・型安全性重視**<br>- スキーマとコードの整合性を強く保ちたい場合       | - **MySQL/Postgres/SQLiteなどを横断的に**<br>- ほどほどに軽量＆柔軟なORMが欲しい場合         | - **SQLを直接制御してパフォーマンス重視**<br>- ORMを使わずに型安全を担保したい場合               |
 
-## 触ってみた上での感覚
+## 触ってみた上での所感
+### GORM
+
+#### コード例
+```
+db.Create(&u)
+db.Preload("Posts.Comments").Find(&allUsersWithPostsWithComments)
+```
+
+- O/Rマッパー慣れしてる人なら使いやすい。
+- Goユーザーの経験率が高そうという意味でも敷居が低い。
+- Relation関係など、実際に発行されるSQLはちゃんと確認した方がよい。
+
+### ent
+
+#### コード例
+```
+client.User.Create().SetName("Alice").Save(ctx)
+client.User.Query().WithPosts().WithComments().All(ctx)
+```
+
+- Relation関係の初期理解コストが高い。
+
+### bun
+
+#### コード例
+```
+db.NewInsert().Model(u).Exec(ctx)
+db.NewSelect().Model(&allUsersWithPostsWithComments).Relation("Posts").Scan(ctx)
+```
+
+- GORMと同じくO/Rマッパー慣れしてる人なら使いやすい。
+- GORMではなくbunを選ぶ決定的な理由が見当たらない。
 
 ### sqlc
 
+#### コード例
+```
+db.Create(&u)
+q.ListUserWithPostAndComments(ctx)
+```
+
 - 目的のSQLにするためのO/Rマッパー構文を覚えなくていいのは楽。
 - O/Rマッピングは自分で実装する必要があるため、階層構造を持つケースが多いと面倒かも。
+- `with`句や`max(id)`、副問い合わせ等のSQLも対応しているが、`in`句が自動生成できないのが難点。
 - 別途マイグレーション機能を導入する場合、都度、最新のDDLを `schema.sql` に反映する必要がありそう。
