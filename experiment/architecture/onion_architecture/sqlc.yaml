@@ -6,6 +6,6 @@ sql:
     gen:
       go:
         package: "db"
-        out: "./internal/infrastructure/db"
+        out: "./internal/adapters/db"
         emit_empty_slices: true
         emit_interface: true
