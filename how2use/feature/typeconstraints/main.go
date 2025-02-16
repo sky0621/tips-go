@@ -16,6 +16,7 @@ func main() {
 	mt.doSomething()
 }
 
+// int も MyInt も渡せる。
 func printInt[T ~int](x T) {
 	fmt.Println(x)
 }
