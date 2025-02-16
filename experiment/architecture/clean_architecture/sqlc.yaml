@@ -1,0 +1,11 @@
+version: "2"
+sql:
+  - engine: "mysql"
+    queries: "./sqlc/query"
+    schema: "./sqlc/schema.sql"
+    gen:
+      go:
+        package: "db"
+        out: "./internal/infrastructure/db"
+        emit_empty_slices: true
+        emit_interface: true

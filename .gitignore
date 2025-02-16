@@ -26,6 +26,6 @@ _testmain.go
 .idea/
 
 library_selection/ormapper/**/docker/
-experiment/sql_performance/**/docker/
+experiment/**/docker/
 
 **/.DS_Store
