@@ -35,6 +35,8 @@ const (
 const (
 	// TodoServiceCreateTodoProcedure is the fully-qualified name of the TodoService's CreateTodo RPC.
 	TodoServiceCreateTodoProcedure = "/todo.v1.TodoService/CreateTodo"
+	// TodoServiceGetTodoProcedure is the fully-qualified name of the TodoService's GetTodo RPC.
+	TodoServiceGetTodoProcedure = "/todo.v1.TodoService/GetTodo"
 	// TodoServiceListTodoProcedure is the fully-qualified name of the TodoService's ListTodo RPC.
 	TodoServiceListTodoProcedure = "/todo.v1.TodoService/ListTodo"
 )
@@ -42,6 +44,7 @@ const (
 // TodoServiceClient is a client for the todo.v1.TodoService service.
 type TodoServiceClient interface {
 	CreateTodo(context.Context, *connect.Request[v1.CreateTodoRequest]) (*connect.Response[v1.CreateTodoResponse], error)
+	GetTodo(context.Context, *connect.Request[v1.GetTodoRequest]) (*connect.Response[v1.GetTodoResponse], error)
 	ListTodo(context.Context, *connect.Request[v1.ListTodoRequest]) (*connect.Response[v1.ListTodoResponse], error)
 }
 
@@ -62,6 +65,12 @@ func NewTodoServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(todoServiceMethods.ByName("CreateTodo")),
 			connect.WithClientOptions(opts...),
 		),
+		getTodo: connect.NewClient[v1.GetTodoRequest, v1.GetTodoResponse](
+			httpClient,
+			baseURL+TodoServiceGetTodoProcedure,
+			connect.WithSchema(todoServiceMethods.ByName("GetTodo")),
+			connect.WithClientOptions(opts...),
+		),
 		listTodo: connect.NewClient[v1.ListTodoRequest, v1.ListTodoResponse](
 			httpClient,
 			baseURL+TodoServiceListTodoProcedure,
@@ -74,12 +83,18 @@ func NewTodoServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 // todoServiceClient implements TodoServiceClient.
 type todoServiceClient struct {
 	createTodo *connect.Client[v1.CreateTodoRequest, v1.CreateTodoResponse]
+	getTodo    *connect.Client[v1.GetTodoRequest, v1.GetTodoResponse]
 	listTodo   *connect.Client[v1.ListTodoRequest, v1.ListTodoResponse]
 }
 
 // CreateTodo calls todo.v1.TodoService.CreateTodo.
 func (c *todoServiceClient) CreateTodo(ctx context.Context, req *connect.Request[v1.CreateTodoRequest]) (*connect.Response[v1.CreateTodoResponse], error) {
 	return c.createTodo.CallUnary(ctx, req)
+}
+
+// GetTodo calls todo.v1.TodoService.GetTodo.
+func (c *todoServiceClient) GetTodo(ctx context.Context, req *connect.Request[v1.GetTodoRequest]) (*connect.Response[v1.GetTodoResponse], error) {
+	return c.getTodo.CallUnary(ctx, req)
 }
 
 // ListTodo calls todo.v1.TodoService.ListTodo.
@@ -90,6 +105,7 @@ func (c *todoServiceClient) ListTodo(ctx context.Context, req *connect.Request[v
 // TodoServiceHandler is an implementation of the todo.v1.TodoService service.
 type TodoServiceHandler interface {
 	CreateTodo(context.Context, *connect.Request[v1.CreateTodoRequest]) (*connect.Response[v1.CreateTodoResponse], error)
+	GetTodo(context.Context, *connect.Request[v1.GetTodoRequest]) (*connect.Response[v1.GetTodoResponse], error)
 	ListTodo(context.Context, *connect.Request[v1.ListTodoRequest]) (*connect.Response[v1.ListTodoResponse], error)
 }
 
@@ -106,6 +122,12 @@ func NewTodoServiceHandler(svc TodoServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(todoServiceMethods.ByName("CreateTodo")),
 		connect.WithHandlerOptions(opts...),
 	)
+	todoServiceGetTodoHandler := connect.NewUnaryHandler(
+		TodoServiceGetTodoProcedure,
+		svc.GetTodo,
+		connect.WithSchema(todoServiceMethods.ByName("GetTodo")),
+		connect.WithHandlerOptions(opts...),
+	)
 	todoServiceListTodoHandler := connect.NewUnaryHandler(
 		TodoServiceListTodoProcedure,
 		svc.ListTodo,
@@ -116,6 +138,8 @@ func NewTodoServiceHandler(svc TodoServiceHandler, opts ...connect.HandlerOption
 		switch r.URL.Path {
 		case TodoServiceCreateTodoProcedure:
 			todoServiceCreateTodoHandler.ServeHTTP(w, r)
+		case TodoServiceGetTodoProcedure:
+			todoServiceGetTodoHandler.ServeHTTP(w, r)
 		case TodoServiceListTodoProcedure:
 			todoServiceListTodoHandler.ServeHTTP(w, r)
 		default:
@@ -129,6 +153,10 @@ type UnimplementedTodoServiceHandler struct{}
 
 func (UnimplementedTodoServiceHandler) CreateTodo(context.Context, *connect.Request[v1.CreateTodoRequest]) (*connect.Response[v1.CreateTodoResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("todo.v1.TodoService.CreateTodo is not implemented"))
+}
+
+func (UnimplementedTodoServiceHandler) GetTodo(context.Context, *connect.Request[v1.GetTodoRequest]) (*connect.Response[v1.GetTodoResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("todo.v1.TodoService.GetTodo is not implemented"))
 }
 
 func (UnimplementedTodoServiceHandler) ListTodo(context.Context, *connect.Request[v1.ListTodoRequest]) (*connect.Response[v1.ListTodoResponse], error) {

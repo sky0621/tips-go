@@ -18,6 +18,14 @@ message CreateTodoResponse {
   bool success = 1;
 }
 
+message GetTodoRequest {
+  int32 id = 1;
+}
+
+message GetTodoResponse {
+  Todo todo = 1;
+}
+
 message ListTodoRequest {}
 
 message ListTodoResponse {
@@ -26,5 +34,6 @@ message ListTodoResponse {
 
 service TodoService {
   rpc CreateTodo(CreateTodoRequest) returns (CreateTodoResponse) {}
+  rpc GetTodo(GetTodoRequest) returns (GetTodoResponse) {}
   rpc ListTodo(ListTodoRequest) returns (ListTodoResponse) {}
 }
