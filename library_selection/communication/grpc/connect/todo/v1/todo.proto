@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package todo.v1;
+
+option go_package = "github.com/sky0621/tips-go/library_selection/communication/grpc/connect/gen/todo/v1;todov1";
+
+message Todo {
+  int32 id = 1;
+  string msg = 2;
+  bool completed = 3;
+}
+
+message CreateTodoRequest {
+  string msg = 1;
+}
+
+message CreateTodoResponse {
+  bool success = 1;
+}
+
+message ListTodoRequest {}
+
+message ListTodoResponse {
+  repeated Todo todo_list = 1;
+}
+
+service TodoService {
+  rpc CreateTodo(CreateTodoRequest) returns (CreateTodoResponse) {}
+  rpc ListTodo(ListTodoRequest) returns (ListTodoResponse) {}
+}
