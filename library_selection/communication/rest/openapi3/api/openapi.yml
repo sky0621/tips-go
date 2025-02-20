@@ -1,0 +1,51 @@
+openapi: "3.0.3"
+
+info:
+  version: 1.0.0
+  title: Todo API server
+  description: Todo API
+
+security: []
+
+paths:
+  /todos:
+    post:
+      summary: "TODO登録"
+      description: "TODOを登録する。"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ""
+    get:
+      responses:
+        '200':
+          description: todo response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pong'
+components:
+  schemas:
+    TodoId:
+      type: integer
+      format: int
+      description: "TODOを一意に識別するキー"
+      example: 1
+      x-go-name: TodoID
+
+    Todo:
+      type: object
+      description: "１TODOの属性"
+      properties:
+        id:
+    # base types
+    Pong:
+      type: object
+      required:
+        - ping
+      properties:
+        ping:
+          type: string
+          example: pong
