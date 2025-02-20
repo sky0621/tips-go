@@ -10,6 +10,7 @@ func main() {
 	e.GET("/", rootHandler)
 	e.GET("/users/:id", getUserHandler)
 	e.GET("/show", getShowHandler)
+	e.POST("/users", postHandler)
 	e.Logger.Fatal(e.Start(":1323"))
 }
 
