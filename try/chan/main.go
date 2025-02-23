@@ -21,12 +21,13 @@ func main() {
 			ch = nil
 		case j, ok := <-ch2:
 			if ok {
-				fmt.Printf("[CH2] %d\n", j)
+				fmt.Printf("          [CH2] %d\n", j)
 				continue
 			}
 			ch2 = nil
 		}
 		if ch == nil && ch2 == nil {
+			fmt.Println("break")
 			break
 		}
 	}
@@ -40,8 +41,8 @@ func exec1(ch chan int) {
 			ch <- i
 		}
 	}
-	close(ch)
 	fmt.Println("fin exec1")
+	close(ch)
 }
 
 func exec2(ch chan int) {
@@ -51,6 +52,6 @@ func exec2(ch chan int) {
 			ch <- i
 		}
 	}
+	fmt.Println("          fin exec2")
 	close(ch)
-	fmt.Println("fin exec2")
 }
