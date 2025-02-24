@@ -17,35 +17,90 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ""
-    get:
+              $ref: "#/components/schemas/TodoCreateInput"
       responses:
-        '200':
-          description: todo response
+        '201':
+          description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pong'
+                $ref: "#/components/schemas/Todo"
+    get:
+      summary: "全TODO返却"
+      description: "全てのTODOを返却する。"
+      responses:
+        '200':
+          description: "全てのTODO"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Todo"
+  /todos/{todoId}:
+    get:
+      summary: "指定TODO返却"
+      description: "指定されたTODOを返却する。"
+      parameters:
+        - name: todoId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/TodoId"
+      responses:
+        '200':
+          description: "指定されたTODO"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+
 components:
   schemas:
+    CreatedAt:
+      type: string
+      format: date-time
+      description: "作成日時"
+      example: ""
     TodoId:
       type: integer
       format: int
       description: "TODOを一意に識別するキー"
       example: 1
       x-go-name: TodoID
-
-    Todo:
+    TodoTitle:
+      type: string
+      description: "TODOのタイトル"
+      example: "床掃除"
+    TodoContent:
+      type: string
+      description: "TODOの内容"
+      example: "床掃除をする。"
+    TodoCompleted:
+      type: boolean
+      description: "完了フラグ"
+      example: true
+    TodoCreateInput:
       type: object
-      description: "１TODOの属性"
+      description: "作成するTODOの入力情報"
       properties:
-        id:
-    # base types
-    Pong:
-      type: object
+        title:
+          $ref: "#/components/schemas/TodoTitle"
+        content:
+          $ref: "#/components/schemas/TodoContent"
       required:
-        - ping
-      properties:
-        ping:
-          type: string
-          example: pong
+        - title
+    Todo:
+      allOf:
+        - $ref: "#/components/schemas/TodoCreateInput"
+        - type: object
+          properties:
+            id:
+              $ref: "#/components/schemas/TodoId"
+            completed:
+              $ref: "#/components/schemas/TodoCompleted"
+            createdAt:
+              $ref: "#/components/schemas/CreatedAt"
+          required:
+            - id
+            - createdAt
