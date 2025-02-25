@@ -28,8 +28,16 @@ paths:
     get:
       summary: "全TODO返却"
       description: "全てのTODOを返却する。"
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
       responses:
-        '200':
+        200:
           description: "全てのTODO"
           content:
             application/json:
@@ -48,7 +56,7 @@ paths:
           schema:
             $ref: "#/components/schemas/TodoId"
       responses:
-        '200':
+        200:
           description: "指定されたTODO"
           content:
             application/json:
