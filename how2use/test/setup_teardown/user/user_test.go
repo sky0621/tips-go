@@ -13,6 +13,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestGetUser(t *testing.T) {
+	log.Println("start TestGetUser")
 	type args struct {
 		id int
 	}
@@ -41,9 +42,11 @@ func TestGetUser(t *testing.T) {
 			}
 		})
 	}
+	log.Println("end TestGetUser")
 }
 
 func TestAddUser(t *testing.T) {
+	log.Println("start TestAddUser")
 	type args struct {
 		name int
 		id   int
@@ -66,4 +69,5 @@ func TestAddUser(t *testing.T) {
 			}
 		})
 	}
+	log.Println("end TestAddUser")
 }
