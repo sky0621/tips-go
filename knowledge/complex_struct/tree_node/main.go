@@ -11,32 +11,64 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
-func (n *TreeNode) String() string {
-	if n == nil {
-		return "<nil>"
-	}
+func (n *TreeNode) String(indent string) string {
 	sb := strings.Builder{}
-	sb.WriteString("TreeNode {\n")
-	sb.WriteString(fmt.Sprintf("Value: %d, \n", n.Value))
-	sb.WriteString(fmt.Sprintf("Left: %+v, \n", n.Left.String()))
-	sb.WriteString(fmt.Sprintf("Right: %+v, \n", n.Right.String()))
-	sb.WriteString("}")
+	sb.WriteString(fmt.Sprintf("{\n"))
+	sb.WriteString(fmt.Sprintf("%s  Value: %d, \n", indent, n.Value))
+	if n.Left != nil {
+		sb.WriteString(fmt.Sprintf("%s  Left: %+v, \n", indent, n.Left.String(indent+"  ")))
+	}
+	if n.Right != nil {
+		sb.WriteString(fmt.Sprintf("%s  Right: %+v, \n", indent, n.Right.String(indent+"  ")))
+	}
+	sb.WriteString(fmt.Sprintf("%s}", indent))
 	return sb.String()
 }
 
 func main() {
 	root := &TreeNode{
-		Value: 10,
+		Value: 1,
 		Left: &TreeNode{
-			Value: 5,
-			Left:  &TreeNode{Value: 3},
-			Right: &TreeNode{Value: 20},
+			Value: 11,
+			Left: &TreeNode{
+				Value: 111,
+				Left: &TreeNode{
+					Value: 1111,
+					Left: &TreeNode{
+						Value: 11111,
+						Left:  nil,
+						Right: nil,
+					},
+					Right: nil,
+				},
+				Right: &TreeNode{
+					Value: 1112,
+					Left:  nil,
+					Right: nil,
+				},
+			},
+			Right: &TreeNode{
+				Value: 112,
+				Left:  nil,
+				Right: &TreeNode{
+					Value: 1122,
+					Left:  nil,
+					Right: nil,
+				}},
 		},
 		Right: &TreeNode{
-			Value: 15,
-			Left:  &TreeNode{Value: 7},
-			Right: &TreeNode{Value: 11},
+			Value: 12,
+			Left: &TreeNode{
+				Value: 121,
+				Left:  nil,
+				Right: nil,
+			},
+			Right: &TreeNode{
+				Value: 122,
+				Left:  nil,
+				Right: nil,
+			},
 		},
 	}
-	fmt.Println(root.String())
+	fmt.Println(root.String(""))
 }

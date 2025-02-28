@@ -9,10 +9,10 @@ import (
 func main() {
 	util.ExecMain(func() {
 
-		limit := make(chan struct{}, 20)
+		limit := make(chan struct{}, 5)
 
 		var wg sync.WaitGroup
-		for i := 0; i < 50; i++ {
+		for i := 0; i < 10; i++ {
 			wg.Add(1)
 			i := i
 			go func() {

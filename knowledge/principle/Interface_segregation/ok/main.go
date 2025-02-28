@@ -5,19 +5,9 @@ import (
 )
 
 func main() {
-	s := impl{}
+	var s BuyAndMailService = impl{}
 	s.Buy()
 	s.Mail()
-
-	fmt.Println()
-
-	var bs BuyService
-	bs = s
-	bs.Buy()
-
-	var ms MailService
-	ms = s
-	ms.Mail()
 }
 
 type BuyService interface {
@@ -26,6 +16,11 @@ type BuyService interface {
 
 type MailService interface {
 	Mail()
+}
+
+type BuyAndMailService interface {
+	BuyService
+	MailService
 }
 
 type impl struct{}
