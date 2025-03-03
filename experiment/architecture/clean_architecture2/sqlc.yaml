@@ -1,0 +1,11 @@
+version: "2"
+sql:
+  - engine: "mysql"
+    queries: "./internal/infrastructure/db"
+    schema: "./internal/infrastructure/db/schema.sql"
+    gen:
+      go:
+        package: "db"
+        out: "./internal/infrastructure/db"
+        emit_empty_slices: true
+        emit_interface: true
