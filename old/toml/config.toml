@@ -1,5 +1,0 @@
-[API]
-port     = 8000
-version  = "v1"
-endpoint = "api.example.com"
-debug    = true
