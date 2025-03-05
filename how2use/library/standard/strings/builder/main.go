@@ -21,7 +21,7 @@ func main() {
 	}
 
 	builder := NewStringBuilder()
-	jsonLog := builder.
+	result := builder.
 		Append(`{`).
 		Append(`"book": {`).
 		Append(`"id": `).AppendInt(b.ID).Append(", ").
@@ -29,10 +29,13 @@ func main() {
 		Append(`"author": `).Append(b.Author).Append(", ").
 		Append(`"price": `).AppendInt(b.Price).Append("").
 		Append(`}`).
-		Append(`}`).
-		ToString()
+		Append(`}`)
+	if len(result.Errors()) > 0 {
+		fmt.Println(result.Errors())
+		return
+	}
 
-	fmt.Println(jsonLog)
+	fmt.Println(result.ToString())
 }
 
 // NewStringBuilder ...
