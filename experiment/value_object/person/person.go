@@ -1,5 +1,9 @@
 package person
 
+import (
+	"fmt"
+)
+
 type ID struct {
 	v ValueObject[int64]
 }
@@ -7,7 +11,7 @@ type ID struct {
 func NewID(v int64) (ID, error) {
 	id, err := NewValueObject[int64](v, isID)
 	if err != nil {
-		return ID{}, err
+		return ID{}, fmt.Errorf("idの生成に失敗しました。[%d] %w", v, err)
 	}
 	return ID{v: id}, nil
 }
@@ -19,7 +23,7 @@ type Name struct {
 func NewName(v string) (Name, error) {
 	name, err := NewValueObject[string](v, isName, isPersonName)
 	if err != nil {
-		return Name{}, err
+		return Name{}, fmt.Errorf("nameの生成に失敗しました。[%s] %w", v, err)
 	}
 	return Name{v: name}, nil
 }
@@ -50,11 +54,11 @@ func (p Person) NameValue() string {
 func New(id int64, name string) (Person, error) {
 	pID, err := NewID(id)
 	if err != nil {
-		return Person{}, err
+		return Person{}, fmt.Errorf("personの生成に失敗しました。%w", err)
 	}
 	pName, err := NewName(name)
 	if err != nil {
-		return Person{}, err
+		return Person{}, fmt.Errorf("personの生成に失敗しました。%w", err)
 	}
 	return Person{
 		id:   pID,
