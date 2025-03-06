@@ -38,7 +38,7 @@ func sub(word string, ch chan struct{}, wg *sync.WaitGroup) {
 		select {
 		case <-ch:
 			fmt.Println(word)
-			time.Sleep(100 * time.Millisecond)
+			time.Sleep(1 * time.Second)
 			ch <- struct{}{}
 		}
 	}

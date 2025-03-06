@@ -6,8 +6,7 @@ import (
 	"time"
 )
 
-// fatal error: all goroutines are asleep - deadlock!
-// チャネルにトークンが入るタイミングがないため
+// 1つのチャネルをpingとpongで共有しているため、一方が処理している間、他方は待ちとなり、交互にpingとpongが出力される
 func main() {
 	wg := &sync.WaitGroup{}
 
@@ -19,6 +18,9 @@ func main() {
 	wg.Add(1)
 	go sub("     pong", ch, wg)
 
+	// 最初のきっかけを与えてやる
+	ch <- struct{}{}
+
 	wg.Wait()
 }
 
@@ -29,7 +31,7 @@ func sub(word string, ch chan struct{}, wg *sync.WaitGroup) {
 		select {
 		case <-ch:
 			fmt.Println(word)
-			time.Sleep(100 * time.Millisecond)
+			time.Sleep(1 * time.Second)
 			ch <- struct{}{}
 		}
 	}

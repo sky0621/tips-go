@@ -36,6 +36,6 @@ func sub(word string, wg *sync.WaitGroup) {
 
 	for i := 0; i < 5; i++ {
 		fmt.Println(word)
-		time.Sleep(100 * time.Millisecond)
+		time.Sleep(1 * time.Second)
 	}
 }

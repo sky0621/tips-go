@@ -9,19 +9,19 @@ import (
 func main() {
 	go ping()
 	go pong()
-	time.Sleep(3 * time.Second)
+	time.Sleep(6 * time.Second)
 }
 
 func ping() {
 	for i := 0; i < 5; i++ {
 		fmt.Println("ping")
-		time.Sleep(100 * time.Millisecond)
+		time.Sleep(1 * time.Second)
 	}
 }
 
 func pong() {
 	for i := 0; i < 5; i++ {
 		fmt.Println("     pong")
-		time.Sleep(100 * time.Millisecond)
+		time.Sleep(1 * time.Second)
 	}
 }

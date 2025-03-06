@@ -73,17 +73,17 @@ func newComposite(name string, components []component) component {
 }
 
 type composite struct {
-	name   string
-	childs []component
+	name     string
+	children []component
 }
 
 func (c *composite) exec(wg *sync.WaitGroup) {
 	defer wg.Done()
-	time.Sleep(1 * time.Second)
+	time.Sleep(2 * time.Second)
 	fmt.Printf("[COMPOSITE]%s\n", c.name)
 
 	wg2 := &sync.WaitGroup{}
-	for _, child := range c.childs {
+	for _, child := range c.children {
 		wg2.Add(1)
 		go child.exec(wg2)
 	}
@@ -91,7 +91,7 @@ func (c *composite) exec(wg *sync.WaitGroup) {
 }
 
 func (c *composite) add(cmp component) {
-	c.childs = append(c.childs, cmp)
+	c.children = append(c.children, cmp)
 }
 
 func newLeaf(name string) component {
@@ -104,6 +104,6 @@ type leaf struct {
 
 func (l *leaf) exec(wg *sync.WaitGroup) {
 	defer wg.Done()
-	time.Sleep(1 * time.Second)
+	time.Sleep(2 * time.Second)
 	fmt.Printf("[LEAF]%s\n", l.name)
 }
