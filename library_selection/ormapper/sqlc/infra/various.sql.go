@@ -110,39 +110,6 @@ func (q *Queries) ListRecentCommentByPosts(ctx context.Context) ([]ListRecentCom
 	return items, nil
 }
 
-const listUsersByIDs = `-- name: ListUsersByIDs :many
-SELECT id, name, created_at, updated_at FROM users
-WHERE id IN (?)
-`
-
-func (q *Queries) ListUsersByIDs(ctx context.Context, id int64) ([]User, error) {
-	rows, err := q.db.QueryContext(ctx, listUsersByIDs, id)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	items := []User{}
-	for rows.Next() {
-		var i User
-		if err := rows.Scan(
-			&i.ID,
-			&i.Name,
-			&i.CreatedAt,
-			&i.UpdatedAt,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
 const listUsersWithPostAndCommentCount = `-- name: ListUsersWithPostAndCommentCount :many
 SELECT
     users.id AS user_id,
@@ -266,6 +233,39 @@ func (q *Queries) MaxUsersID(ctx context.Context) (interface{}, error) {
 	var maxid interface{}
 	err := row.Scan(&maxid)
 	return maxid, err
+}
+
+const orgListUsersByIDs = `-- name: OrgListUsersByIDs :many
+SELECT id, name, created_at, updated_at FROM users
+WHERE id IN (?)
+`
+
+func (q *Queries) OrgListUsersByIDs(ctx context.Context, id int64) ([]User, error) {
+	rows, err := q.db.QueryContext(ctx, orgListUsersByIDs, id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []User{}
+	for rows.Next() {
+		var i User
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const relations = `-- name: Relations :many

@@ -48,38 +48,32 @@ func Various(ctx context.Context, q *infra.Queries) {
 	}
 	fmt.Println("-- title指定でposts取得 --")
 	for _, post := range posts {
-		fmt.Printf("ID: %d, Title: %s\n", post.ID, post.Title)
+		fmt.Printf("ID: %u, Title: %s\n", post.ID, post.Title)
 	}
 
 	fmt.Println()
 
-	ds, err := q.ListUsersByIDs(ctx, 1)
+	users, err := q.ListUsersByIDs(ctx, []int64{1, 2, 3, 4, 5, 6, 99})
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("-- id指定でusers取得 --")
-	for _, d := range ds {
-		fmt.Printf("ID: %d, Name: %s\n", d.ID, d.Name)
+	for _, u := range users {
+		fmt.Printf("ID: %d, Name: %s\n", u.ID, u.Name)
 	}
 
 	fmt.Println()
-
-	ds2, err := q.ListUsersByIDs2(ctx, []int64{1, 2, 3, 4, 5, 6, 99})
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("-- id指定でusers取得2 --")
-	for _, d := range ds2 {
-		fmt.Printf("ID: %d, Name: %s\n", d.ID, d.Name)
-	}
 
 	relations, err := q.Relations(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("-- relations --")
 	for _, r := range relations {
 		fmt.Printf("ID: %d, Name: %s\n", r.ID, r.Name)
 	}
+
+	fmt.Println()
 
 	id, err := q.MaxUsersID(ctx)
 	if err != nil {

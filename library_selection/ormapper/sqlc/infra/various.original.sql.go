@@ -2,12 +2,14 @@ package infra
 
 import (
 	"context"
+	"database/sql"
+	"log"
 
 	"github.com/jmoiron/sqlx"
 )
 
-func (q *Queries) ListUsersByIDs2(ctx context.Context, ids []int64) ([]User, error) {
-	query, args, err := sqlx.In(listUsersByIDs, ids)
+func (q *Queries) ListUsersByIDs(ctx context.Context, ids []int64) ([]User, error) {
+	query, args, err := sqlx.In(orgListUsersByIDs, ids)
 	if err != nil {
 		return nil, err
 	}
@@ -16,8 +18,13 @@ func (q *Queries) ListUsersByIDs2(ctx context.Context, ids []int64) ([]User, err
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
-	items := []User{}
+	defer func(rows *sql.Rows) {
+		err := rows.Close()
+		if err != nil {
+			log.Println(err)
+		}
+	}(rows)
+	var items []User
 	for rows.Next() {
 		var i User
 		if err := rows.Scan(

@@ -59,7 +59,7 @@ WHERE
 ORDER BY
     p.id;
 
--- name: ListUsersByIDs :many
+-- name: OrgListUsersByIDs :many
 SELECT * FROM users
 WHERE id IN (?);
 
