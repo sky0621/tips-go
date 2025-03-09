@@ -10,7 +10,7 @@ import (
 func main() {
 	str := "あいうえお"
 	fmt.Println(str)
-	fmt.Println(len(str)) // 15
+	fmt.Printf("len(str): %d\n", len(str)) // 15
 
 	fmt.Println()
 
@@ -22,9 +22,14 @@ func main() {
 		// 12: 'お' (U+304A)
 		fmt.Printf("%d: %q (%[2]U)\n", i, r)
 	}
+	fmt.Printf("utf8.RuneCountInString(str): %d\n", utf8.RuneCountInString(str)) // 5
 
 	fmt.Println()
 
-	fmt.Println(utf8.RuneCountInString(str))
-	fmt.Println(len([]rune(str)))
+	runes := []rune(str)
+	fmt.Println(runes)
+	for i, r := range runes {
+		fmt.Printf("%d: %q (%[2]U)\n", i, r)
+	}
+	fmt.Printf("len([]rune(str)): %d\n", len(runes)) // 5
 }
