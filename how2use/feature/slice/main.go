@@ -6,75 +6,107 @@ import "fmt"
 // スライスは参照型。（マップやチャネルも参照型）
 
 func main() {
-	// 文字列を要素とするスライス。参照型なのでこの時点では nil
-	var s []string
+	fmt.Println("＜初期化の違い＞")
+	var iSlice []int
+	fmt.Println("var iSlice []int")
+	fmt.Printf("  iSlice: %v, len: %d\n", iSlice, len(iSlice))
 
-	// 配列の宣言と初期化
-	a := [5]string{"Go", "Java", "Scala", "Ruby", "Python"}
+	iSlice2 := []int{}
+	fmt.Println("iSlice2 []int")
+	fmt.Printf("  iSlice2: %v, len: %d\n", iSlice2, len(iSlice2))
 
-	// 配列のすべてをスライスへ
-	s = a[:]
-	fmt.Println("＜５つの文字列配列＞")
-	fmt.Printf("[スライス]\t[s]:\t %#v\n", s)
-	fmt.Printf("[配列]\t\t[a]:\t%#v\n", a)
+	iSlice3 := make([]int, 0)
+	fmt.Println("iSlice3 := make([]int, 0)")
+	fmt.Printf("  iSlice3: %v, len: %d\n", iSlice3, len(iSlice3))
+
 	fmt.Println()
 
-	s[2] = "PHP"
-	fmt.Println("＜スライスの３番目をPHPに変更＞")
-	fmt.Printf("[スライス]\t[s]:\t %#v\n", s)
-	fmt.Printf("[配列]\t\t[a]:\t%#v\n", a)
+	fmt.Println("＜サイズを指定して初期化＞")
+	iSlice4 := make([]int, 2, 3)
+	fmt.Println("iSlice4 := make([]int, 2, 3)")
+	fmt.Printf("  iSlice4: %v, len: %d\n", iSlice4, len(iSlice4))
+	iSlice4 = append(iSlice4, 1)
+	fmt.Println("iSlice4 = append(iSlice4, 1)")
+	fmt.Printf("  iSlice4: %v, len: %d\n", iSlice4, len(iSlice4))
+	iSlice4 = append(iSlice4, 2)
+	fmt.Println("iSlice4 = append(iSlice4, 2)")
+	fmt.Printf("  iSlice4: %v, len: %d\n", iSlice4, len(iSlice4))
+
 	fmt.Println()
 
-	s2 := append(s, "Elixir", "C++")
-	fmt.Println("＜スライスに要素「Elixir」「C++」を追加(★元のスライス、配列には影響なし★) -> s2 ＞")
-	fmt.Printf("[スライス]\t[s2]:\t %#v\n", s2)
-	fmt.Printf("[スライス]\t[s]:\t %#v\n", s)
-	fmt.Printf("[配列]\t\t[a]:\t%#v\n", a)
+	fmt.Println("＜appendして別のスライスを生成＞")
+	iSliceOrg := make([]int, 0, 3)
+	iSliceOrg = append(iSliceOrg, 1)
+	fmt.Println("iSliceOrg := make([]int, 0, 3)")
+	fmt.Println("iSliceOrg = append(iSliceOrg, 1)")
+	fmt.Printf("  iSliceOrg: %v, len: %d\n", iSliceOrg, len(iSliceOrg))
+
 	fmt.Println()
 
-	src := []int{1, 2, 3, 4, 5}
-	var dst []int
-	cnt := copy(dst, src)
-	fmt.Println("＜スライスをコピー(dstは[]intで宣言しただけではコピーされない)＞", cnt)
-	fmt.Printf("[スライス]\t[src]:\t %#v\n", src)
-	fmt.Printf("[スライス]\t[dst]:\t %#v\n", dst)
+	// iSliceOrgと同じ配列を指す新しいスライスを生成
+	//
+	// [1][2]
+	//
+	// iSliceOrgは上記の配列の０番目のみを示すスライス
+	// isSliceNewは上記の配列のすべての範囲を示すスライス
+	iSliceNew := append(iSliceOrg, 2)
+	fmt.Println("iSliceNew := append(iSliceOrg, 2)")
+	fmt.Printf("  iSliceOrg: %v, len: %d\n", iSliceOrg, len(iSliceOrg))
+	fmt.Printf("  iSliceNew: %v, len: %d\n", iSliceNew, len(iSliceNew))
+
 	fmt.Println()
 
-	dst = []int{}
-	cnt = copy(dst, src)
-	fmt.Println("＜スライスをコピー(dstは[]int{}で空要素初期化しただけではコピーされない)＞", cnt)
-	fmt.Printf("[スライス]\t[src]:\t %#v\n", src)
-	fmt.Printf("[スライス]\t[dst]:\t %#v\n", dst)
+	// iSliceOrgとiSliceNewは現時点では同じ配列を示している
+	// そのため、どちらかの要素を書き換えた結果は両方のスライスに反映される
+	iSliceOrg[0] = 11
+	fmt.Println("iSliceOrg[0] = 11")
+	fmt.Printf("  iSliceOrg: %v, len: %d\n", iSliceOrg, len(iSliceOrg))
+	fmt.Printf("  iSliceNew: %v, len: %d\n", iSliceNew, len(iSliceNew))
+
+	// iSliceNewに要素を追加
+	// iSliceOrgは同じ配列の０番目しか見ていないので上記操作の結果はiSliceNewにだけ反映される
+	//
+	// iSliceOrg: [11], len: 1
+	// iSliceNew: [11 2 3], len: 3
+	iSliceNew = append(iSliceNew, 3)
+	fmt.Println("iSliceNew = append(iSliceNew, 3)")
+	fmt.Printf("  iSliceOrg: %v, len: %d\n", iSliceOrg, len(iSliceOrg))
+	fmt.Printf("  iSliceNew: %v, len: %d\n", iSliceNew, len(iSliceNew))
+
+	// iSliceOrgに要素を追加
+	//
+	// iSliceOrgとiSliceNewとで以下の同じ配列を（範囲違いで）参照していて、iSliceOrgは [11] だけを参照しているため、
+	// [11][2][3]
+	// iSliceOrgに要素を追加すると、結果的に [2] を書き換えることになる（つまり、iSliceNewにも影響が出る）
+	//
+	// [11][22][3]
+	iSliceOrg = append(iSliceOrg, 22)
+	fmt.Println("iSliceOrg = append(iSliceOrg, 22)")
+	fmt.Printf("  iSliceOrg: %v, len: %d\n", iSliceOrg, len(iSliceOrg))
+	fmt.Printf("  iSliceNew: %v, len: %d\n", iSliceNew, len(iSliceNew))
+
 	fmt.Println()
 
-	dst = []int{6}
-	cnt = copy(dst, src)
-	fmt.Println("＜スライスをコピー(dstは[]int{6}で初期化した場合、サイズ分だけがコピー（入れ替え）される)＞", cnt)
-	fmt.Printf("[スライス]\t[src]:\t %#v\n", src)
-	fmt.Printf("[スライス]\t[dst]:\t %#v\n", dst)
-	fmt.Println()
+	// iSliceNewにさらに要素を加える
+	//
+	// これまでに操作していた配列は最初にキャパシティ「３」で作成していたもののため、このサイズに収まっている範囲内の操作は
+	// 同じ配列を参照している iSliceOrg と iSliceNew の両方に（参照範囲が同じなら）影響が出る
+	//
+	// ただ、現在のサイズが３である状態でさらに要素を追加すると、追加するために別の配列を用意する必要が生じ、
+	// 結果的に iSliceNew は iSliceOrg とは別の新しい配列を参照することになる
+	// これ以降は、参照範囲が同じ場所を修正したとしても参照先の配列が違うため、他方のスライスに影響が出なくなる
+	iSliceNew = append(iSliceNew, 4)
+	fmt.Println("iSliceNew = append(iSliceNew, 4)")
+	fmt.Printf("  iSliceOrg: %v, len: %d\n", iSliceOrg, len(iSliceOrg))
+	fmt.Printf("  iSliceNew: %v, len: %d\n", iSliceNew, len(iSliceNew))
 
-	// いったん配列として初期化
-	dst2 := [...]int{}
-	cnt = copy(dst2[:], src)
-	fmt.Println("＜スライスをコピー(dst2は、いったん[...]int{}で配列として初期化した場合、結局サイズ０なのでコピーされない)＞", cnt)
-	fmt.Printf("[スライス]\t[src]:\t %#v\n", src)
-	fmt.Printf("[スライス]\t[dst2]:\t %#v\n", dst2)
-	fmt.Println()
+	iSliceOrg[0] = 111
+	fmt.Println("iSliceOrg[0] = 111")
+	fmt.Printf("  iSliceOrg: %v, len: %d\n", iSliceOrg, len(iSliceOrg))
+	fmt.Printf("  iSliceNew: %v, len: %d\n", iSliceNew, len(iSliceNew))
 
-	isl := make([]int, 10, 10)
-	fmt.Println("＜スライスをmake([]int, 10, 10)で生成＞")
-	fmt.Println(isl)
-	fmt.Println()
-
-	bt := []string{"A", "B", "O", "AB"}
-	fmt.Println("＜スライスを可変長引数持ち関数に渡す＞")
-	test(bt...)
-
-}
-
-// 可変長引数を持つ関数
-func test(s ...string) {
-	fmt.Println(len(s), s)
-	fmt.Println()
+	iSliceNew[1] = 222
+	fmt.Println("iSliceNew[1] = 222")
+	fmt.Printf("  iSliceOrg: %v, len: %d\n", iSliceOrg, len(iSliceOrg))
+	fmt.Printf("  iSliceNew: %v, len: %d\n", iSliceNew, len(iSliceNew))
 }
