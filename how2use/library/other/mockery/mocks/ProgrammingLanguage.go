@@ -2,7 +2,7 @@
 package mocks
 
 import (
-	target "github.com/sky0621/tips-go/tools/mockery"
+	target "github.com/sky0621/tips-go/how2use/library/other/mockery"
 	mock "github.com/stretchr/testify/mock"
 )
 

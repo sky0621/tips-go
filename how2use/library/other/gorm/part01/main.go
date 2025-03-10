@@ -1,7 +1,7 @@
 package main
 
 import (
-	"tips-go/tools/gorm/part01/model"
+	"github.com/sky0621/tips-go/how2use/library/other/gorm/part01/model"
 
 	"github.com/jinzhu/gorm"
 
