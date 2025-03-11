@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"context"
 	"github.com/labstack/echo/v4"
 	"github.com/sky0621/tips-go/experiment/architecture/clean_architecture2/internal/usecase"
 	"net/http"
@@ -24,7 +23,8 @@ func (u *User) GetUser(c echo.Context) error {
 	}
 	presenter := NewHTTPPresenter(c)
 	req := usecase.GetUserRequest{UserID: id}
-	if err := u.getUserUsecase.GetUser(context.Background(), req, presenter); err != nil {
+	ctx := c.Request().Context()
+	if err := u.getUserUsecase.GetUser(ctx, req, presenter); err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
 	return nil
