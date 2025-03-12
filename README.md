@@ -109,6 +109,10 @@ https://100go.co/#not-knowing-which-type-of-receiver-to-use-42
 ・レシーバーが int、float64、または string などの基本型の場合。
 ```
 
+### Concurrency
+
+https://100go.co/56-concurrency-faster/
+
 ## ref
 
 https://100go.co/
