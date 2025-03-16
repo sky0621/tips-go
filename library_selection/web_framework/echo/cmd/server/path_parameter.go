@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func getUserHandler(c echo.Context) error {
+func pathParameterSample(c echo.Context) error {
 	id := c.Param("id")
 	return c.String(http.StatusOK, id)
 }

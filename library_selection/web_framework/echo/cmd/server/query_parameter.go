@@ -6,8 +6,9 @@ import (
 	"net/http"
 )
 
-func getShowHandler(c echo.Context) error {
+func queryParameterSample(c echo.Context) error {
 	team := c.QueryParam("team")
 	member := c.QueryParam("member")
-	return c.String(http.StatusOK, fmt.Sprintf("team:%s - member:%s", team, member))
+	tags := c.QueryParam("tags")
+	return c.String(http.StatusOK, fmt.Sprintf("team:%s - member:%s - tags:%s", team, member, tags))
 }

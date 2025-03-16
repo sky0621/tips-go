@@ -10,7 +10,7 @@ type User struct {
 	Email string `json:"email"`
 }
 
-func postUsersHandler(c echo.Context) error {
+func handlingRequestSample(c echo.Context) error {
 	u := new(User)
 	if err := c.Bind(&u); err != nil {
 		return err
