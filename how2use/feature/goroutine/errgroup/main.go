@@ -22,8 +22,6 @@ func handle(ctx context.Context, circles []Circle) ([]Result, error) {
 	group, ctx := errgroup.WithContext(ctx)
 
 	for i, circle := range circles {
-		i := i
-		circle := circle
 		group.Go(func() error {
 			result, err := foo(ctx, circle)
 			if err != nil {
