@@ -1,10 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
+	"net/http"
 )
 
 type CustomContext struct {
@@ -34,6 +36,14 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	/*
+	 * CORSの設定
+	 * フロントエンドからのアクセスを許可する必要がある場合は追加
+	 */
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://localhost:1323"},
+	}))
+
+	/*
 	 * 出力ログレベルの設定
 	 */
 	e.Logger.SetLevel(log.DEBUG)
@@ -43,6 +53,7 @@ func main() {
 	if l, ok := e.Logger.(*log.Logger); ok {
 		l.SetHeader("${time_rfc3339} ${level}")
 	}
+
 	/*
 	 * カスタムバリデーションの登録
 	 */
@@ -72,6 +83,35 @@ func main() {
 	}))
 	g.GET("/ping", func(c echo.Context) error {
 		return c.String(200, "pong")
+	})
+
+	/*
+	 * CSRF
+	 */
+	g2 := e.Group("/csrf", middleware.CSRFWithConfig(middleware.CSRFConfig{
+		TokenLookup: "header:X-CSRF-Token",
+		TokenLength: 32,
+		CookieName:  "csrf",
+		CookiePath:  "/",
+	}))
+	g2.GET("/token", func(c echo.Context) error {
+		// ミドルウェアによりコンテキストにセットされた CSRF トークンを取得
+		csrfToken := c.Get("csrf").(string)
+		html := fmt.Sprintf(`
+			<html>
+			<head>
+				<title>CSRF ヘッダーサンプル</title>
+			</head>
+			<body>
+				<p>CSRF トークン: <strong>%s</strong></p>
+				<p>このトークンを、POST リクエスト時に HTTP ヘッダー "X-CSRF-Token" に設定してください。</p>
+			</body>
+			</html>
+		`, csrfToken)
+		return c.HTML(http.StatusOK, html)
+	})
+	g2.POST("/submit", func(c echo.Context) error {
+		return c.String(200, "submit ok")
 	})
 
 	e.Logger.Fatal(e.Start(":1323"))
