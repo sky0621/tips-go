@@ -56,6 +56,16 @@ func TestAddUser(t *testing.T) {
 			wantError: false,
 		},
 		{
+			testName: "正常系2",
+			user: createTestUser(
+				WithID(100),
+				WithName("TestUser2"),
+				WithAge(30),
+				WithEmail("test@example.com"),
+			),
+			wantError: false,
+		},
+		{
 			testName:  "準正常系（ID不正）",
 			user:      createTestUser(WithID(0)),
 			wantError: true,

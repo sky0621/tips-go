@@ -7,7 +7,7 @@ import (
 )
 
 /*
- * time.Time は、MarshalJSON でシリアライズすると、
+ * time.Date は、MarshalJSON でシリアライズすると、
  * モノトニッククロックの情報が失われる。
  */
 func main() {
