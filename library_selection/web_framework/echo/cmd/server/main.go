@@ -60,5 +60,19 @@ func main() {
 	e.POST("/cookie", writeCookie)
 	e.POST("/custom_data_bind", customDataBindSample)
 	e.POST("/validate", validateSample)
+
+	/*
+	 * ルートのグルーピング
+	 */
+	g := e.Group("/admin", middleware.BasicAuth(func(username, password string, c echo.Context) (bool, error) {
+		if username == "joe" && password == "secret" {
+			return true, nil
+		}
+		return false, nil
+	}))
+	g.GET("/ping", func(c echo.Context) error {
+		return c.String(200, "pong")
+	})
+
 	e.Logger.Fatal(e.Start(":1323"))
 }
