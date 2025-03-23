@@ -7,7 +7,10 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
+	"github.com/sky0621/tips-go/library_selection/web_framework/echo/cmd/server/logger"
+	"log/slog"
 	"net/http"
+	"os"
 )
 
 type CustomContext struct {
@@ -36,6 +39,7 @@ func main() {
 	})
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Use(middleware.RequestID())
 	/*
 	 * CORSの設定
 	 * フロントエンドからのアクセスを許可する必要がある場合は追加
@@ -51,9 +55,13 @@ func main() {
 	/*
 	 * 出力ログのフォーマットの設定
 	 */
-	if l, ok := e.Logger.(*log.Logger); ok {
-		l.SetHeader("${time_rfc3339} ${level}")
-	}
+	//if l, ok := e.Logger.(*log.Logger); ok {
+	//	l.SetHeader("${time_rfc3339} ${level}")
+	//}
+	/*
+	 * ロガーのカスタムハンドラの登録
+	 */
+	slog.SetDefault(slog.New(&logger.AppLogHandler{Handler: slog.NewJSONHandler(os.Stdout, nil)}))
 
 	/*
 	 * カスタムバリデーションの登録
@@ -122,6 +130,49 @@ func main() {
 	g3 := e.Group("/jwt")
 	g3.Use(echojwt.JWT([]byte(jwtSecretKey)))
 	g3.GET("/user", jwtSample)
+
+	/*
+	 * RequestLogger
+	 */
+	g4 := e.Group("/request_logger")
+	g4.Use(middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
+		LogHost:      true,
+		LogURI:       true,
+		LogMethod:    true,
+		LogStatus:    true,
+		LogLatency:   true,
+		LogRequestID: true,
+		LogError:     true,
+		LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
+			if v.Error == nil {
+				slog.LogAttrs(c.Request().Context(), slog.LevelInfo, "REQUEST",
+					slog.String("host", v.Host),
+					slog.String("path", v.URI),
+					slog.String("method", v.Method),
+					slog.Int("status", v.Status),
+					slog.Int("latency", int(v.Latency)),
+					slog.String(logger.LogKeyTraceID, v.RequestID),
+				)
+			} else {
+				slog.LogAttrs(c.Request().Context(), slog.LevelError, "REQUEST_ERROR",
+					slog.String("host", v.Host),
+					slog.String("path", v.URI),
+					slog.String("method", v.Method),
+					slog.Int("status", v.Status),
+					slog.Int("latency", int(v.Latency)),
+					slog.String(logger.LogKeyTraceID, v.RequestID),
+					slog.String("error", v.Error.Error()),
+				)
+			}
+			return nil
+		},
+	}))
+	g4.GET("/user/:id", requestLoggerSample)
+
+	/*
+	 * RequestID
+	 */
+	e.GET("/request_id", requestIDSample)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
