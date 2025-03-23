@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/go-playground/validator"
+	"github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
@@ -113,6 +114,14 @@ func main() {
 	g2.POST("/submit", func(c echo.Context) error {
 		return c.String(200, "submit ok")
 	})
+
+	/*
+	 * JWT
+	 */
+	e.POST("/login", loginSample)
+	g3 := e.Group("/jwt")
+	g3.Use(echojwt.JWT([]byte(jwtSecretKey)))
+	g3.GET("/user", jwtSample)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
