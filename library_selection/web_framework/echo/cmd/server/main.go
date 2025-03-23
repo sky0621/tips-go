@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo-jwt/v4"
@@ -11,6 +13,8 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"os/signal"
+	"time"
 )
 
 type CustomContext struct {
@@ -200,5 +204,33 @@ func main() {
 		},
 	}))
 
-	e.Logger.Fatal(e.Start(":1323"))
+	e.GET("/sleep", func(c echo.Context) error {
+		fmt.Println("sleep start")
+		time.Sleep(5 * time.Second)
+		fmt.Println("sleep end")
+		return c.String(http.StatusOK, "sleep ok")
+	})
+
+	/*
+	 * Graceful Shutdown
+	 */
+	ctxForOsInterrupt, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer stop()
+
+	go func() {
+		if err := e.Start(":1323"); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			e.Logger.Fatal(err)
+		}
+	}()
+	// OSシグナルを受信するまで待機
+	<-ctxForOsInterrupt.Done()
+	fmt.Println("notified os interrupt")
+
+	ctxForTimeout, cancelFunc := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancelFunc()
+
+	if err := e.Shutdown(ctxForTimeout); err != nil {
+		e.Logger.Fatal(err)
+	}
+	fmt.Println("after server shutdown")
 }
