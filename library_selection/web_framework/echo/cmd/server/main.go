@@ -172,6 +172,14 @@ func main() {
 	g4.GET("/user/:id", requestLoggerSample)
 
 	/*
+	 * ファイルダウンロード
+	 */
+	g5 := e.Group("/download")
+	g5.GET("/", fileDownloadIndex)
+	g5.GET("/exec", fileDownloadExec)
+	g5.GET("/attachment", fileAttachment)
+
+	/*
 	 * RequestID
 	 */
 	e.GET("/request_id", requestIDSample)
