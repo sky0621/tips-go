@@ -40,6 +40,8 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(middleware.RequestID())
+	e.Use(middleware.Secure())
+	e.Use(middleware.Timeout())
 	/*
 	 * CORSの設定
 	 * フロントエンドからのアクセスを許可する必要がある場合は追加
@@ -173,6 +175,15 @@ func main() {
 	 * RequestID
 	 */
 	e.GET("/request_id", requestIDSample)
+
+	/*
+	 * リライト
+	 */
+	e.Pre(middleware.RewriteWithConfig(middleware.RewriteConfig{
+		Rules: map[string]string{
+			"/old/*": "/$1",
+		},
+	}))
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
