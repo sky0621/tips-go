@@ -180,6 +180,13 @@ func main() {
 	g5.GET("/attachment", fileAttachment)
 
 	/*
+	 * ファイルアップロード
+	 */
+	g6 := e.Group("/upload")
+	g6.GET("/", fileUploadIndex)
+	g6.POST("/exec", fileUploadExec)
+
+	/*
 	 * RequestID
 	 */
 	e.GET("/request_id", requestIDSample)
