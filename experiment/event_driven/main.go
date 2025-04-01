@@ -64,23 +64,29 @@ func main() {
 	eventBus.Publish(Event{
 		Kind: Add, Data: "user A added", Timestamp: time.Now().Format(time.RFC3339Nano),
 	})
+	time.Sleep(100 * time.Millisecond)
 	eventBus.Publish(Event{
 		Kind: Edit, Data: "user A edited", Timestamp: time.Now().Format(time.RFC3339Nano),
 	})
+	time.Sleep(100 * time.Millisecond)
 	eventBus.Publish(Event{
 		Kind: Delete, Data: "user A deleted", Timestamp: time.Now().Format(time.RFC3339Nano),
 	})
+	time.Sleep(300 * time.Millisecond)
 
 	eventBus.Publish(Event{
 		Kind: Add, Data: "user B added", Timestamp: time.Now().Format(time.RFC3339Nano),
 	})
+	time.Sleep(100 * time.Millisecond)
 	eventBus.Publish(Event{
 		Kind: Edit, Data: "user B edited", Timestamp: time.Now().Format(time.RFC3339Nano),
 	})
+	time.Sleep(250 * time.Millisecond)
 
 	eventBus.Publish(Event{
 		Kind: Add, Data: "user C added", Timestamp: time.Now().Format(time.RFC3339Nano),
 	})
+	time.Sleep(100 * time.Millisecond)
 	eventBus.Publish(Event{
 		Kind: Delete, Data: "user C deleted", Timestamp: time.Now().Format(time.RFC3339Nano),
 	})

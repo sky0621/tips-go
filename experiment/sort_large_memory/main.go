@@ -14,7 +14,7 @@ func main() {
 	// ランダムなデータを生成
 	data := make([]int, numElements)
 	for i := 0; i < numElements; i++ {
-		data[i] = rand.Intn(100000000)
+		data[i] = rand.Intn(numElements)
 	}
 
 	// 並べ替え開始前のタイムスタンプとメモリ使用量を取得

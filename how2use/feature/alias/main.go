@@ -22,11 +22,19 @@ func main() {
 
 	t1 := reflect.TypeOf(strEmail)
 	t2 := reflect.TypeOf(email)
+	/*
+	   false
+	   これは、email型がstring型のエイリアスではなく、新しい型であるためです。
+	*/
 	fmt.Println(t1 == t2)
 
 	u1 := user{ID: 1, Name: "user1"}
 	u2 := user2{ID: 2, Name: "user2"}
 	tu1 := reflect.TypeOf(u1)
 	tu2 := reflect.TypeOf(u2)
+	/*
+	   true
+	   これは、user2がuserのエイリアスであるため、同じ型として扱われます。
+	*/
 	fmt.Println(tu1 == tu2)
 }

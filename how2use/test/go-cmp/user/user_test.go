@@ -31,6 +31,17 @@ func TestGetUser(t *testing.T) {
 				return
 			}
 			if diff := cmp.Diff(got, tt.want); diff != "" {
+				/*
+					=== RUN   TestGetUser/1
+					    user_test.go:34: GetUser() diff =   &user.User{
+					          	ID:   1,
+					        - 	Name: "User01",
+					        + 	Name: "User11",
+					        - 	Age:  6,
+					        + 	Age:  7,
+					          }
+					--- FAIL: TestGetUser/1 (0.00s)
+				*/
 				t.Errorf("GetUser() diff = %v", diff)
 			}
 		})

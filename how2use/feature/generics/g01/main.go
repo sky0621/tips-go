@@ -20,6 +20,7 @@ func (s Str2) exec() {
 	fmt.Println("I'm Str2")
 }
 
+// T は If インタフェースを実装した構造体であるという縛り
 func ifExec[T If](ts []T) {
 	for _, t := range ts {
 		t.exec()
