@@ -29,3 +29,5 @@ library_selection/ormapper/**/docker/
 experiment/**/docker/
 
 **/.DS_Store
+
+**/bin/**
