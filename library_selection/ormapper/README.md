@@ -66,6 +66,8 @@ db.Preload("Posts.Comments").Find(&allUsersWithPostsWithComments)
 - Goユーザーの経験率が高そうという意味でも敷居が低い。
 - Relation関係など、実際に発行されるSQLはちゃんと確認した方がよい。
 
+何も考えずに使えるがちゃんと調べないと、[こういうこと](https://scrapbox.io/keroxp/Gorm%E3%81%8C%E6%9C%AC%E7%95%AA%E3%83%86%E3%83%BC%E3%83%96%E3%83%AB%E3%81%AE%E6%95%B0%E5%84%84%E4%BB%B6%E3%81%AE%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92%E6%B6%88%E3%81%9D%E3%81%86%E3%81%A8%E3%81%97%E3%81%9F%E8%A9%B1)が起きそうになることもある。
+
 ### ent
 
 #### コード例
