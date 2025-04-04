@@ -64,9 +64,9 @@ SELECT * FROM users
 WHERE id IN (?);
 
 # https://docs.sqlc.dev/en/latest/howto/select.html#mysql-and-sqlite
-# -- name: ListUsersByIDs :many
-# SELECT * FROM users
-# WHERE id IN (sqlc.slice('ids'));
+-- name: ListUsersByIDs :many
+SELECT * FROM users
+WHERE id IN (sqlc.slice('ids'));
 
 -- name: MaxUsersID :one
 SELECT MAX(id) AS maxId

@@ -53,7 +53,7 @@ func Various(ctx context.Context, q *infra.Queries) {
 
 	fmt.Println()
 
-	users, err := q.ListUsersByIDs(ctx, []int64{1, 2, 3, 4, 5, 6, 99})
+	users, err := q.ListUsersByIDs(ctx, []int64{1, 2, 4, 5, 6, 99})
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -1,11 +1,11 @@
 version: "2"
 sql:
   - engine: "mysql"
-    queries: "./queries"
-    schema: "../schema.sql"
+    queries: "./infra/queries"
+    schema: "./schema.sql"
     gen:
       go:
         package: "infra"
-        out: "."
+        out: "./infra"
         emit_empty_slices: true
         emit_interface: true
