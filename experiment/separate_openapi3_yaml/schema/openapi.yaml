@@ -716,52 +716,6 @@ paths:
           $ref: '#/components/responses/404-NotFound'
 components:
   schemas:
-    UserName:
-      type: string
-      description: ユーザーの本名
-      example: 山田太郎
-    UserNickName:
-      type: string
-      description: ユーザーのニックネーム
-      example: ドカベン
-    Year:
-      type: integer
-      format: int
-      description: 生年月日の「年」
-      example: 2022
-    Month:
-      type: integer
-      format: int
-      description: 生年月日の「月」
-      example: 9
-    Day:
-      type: integer
-      format: int
-      description: 生年月日の「日」
-      example: 10
-    BirthDay:
-      type: object
-      description: 生年月日
-      example: '{year: 2022, month: 9, day:10}'
-      properties:
-        year:
-          $ref: '#/components/schemas/Year'
-        month:
-          $ref: '#/components/schemas/Month'
-        day:
-          $ref: '#/components/schemas/Day'
-    Job:
-      type: string
-      description: 職業
-      example: エンジニア
-    BelongTo:
-      type: string
-      description: 所属
-      example: フリー
-    PR:
-      type: string
-      description: PR
-      example: 私は20年以上のキャリアを持ち、〜〜
     ActivityName:
       type: string
       description: アクティビティ名
@@ -866,26 +820,6 @@ components:
       type: string
       description: メモ
       example: 以下、順不同。
-    UserAttribute:
-      type: object
-      description: １ユーザーの属性
-      properties:
-        id:
-          $ref: '#/components/schemas/UserId'
-        name:
-          $ref: '#/components/schemas/UserName'
-        nickname:
-          $ref: '#/components/schemas/UserNickName'
-        avatarUrl:
-          $ref: '#/components/schemas/Url'
-        birthday:
-          $ref: '#/components/schemas/BirthDay'
-        job:
-          $ref: '#/components/schemas/Job'
-        belongTo:
-          $ref: '#/components/schemas/BelongTo'
-        pr:
-          $ref: '#/components/schemas/PR'
     UserActivity:
       type: object
       description: １ユーザーのアクティビティ
@@ -1112,6 +1046,72 @@ components:
       description: ユーザーを一意に識別するキー
       example: 1
       x-go-name: UserID
+    UserName:
+      type: string
+      description: ユーザーの本名
+      example: 山田太郎
+    UserNickName:
+      type: string
+      description: ユーザーのニックネーム
+      example: ドカベン
+    Year:
+      type: integer
+      format: int
+      description: 生年月日の「年」
+      example: 2022
+    Month:
+      type: integer
+      format: int
+      description: 生年月日の「月」
+      example: 9
+    Day:
+      type: integer
+      format: int
+      description: 生年月日の「日」
+      example: 10
+    BirthDay:
+      type: object
+      description: 生年月日
+      example: '{year: 2022, month: 9, day:10}'
+      properties:
+        year:
+          $ref: '#/components/schemas/Year'
+        month:
+          $ref: '#/components/schemas/Month'
+        day:
+          $ref: '#/components/schemas/Day'
+    Job:
+      type: string
+      description: 職業
+      example: エンジニア
+    BelongTo:
+      type: string
+      description: 所属
+      example: フリー
+    PR:
+      type: string
+      description: PR
+      example: 私は20年以上のキャリアを持ち、〜〜
+    UserAttribute:
+      type: object
+      description: １ユーザーの属性
+      properties:
+        id:
+          $ref: '#/components/schemas/UserId'
+        name:
+          $ref: '#/components/schemas/UserName'
+        nickname:
+          $ref: '#/components/schemas/UserNickName'
+        avatarUrl:
+          $ref: '#/components/schemas/Url'
+        birthday:
+          $ref: '#/components/schemas/BirthDay'
+        job:
+          $ref: '#/components/schemas/Job'
+        belongTo:
+          $ref: '#/components/schemas/BelongTo'
+        pr:
+          $ref: '#/components/schemas/PR'
     CareerGroupId:
       type: integer
       format: int

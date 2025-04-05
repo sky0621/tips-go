@@ -39,90 +39,13 @@ paths:
     $ref: "./paths/skill.yml#/skillsBySkillId"
 
   "/users":
-    post:
-      summary: "ユーザーアカウント登録"
-      description: "ユーザーアカウントを登録する。"
-      tags: ["users"]
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserAttribute"
-      responses:
-        "201":
-          description: "Created: 指定ユーザーの属性を返却する。"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserAttribute"
-        "400":
-          $ref: "./components/responses/error.yml#/400-BadRequest"
-    get:
-      summary: "ユーザー一覧取得"
-      description: "ユーザー一覧を取得する。"
-      tags: ["users"]
-      responses:
-        "200":
-          description: "OK: ユーザーの一覧を返却する。"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/UserAttribute"
+    $ref: "./paths/user.yml#/users"
 
   "/users/{byUserId}":
-    parameters:
-      - $ref: "./components/parameters/user.yml#/userId"
-    delete:
-      summary: "指定ユーザーアカウント削除"
-      description: "指定ユーザーアカウントを削除する。"
-      tags: ["users"]
-      responses:
-        "204":
-          description: "No Content: 指定ユーザーアカウントの削除に成功。"
-        "404":
-          $ref: "./components/responses/error.yml#/404-NotFound"
+    $ref: "./paths/user.yml#/usersByUserId"
 
   "/users/{byUserId}/attribute":
-    parameters:
-      - $ref: "./components/parameters/user.yml#/userId"
-    put:
-      summary: "属性更新"
-      description: "指定ユーザーの属性を更新する。"
-      tags: ["users"]
-      requestBody:
-        description: "属性"
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserAttribute"
-      responses:
-        "200":
-          description: "OK: 指定ユーザーの属性を返却する。"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserAttribute"
-        "400":
-          $ref: "./components/responses/error.yml#/400-BadRequest"
-        "404":
-          $ref: "./components/responses/error.yml#/404-NotFound"
-    get:
-      summary: "属性取得"
-      description: "指定ユーザーの属性を取得する。"
-      tags: ["users"]
-      responses:
-        "200":
-          description: "OK: 指定ユーザーの属性を返却する。"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserAttribute"
-        "404":
-          $ref: "./components/responses/error.yml#/404-NotFound"
+    $ref: "./paths/user_attribute.yml#/usersByUserIdAttribute"
 
   "/users/{byUserId}/activities":
     parameters:
@@ -591,52 +514,6 @@ paths:
 
 components:
   schemas:
-    UserName:
-      type: string
-      description: "ユーザーの本名"
-      example: "山田太郎"
-    UserNickName:
-      type: string
-      description: "ユーザーのニックネーム"
-      example: "ドカベン"
-    Year:
-      type: integer
-      format: int
-      description: "生年月日の「年」"
-      example: 2022
-    Month:
-      type: integer
-      format: int
-      description: "生年月日の「月」"
-      example: 9
-    Day:
-      type: integer
-      format: int
-      description: "生年月日の「日」"
-      example: 10
-    BirthDay:
-      type: object
-      description: "生年月日"
-      example: "{year: 2022, month: 9, day:10}"
-      properties:
-        year:
-          $ref: "#/components/schemas/Year"
-        month:
-          $ref: "#/components/schemas/Month"
-        day:
-          $ref: "#/components/schemas/Day"
-    Job:
-      type: string
-      description: "職業"
-      example: "エンジニア"
-    BelongTo:
-      type: string
-      description: "所属"
-      example: "フリー"
-    PR:
-      type: string
-      description: "PR"
-      example: "私は20年以上のキャリアを持ち、〜〜"
     ActivityName:
       type: string
       description: "アクティビティ名"
@@ -688,18 +565,18 @@ components:
       example: "{year: 2021, month: 9}"
       properties:
         year:
-          $ref: "#/components/schemas/Year"
+          $ref: "./components/schemas/user.yml#/Year"
         month:
-          $ref: "#/components/schemas/Month"
+          $ref: "./components/schemas/user.yml#/Month"
     CareerPeriodTo:
       type: object
       description: "キャリア期間年月To"
       example: "{year: 2022, month: 10}"
       properties:
         year:
-          $ref: "#/components/schemas/Year"
+          $ref: "./components/schemas/user.yml#/Year"
         month:
-          $ref: "#/components/schemas/Month"
+          $ref: "./components/schemas/user.yml#/Month"
     CareerPeriodMonth:
       type: integer
       format: int
@@ -741,26 +618,6 @@ components:
       type: string
       description: "メモ"
       example: "以下、順不同。"
-    UserAttribute:
-      type: object
-      description: "１ユーザーの属性"
-      properties:
-        id:
-          $ref: "./components/schemas/user.yml#/UserId"
-        name:
-          $ref: "#/components/schemas/UserName"
-        nickname:
-          $ref: "#/components/schemas/UserNickName"
-        avatarUrl:
-          $ref: "./components/schemas/common.yml#/Url"
-        birthday:
-          $ref: "#/components/schemas/BirthDay"
-        job:
-          $ref: "#/components/schemas/Job"
-        belongTo:
-          $ref: "#/components/schemas/BelongTo"
-        pr:
-          $ref: "#/components/schemas/PR"
     UserActivity:
       type: object
       description: "１ユーザーのアクティビティ"

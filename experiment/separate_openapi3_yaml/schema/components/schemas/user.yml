@@ -4,3 +4,79 @@ UserId:
   description: "ユーザーを一意に識別するキー"
   example: 1
   x-go-name: UserID
+
+UserName:
+  type: string
+  description: "ユーザーの本名"
+  example: "山田太郎"
+
+UserNickName:
+  type: string
+  description: "ユーザーのニックネーム"
+  example: "ドカベン"
+
+Year:
+  type: integer
+  format: int
+  description: "生年月日の「年」"
+  example: 2022
+
+Month:
+  type: integer
+  format: int
+  description: "生年月日の「月」"
+  example: 9
+
+Day:
+  type: integer
+  format: int
+  description: "生年月日の「日」"
+  example: 10
+
+BirthDay:
+  type: object
+  description: "生年月日"
+  example: "{year: 2022, month: 9, day:10}"
+  properties:
+    year:
+      $ref: "#/Year"
+    month:
+      $ref: "#/Month"
+    day:
+      $ref: "#/Day"
+
+Job:
+  type: string
+  description: "職業"
+  example: "エンジニア"
+
+BelongTo:
+  type: string
+  description: "所属"
+  example: "フリー"
+
+PR:
+  type: string
+  description: "PR"
+  example: "私は20年以上のキャリアを持ち、〜〜"
+
+UserAttribute:
+  type: object
+  description: "１ユーザーの属性"
+  properties:
+    id:
+      $ref: "#/UserId"
+    name:
+      $ref: "#/UserName"
+    nickname:
+      $ref: "#/UserNickName"
+    avatarUrl:
+      $ref: "./common.yml#/Url"
+    birthday:
+      $ref: "#/BirthDay"
+    job:
+      $ref: "#/Job"
+    belongTo:
+      $ref: "#/BelongTo"
+    pr:
+      $ref: "#/PR"
