@@ -1,6 +1,4 @@
-# openapi3
-
-スキーマファースト
+# separate_openapi3_yaml
 
 ## ref
 
@@ -17,6 +15,9 @@ go get -tool github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen
 ```
 go get -u tool
 ```
+
+## exec
+
 
 ## check
 

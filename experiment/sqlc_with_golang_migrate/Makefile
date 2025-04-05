@@ -9,11 +9,3 @@ migration-down:
 .PHONY: gen
 gen:
 	go tool sqlc generate
-
-.PHONY: build
-build:
-	go build -o ./bin/sqlc ./main.go
-
-.PHONY: run
-run: build
-	./bin/sqlc
