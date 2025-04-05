@@ -1,0 +1,6 @@
+CareerId:
+  type: integer
+  format: int
+  description: "キャリアを一意に識別するID"
+  example: 1
+  x-go-name: CareerID

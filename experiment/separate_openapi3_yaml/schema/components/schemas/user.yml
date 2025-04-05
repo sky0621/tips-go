@@ -1,0 +1,6 @@
+UserId:
+  type: integer
+  format: int
+  description: "ユーザーを一意に識別するキー"
+  example: 1
+  x-go-name: UserID

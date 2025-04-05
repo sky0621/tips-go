@@ -59,7 +59,7 @@ paths:
 
   "/skilltags/{bySkillTagId}":
     parameters:
-      - $ref: "#/components/parameters/skillTagId"
+      - $ref: "./components/parameters/skillTag.yml#/skillTagId"
     get:
       summary: "指定スキルタグ取得"
       description: "指定スキルタグを取得する。"
@@ -76,7 +76,7 @@ paths:
 
   "/skills":
     parameters:
-      - $ref: "#/components/parameters/skillTagIdQuery"
+      - $ref: "./components/parameters/skillTag.yml#/skillTagIdQuery"
     post:
       summary: "スキル登録"
       description: "スキルを登録する。"
@@ -137,7 +137,7 @@ paths:
 
   "/skills/{bySkillId}":
     parameters:
-      - $ref: "#/components/parameters/skillId"
+      - $ref: "./components/parameters/skill.yml#/skillId"
     get:
       summary: "指定スキル取得"
       description: "指定スキルを取得する。"
@@ -188,7 +188,7 @@ paths:
 
   "/users/{byUserId}":
     parameters:
-      - $ref: "#/components/parameters/userId"
+      - $ref: "./components/parameters/user.yml#/userId"
     delete:
       summary: "指定ユーザーアカウント削除"
       description: "指定ユーザーアカウントを削除する。"
@@ -201,7 +201,7 @@ paths:
 
   "/users/{byUserId}/attribute":
     parameters:
-      - $ref: "#/components/parameters/userId"
+      - $ref: "./components/parameters/user.yml#/userId"
     put:
       summary: "属性更新"
       description: "指定ユーザーの属性を更新する。"
@@ -240,7 +240,7 @@ paths:
 
   "/users/{byUserId}/activities":
     parameters:
-      - $ref: "#/components/parameters/userId"
+      - $ref: "./components/parameters/user.yml#/userId"
     put:
       summary: "アクティビティ群最新化"
       description: "指定ユーザーのアクティビティ群を最新化（総洗い替え）する。"
@@ -286,7 +286,7 @@ paths:
 
   "/users/{byUserId}/qualifications":
     parameters:
-      - $ref: "#/components/parameters/userId"
+      - $ref: "./components/parameters/user.yml#/userId"
     put:
       summary: "資格情報群最新化"
       description: "指定ユーザーの資格情報群を最新化（総洗い替え）する。"
@@ -332,7 +332,7 @@ paths:
 
   "/users/{byUserId}/appeals":
     parameters:
-      - $ref: "#/components/parameters/userId"
+      - $ref: "./components/parameters/user.yml#/userId"
     put:
       summary: "アピール事項群最新化"
       description: "指定ユーザーのアピール事項群を最新化（総洗い替え）する。"
@@ -378,7 +378,7 @@ paths:
 
   "/users/{byUserId}/solutions":
     parameters:
-      - $ref: "#/components/parameters/userId"
+      - $ref: "./components/parameters/user.yml#/userId"
     put:
       summary: "課題解決事例群最新化"
       description: "指定ユーザーの課題解決事例群を最新化（総洗い替え）する。"
@@ -424,7 +424,7 @@ paths:
 
   "/users/{byUserId}/careergroups":
     parameters:
-      - $ref: "#/components/parameters/userId"
+      - $ref: "./components/parameters/user.yml#/userId"
     post:
       summary: "キャリアグループ新規登録"
       description: "キャリアグループを新規登録する。"
@@ -464,8 +464,8 @@ paths:
 
   "/users/{byUserId}/careergroups/{byCareerGroupId}":
     parameters:
-      - $ref: "#/components/parameters/userId"
-      - $ref: "#/components/parameters/careerGroupId"
+      - $ref: "./components/parameters/user.yml#/userId"
+      - $ref: "./components/parameters/careerGroup.yml#/careerGroupId"
     get:
       summary: "１キャリアグループ取得"
       description: "指定ユーザーの指定１キャリアグループを取得する。"
@@ -512,8 +512,8 @@ paths:
 
   "/users/{byUserId}/careergroups/{byCareerGroupId}/careers":
     parameters:
-      - $ref: "#/components/parameters/userId"
-      - $ref: "#/components/parameters/careerGroupId"
+      - $ref: "./components/parameters/user.yml#/userId"
+      - $ref: "./components/parameters/careerGroup.yml#/careerGroupId"
     post:
       summary: "１キャリアグループ内の１キャリア登録"
       description: "１キャリアグループ内の１キャリアを登録する。"
@@ -562,9 +562,9 @@ paths:
 
   "/users/{byUserId}/careergroups/{byCareerGroupId}/careers/{byCareerId}":
     parameters:
-      - $ref: "#/components/parameters/userId"
-      - $ref: "#/components/parameters/careerGroupId"
-      - $ref: "#/components/parameters/careerId"
+      - $ref: "./components/parameters/user.yml#/userId"
+      - $ref: "./components/parameters/careerGroup.yml#/careerGroupId"
+      - $ref: "./components/parameters/career.yml#/careerId"
     get:
       summary: "１キャリア取得"
       description: "指定ユーザーの指定１キャリアを取得する。"
@@ -581,7 +581,7 @@ paths:
 
   "/users/{byUserId}/notes":
     parameters:
-      - $ref: "#/components/parameters/userId"
+      - $ref: "./components/parameters/user.yml#/userId"
     post:
       summary: "注釈新規登録"
       description: "注釈を新規登録する。"
@@ -621,8 +621,8 @@ paths:
 
   "/users/{byUserId}/notes/{byNoteId}":
     parameters:
-      - $ref: "#/components/parameters/userId"
-      - $ref: "#/components/parameters/noteId"
+      - $ref: "./components/parameters/user.yml#/userId"
+      - $ref: "./components/parameters/note.yml#/noteId"
     put:
       summary: "【未実装】注釈更新"
       description: "１注釈を更新する。"
@@ -656,8 +656,8 @@ paths:
 
   "/users/{byUserId}/notes/{byNoteId}/items":
     parameters:
-      - $ref: "#/components/parameters/userId"
-      - $ref: "#/components/parameters/noteId"
+      - $ref: "./components/parameters/user.yml#/userId"
+      - $ref: "./components/parameters/note.yml#/noteId"
     put:
       summary: "【未実装】注釈内要素群最新化"
       description: "１注釈内の要素群を最新化（総洗い替え）する。"
@@ -686,7 +686,7 @@ paths:
 
   "/users/{byUserId}/skills":
     parameters:
-      - $ref: "#/components/parameters/userId"
+      - $ref: "./components/parameters/user.yml#/userId"
     get:
       summary: "スキル群取得"
       description: "指定ユーザーのスキル群を取得する。"
@@ -705,12 +705,6 @@ paths:
 
 components:
   schemas:
-    UserId:
-      type: integer
-      format: int
-      description: "ユーザーを一意に識別するキー"
-      example: 1
-      x-go-name: UserID
     UserName:
       type: string
       description: "ユーザーの本名"
@@ -790,12 +784,6 @@ components:
       type: string
       description: "課題解決事例"
       example: "Goroutineの導入で夜間バッチ実行時間を８時間から１時間に短縮した。"
-    CareerId:
-      type: integer
-      format: int
-      description: "キャリアを一意に識別するID"
-      example: 1
-      x-go-name: CareerID
     CareerName:
       type: string
       description: "キャリア名"
@@ -855,12 +843,6 @@ components:
       type: string
       description: "スキルグループラベル"
       example: "Backend"
-    NoteId:
-      type: integer
-      format: int
-      description: "注釈を一意に識別するID"
-      example: 1
-      x-go-name: NoteID
     NoteItemText:
       type: string
       description: "注釈内の１要素"
@@ -878,7 +860,7 @@ components:
       description: "１ユーザーの属性"
       properties:
         id:
-          $ref: "#/components/schemas/UserId"
+          $ref: "./components/schemas/user.yml#/UserId"
         name:
           $ref: "#/components/schemas/UserName"
         nickname:
@@ -945,12 +927,6 @@ components:
           $ref: "./components/schemas/skill.yml#/Skill"
         version:
           $ref: "#/components/schemas/SkillVersion"
-    CareerGroupId:
-      type: integer
-      format: int
-      description: "キャリアグループを一意に識別するID"
-      example: 1
-      x-go-name: CareerGroupID
     CareerSkillGroup:
       type: object
       description: "１キャリアのスキルグループ"
@@ -966,7 +942,7 @@ components:
       description: "１キャリアグループのキャリア"
       properties:
         id:
-          $ref: "#/components/schemas/CareerId"
+          $ref: "./components/schemas/career.yml#/CareerId"
         name:
           $ref: "#/components/schemas/CareerName"
         description:
@@ -990,7 +966,7 @@ components:
       description: "１ユーザーのキャリアグループ"
       properties:
         id:
-          $ref: "#/components/schemas/CareerGroupId"
+          $ref: "./components/schemas/careerGroup.yml#/CareerGroupId"
         label:
           $ref: "#/components/schemas/CareerGroupLabel"
         careers:
@@ -1003,7 +979,7 @@ components:
       description: "１ユーザーのキャリアグループ自身"
       properties:
         id:
-          $ref: "#/components/schemas/CareerGroupId"
+          $ref: "./components/schemas/careerGroup.yml#/CareerGroupId"
         label:
           $ref: "#/components/schemas/CareerGroupLabel"
     UserNoteItem:
@@ -1079,50 +1055,6 @@ components:
       properties:
         message:
           $ref: "#/components/schemas/ErrorMessage"
-
-  parameters:
-    skillTagIdQuery:
-      name: "tag"
-      in: "query"
-      required: false
-      schema:
-        $ref: "./components/schemas/skillTag.yml#/SkillTagId"
-    skillTagId:
-      name: "bySkillTagId"
-      in: "path"
-      required: true
-      schema:
-        $ref: "./components/schemas/skillTag.yml#/SkillTagId"
-    skillId:
-      name: "bySkillId"
-      in: "path"
-      required: true
-      schema:
-        $ref: "./components/schemas/skill.yml#/SkillId"
-    userId:
-      name: "byUserId"
-      in: "path"
-      required: true
-      schema:
-        $ref: "#/components/schemas/UserId"
-    noteId:
-      name: "byNoteId"
-      in: "path"
-      required: true
-      schema:
-        $ref: "#/components/schemas/NoteId"
-    careerGroupId:
-      name: "byCareerGroupId"
-      in: "path"
-      required: true
-      schema:
-        $ref: "#/components/schemas/CareerGroupId"
-    careerId:
-      name: "byCareerId"
-      in: "path"
-      required: true
-      schema:
-        $ref: "#/components/schemas/CareerId"
 
   responses:
     400-BadRequest:

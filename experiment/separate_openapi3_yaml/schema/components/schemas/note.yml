@@ -1,0 +1,6 @@
+NoteId:
+  type: integer
+  format: int
+  description: "注釈を一意に識別するID"
+  example: 1
+  x-go-name: NoteID

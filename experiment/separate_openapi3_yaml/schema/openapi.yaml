@@ -716,12 +716,6 @@ paths:
           $ref: '#/components/responses/404-NotFound'
 components:
   schemas:
-    UserId:
-      type: integer
-      format: int
-      description: ユーザーを一意に識別するキー
-      example: 1
-      x-go-name: UserID
     UserName:
       type: string
       description: ユーザーの本名
@@ -801,12 +795,6 @@ components:
       type: string
       description: 課題解決事例
       example: Goroutineの導入で夜間バッチ実行時間を８時間から１時間に短縮した。
-    CareerId:
-      type: integer
-      format: int
-      description: キャリアを一意に識別するID
-      example: 1
-      x-go-name: CareerID
     CareerName:
       type: string
       description: キャリア名
@@ -866,12 +854,6 @@ components:
       type: string
       description: スキルグループラベル
       example: Backend
-    NoteId:
-      type: integer
-      format: int
-      description: 注釈を一意に識別するID
-      example: 1
-      x-go-name: NoteID
     NoteItemText:
       type: string
       description: 注釈内の１要素
@@ -956,12 +938,6 @@ components:
           $ref: '#/components/schemas/Skill'
         version:
           $ref: '#/components/schemas/SkillVersion'
-    CareerGroupId:
-      type: integer
-      format: int
-      description: キャリアグループを一意に識別するID
-      example: 1
-      x-go-name: CareerGroupID
     CareerSkillGroup:
       type: object
       description: １キャリアのスキルグループ
@@ -1135,49 +1111,30 @@ components:
           $ref: '#/components/schemas/Url'
         tagId:
           $ref: '#/components/schemas/SkillTagId'
-  parameters:
-    skillTagIdQuery:
-      name: tag
-      in: query
-      required: false
-      schema:
-        $ref: '#/components/schemas/SkillTagId'
-    skillTagId:
-      name: bySkillTagId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/SkillTagId'
-    skillId:
-      name: bySkillId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/SkillId'
-    userId:
-      name: byUserId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/UserId'
-    noteId:
-      name: byNoteId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/NoteId'
-    careerGroupId:
-      name: byCareerGroupId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/CareerGroupId'
-    careerId:
-      name: byCareerId
-      in: path
-      required: true
-      schema:
-        $ref: '#/components/schemas/CareerId'
+    UserId:
+      type: integer
+      format: int
+      description: ユーザーを一意に識別するキー
+      example: 1
+      x-go-name: UserID
+    CareerGroupId:
+      type: integer
+      format: int
+      description: キャリアグループを一意に識別するID
+      example: 1
+      x-go-name: CareerGroupID
+    CareerId:
+      type: integer
+      format: int
+      description: キャリアを一意に識別するID
+      example: 1
+      x-go-name: CareerID
+    NoteId:
+      type: integer
+      format: int
+      description: 注釈を一意に識別するID
+      example: 1
+      x-go-name: NoteID
   responses:
     400-BadRequest:
       description: 'Bad Request: 属性に誤りがある。'
@@ -1199,3 +1156,46 @@ components:
                 $ref: '#/components/schemas/ErrorMessage'
     500-InternalServerError:
       description: Internal Server Error
+  parameters:
+    skillTagId:
+      name: bySkillTagId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/SkillTagId'
+    skillTagIdQuery:
+      name: tag
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/SkillTagId'
+    skillId:
+      name: bySkillId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/SkillId'
+    userId:
+      name: byUserId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/UserId'
+    careerGroupId:
+      name: byCareerGroupId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/CareerGroupId'
+    careerId:
+      name: byCareerId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/CareerId'
+    noteId:
+      name: byNoteId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/NoteId'
