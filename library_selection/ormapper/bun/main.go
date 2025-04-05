@@ -11,6 +11,7 @@ import (
 	"github.com/sky0621/tips-go/library_selection/ormapper/bun/dsn"
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/mysqldialect"
+	"github.com/uptrace/bun/extra/bundebug"
 )
 
 func main() {
@@ -31,6 +32,12 @@ func main() {
 			log.Fatal(err)
 		}
 	}(db)
+
+	db.AddQueryHook(
+		bundebug.NewQueryHook(
+			bundebug.WithVerbose(true),
+		),
+	)
 
 	ctx := context.Background()
 

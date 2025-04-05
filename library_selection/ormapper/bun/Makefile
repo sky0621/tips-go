@@ -8,8 +8,20 @@ run-migration: build-migration
 
 .PHONY: build
 build:
-	go build -o ./bin/sqlc ./main.go
+	go build -o ./bin/bun ./main.go
 
-.PHONY: run
-run: build
-	./bin/sqlc
+.PHONY: exec-select
+exec-select: build
+	./bin/bun
+
+.PHONY: exec-insert
+exec-insert: build
+	./bin/bun C
+
+.PHONY: exec-update
+exec-update: build
+	./bin/bun U
+
+.PHONY: exec-delete
+exec-delete: build
+	./bin/bun D
