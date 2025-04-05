@@ -4,7 +4,7 @@ usersByUserIdQualifications:
   put:
     summary: "資格情報群最新化"
     description: "指定ユーザーの資格情報群を最新化（総洗い替え）する。"
-    tags: ["users"]
+    tags: [ "users" ]
     requestBody:
       description: "資格情報群"
       required: true
@@ -31,7 +31,7 @@ usersByUserIdQualifications:
   get:
     summary: "資格情報群取得"
     description: "指定ユーザーの資格情報群を取得する。"
-    tags: ["users"]
+    tags: [ "users" ]
     responses:
       "200":
         description: "OK: 指定ユーザーの資格情報群を返却する。"
@@ -43,4 +43,3 @@ usersByUserIdQualifications:
                 $ref: "../components/schemas/user.yml#/UserQualification"
       "404":
         $ref: "../components/responses/error.yml#/404-NotFound"
-

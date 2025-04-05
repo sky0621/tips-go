@@ -4,7 +4,7 @@ usersByUserIdAppeals:
   put:
     summary: "アピール事項群最新化"
     description: "指定ユーザーのアピール事項群を最新化（総洗い替え）する。"
-    tags: ["users"]
+    tags: [ "users" ]
     requestBody:
       description: "アピール事項群"
       required: true
@@ -31,7 +31,7 @@ usersByUserIdAppeals:
   get:
     summary: "アピール事項群取得"
     description: "指定ユーザーのアピール事項群を取得する。"
-    tags: ["users"]
+    tags: [ "users" ]
     responses:
       "200":
         description: "OK: 指定ユーザーのアピール事項群を返却する。"
@@ -43,4 +43,3 @@ usersByUserIdAppeals:
                 $ref: "../components/schemas/user.yml#/UserAppeal"
       "404":
         $ref: "../components/responses/error.yml#/404-NotFound"
-

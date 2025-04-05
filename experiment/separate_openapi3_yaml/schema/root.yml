@@ -24,525 +24,61 @@ security: []
 
 paths:
   "/skilltags":
-    $ref: "./paths/skillTag.yml#/skillTags"
+    $ref: "./paths/skilltags.yml#/skillTags"
 
   "/skilltags/{bySkillTagId}":
-    $ref: "./paths/skillTag.yml#/skillTagsBySkillTagId"
+    $ref: "./paths/skilltags.yml#/skillTagsBySkillTagId"
 
   "/skills":
-    $ref: "./paths/skill.yml#/skills"
+    $ref: "./paths/skills.yml#/skills"
 
   "/skillrecords":
-    $ref: "./paths/skill.yml#/skillRecords"
+    $ref: "./paths/skillrecords.yml#/skillRecords"
 
   "/skills/{bySkillId}":
-    $ref: "./paths/skill.yml#/skillsBySkillId"
+    $ref: "./paths/skills.yml#/skillsBySkillId"
 
   "/users":
-    $ref: "./paths/user.yml#/users"
+    $ref: "./paths/users.yml#/users"
 
   "/users/{byUserId}":
-    $ref: "./paths/user.yml#/usersByUserId"
+    $ref: "./paths/users.yml#/usersByUserId"
 
   "/users/{byUserId}/attribute":
-    $ref: "./paths/user_attribute.yml#/usersByUserIdAttribute"
+    $ref: "./paths/users_attribute.yml#/usersByUserIdAttribute"
 
   "/users/{byUserId}/activities":
-    $ref: "./paths/user_activities.yml#/usersByUserIdActivities"
+    $ref: "./paths/users_activities.yml#/usersByUserIdActivities"
 
   "/users/{byUserId}/qualifications":
-    $ref: "./paths/user_qualifications.yml#/usersByUserIdQualifications"
+    $ref: "./paths/users_qualifications.yml#/usersByUserIdQualifications"
 
   "/users/{byUserId}/appeals":
-    $ref: "./paths/user_appeals.yml#/usersByUserIdAppeals"
+    $ref: "./paths/users_appeals.yml#/usersByUserIdAppeals"
 
   "/users/{byUserId}/solutions":
-    $ref: "./paths/user_solutions.yml#/usersByUserIdSolutions"
+    $ref: "./paths/users_solutions.yml#/usersByUserIdSolutions"
 
   "/users/{byUserId}/careergroups":
-    parameters:
-      - $ref: "./components/parameters/user.yml#/userId"
-    post:
-      summary: "キャリアグループ新規登録"
-      description: "キャリアグループを新規登録する。"
-      tags: ["users"]
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserCareerGroup"
-      responses:
-        "201":
-          description: "Created: 指定ユーザーのキャリアグループを返却する。"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserCareerGroup"
-        "400":
-          $ref: "./components/responses/error.yml#/400-BadRequest"
-        "404":
-          $ref: "./components/responses/error.yml#/404-NotFound"
-    get:
-      summary: "キャリアグループ群取得"
-      description: "指定ユーザーのキャリアグループ群を取得する。"
-      tags: ["users"]
-      responses:
-        "200":
-          description: "OK: 指定ユーザーのキャリアグループ群を返却する。"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/UserCareerGroup"
-        "404":
-          $ref: "./components/responses/error.yml#/404-NotFound"
+    $ref: "./paths/users_careergroups.yml#/usersByUserIdCareerGroups"
 
   "/users/{byUserId}/careergroups/{byCareerGroupId}":
-    parameters:
-      - $ref: "./components/parameters/user.yml#/userId"
-      - $ref: "./components/parameters/careerGroup.yml#/careerGroupId"
-    get:
-      summary: "１キャリアグループ取得"
-      description: "指定ユーザーの指定１キャリアグループを取得する。"
-      tags: ["users"]
-      responses:
-        "200":
-          description: "OK: 指定ユーザーの指定１キャリアグループを返却する。"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserCareerGroup"
-        "404":
-          $ref: "./components/responses/error.yml#/404-NotFound"
-    put:
-      summary: "【未実装】キャリアグループ更新"
-      description: "１キャリアグループを更新する。"
-      tags: ["users"]
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserCareerGroupOwn"
-      responses:
-        "200":
-          description: "OK: 指定ユーザーのキャリアグループ自身を返却する。"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserCareerGroupOwn"
-        "400":
-          $ref: "./components/responses/error.yml#/400-BadRequest"
-        "404":
-          $ref: "./components/responses/error.yml#/404-NotFound"
-    delete:
-      summary: "【未実装】キャリアグループ削除"
-      description: "１キャリアグループを削除する。"
-      tags: ["users"]
-      responses:
-        "204":
-          description: "No Content: 指定キャリアグループの削除に成功。"
-        "404":
-          $ref: "./components/responses/error.yml#/404-NotFound"
+    $ref: "./paths/users_careergroups.yml#/usersByUserIdCareerGroupsByCareerGroupId"
 
   "/users/{byUserId}/careergroups/{byCareerGroupId}/careers":
-    parameters:
-      - $ref: "./components/parameters/user.yml#/userId"
-      - $ref: "./components/parameters/careerGroup.yml#/careerGroupId"
-    post:
-      summary: "１キャリアグループ内の１キャリア登録"
-      description: "１キャリアグループ内の１キャリアを登録する。"
-      tags: ["users"]
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserCareer"
-      responses:
-        "201":
-          description: "Created: 作成した１キャリアを返却する。"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserCareer"
-        "400":
-          $ref: "./components/responses/error.yml#/400-BadRequest"
-    put:
-      summary: "【未実装】キャリアグループ内キャリア群最新化"
-      description: "１キャリアグループ内のキャリア群を最新化（総洗い替え）する。"
-      tags: ["users"]
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: array
-              description: "１ユーザーのキャリアグループのキャリア群"
-              items:
-                $ref: "#/components/schemas/UserCareer"
-      responses:
-        "200":
-          description: "OK: 指定ユーザーの１キャリアグループ内のキャリア群を返却する。"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/UserCareer"
-        "400":
-          $ref: "./components/responses/error.yml#/400-BadRequest"
-        "404":
-          $ref: "./components/responses/error.yml#/404-NotFound"
+    $ref: "./paths/users_careers.yml#/usersByUserIdCareerGroupsByCareerGroupIdCareers"
 
   "/users/{byUserId}/careergroups/{byCareerGroupId}/careers/{byCareerId}":
-    parameters:
-      - $ref: "./components/parameters/user.yml#/userId"
-      - $ref: "./components/parameters/careerGroup.yml#/careerGroupId"
-      - $ref: "./components/parameters/career.yml#/careerId"
-    get:
-      summary: "１キャリア取得"
-      description: "指定ユーザーの指定１キャリアを取得する。"
-      tags: ["users"]
-      responses:
-        "200":
-          description: "OK: 指定ユーザーの指定１キャリアを返却する。"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserCareer"
-        "404":
-          $ref: "./components/responses/error.yml#/404-NotFound"
+    $ref: "./paths/users_careers.yml#/usersByUserIdCareerGroupsByCareerGroupIdCareersByCareerId"
 
   "/users/{byUserId}/notes":
-    parameters:
-      - $ref: "./components/parameters/user.yml#/userId"
-    post:
-      summary: "注釈新規登録"
-      description: "注釈を新規登録する。"
-      tags: ["users"]
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserNote"
-      responses:
-        "201":
-          description: "Created: 指定ユーザーの注釈を返却する。"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserNote"
-        "400":
-          $ref: "./components/responses/error.yml#/400-BadRequest"
-        "404":
-          $ref: "./components/responses/error.yml#/404-NotFound"
-    get:
-      summary: "注釈群取得"
-      description: "指定ユーザーの注釈群を取得する。"
-      tags: ["users"]
-      responses:
-        "200":
-          description: "OK: 指定ユーザーの注釈群を返却する。"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/UserNote"
-        "404":
-          $ref: "./components/responses/error.yml#/404-NotFound"
+    $ref: "./paths/users_notes.yml#/usersByUserIdNotes"
 
   "/users/{byUserId}/notes/{byNoteId}":
-    parameters:
-      - $ref: "./components/parameters/user.yml#/userId"
-      - $ref: "./components/parameters/note.yml#/noteId"
-    put:
-      summary: "【未実装】注釈更新"
-      description: "１注釈を更新する。"
-      tags: ["users"]
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserNoteOwn"
-      responses:
-        "200":
-          description: "OK: 指定ユーザーの注釈自身を返却する。"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserNoteOwn"
-        "400":
-          $ref: "./components/responses/error.yml#/400-BadRequest"
-        "404":
-          $ref: "./components/responses/error.yml#/404-NotFound"
-    delete:
-      summary: "【未実装】注釈削除"
-      description: "１注釈を削除する。"
-      tags: ["users"]
-      responses:
-        "204":
-          description: "No Content: 指定注釈の削除に成功。"
-        "404":
-          $ref: "./components/responses/error.yml#/404-NotFound"
+    $ref: "./paths/users_notes.yml#/usersByUserIdNotesByNoteId"
 
   "/users/{byUserId}/notes/{byNoteId}/items":
-    parameters:
-      - $ref: "./components/parameters/user.yml#/userId"
-      - $ref: "./components/parameters/note.yml#/noteId"
-    put:
-      summary: "【未実装】注釈内要素群最新化"
-      description: "１注釈内の要素群を最新化（総洗い替え）する。"
-      tags: ["users"]
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: "#/components/schemas/UserNoteItem"
-      responses:
-        "200":
-          description: "OK: 指定ユーザーの１注釈内の要素群を返却する。"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/UserNoteItem"
-        "400":
-          $ref: "./components/responses/error.yml#/400-BadRequest"
-        "404":
-          $ref: "./components/responses/error.yml#/404-NotFound"
+    $ref: "./paths/users_notes.yml#/usersByUserIdNotesByNoteIdItems"
 
   "/users/{byUserId}/skills":
-    parameters:
-      - $ref: "./components/parameters/user.yml#/userId"
-    get:
-      summary: "スキル群取得"
-      description: "指定ユーザーのスキル群を取得する。"
-      tags: ["users"]
-      responses:
-        "200":
-          description: "OK: 指定ユーザーのスキル群を返却する。"
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/UserSkillTag"
-        "404":
-          $ref: "./components/responses/error.yml#/404-NotFound"
-
-components:
-  schemas:
-    CareerName:
-      type: string
-      description: "キャリア名"
-      example: "物流システム開発"
-    CareerDescription:
-      type: array
-      description: "キャリア説明"
-      example: "['静的サイトのリニューアル', '動画配信サイト構築']"
-      items:
-        type: string
-        description: "キャリア説明１文"
-        example: "静的サイトのリニューアル"
-    CareerPeriodFrom:
-      type: object
-      description: "キャリア期間年月From"
-      example: "{year: 2021, month: 9}"
-      properties:
-        year:
-          $ref: "./components/schemas/user.yml#/Year"
-        month:
-          $ref: "./components/schemas/user.yml#/Month"
-    CareerPeriodTo:
-      type: object
-      description: "キャリア期間年月To"
-      example: "{year: 2022, month: 10}"
-      properties:
-        year:
-          $ref: "./components/schemas/user.yml#/Year"
-        month:
-          $ref: "./components/schemas/user.yml#/Month"
-    CareerPeriodMonth:
-      type: integer
-      format: int
-      description: "キャリア期間(月)"
-      example: 6
-    CareerGroupLabel:
-      type: string
-      description: "キャリアグループラベル"
-      example: "某コンサルティング会社にて就労"
-    TaskName:
-      type: string
-      description: "タスク名"
-      example: "バックエンドの機能拡張、不具合改修。"
-    TaskDescription:
-      type: array
-      description: "タスク説明"
-      example: "['・分析APIのベース開発', '・各種バッチ開発']"
-      items:
-        type: string
-        description: "タスク説明１文"
-        example: "・分析APIのベース開発"
-    SkillVersion:
-      type: string
-      description: "スキルバージョン"
-      example: "v1.19"
-    SkillGroupLabel:
-      type: string
-      description: "スキルグループラベル"
-      example: "Backend"
-    NoteItemText:
-      type: string
-      description: "注釈内の１要素"
-      example: "GraphQLを使っている"
-    NoteLabel:
-      type: string
-      description: "ラベル"
-      example: "就労条件"
-    NoteMemo:
-      type: string
-      description: "メモ"
-      example: "以下、順不同。"
-    CareerTask:
-      type: object
-      description: "１キャリアのタスク"
-      properties:
-        name:
-          $ref: "#/components/schemas/TaskName"
-        description:
-          $ref: "#/components/schemas/TaskDescription"
-    CareerSkill:
-      type: object
-      description: "１キャリアのスキル"
-      properties:
-        skill:
-          $ref: "./components/schemas/skill.yml#/Skill"
-        version:
-          $ref: "#/components/schemas/SkillVersion"
-    CareerSkillGroup:
-      type: object
-      description: "１キャリアのスキルグループ"
-      properties:
-        label:
-          $ref: "#/components/schemas/SkillGroupLabel"
-        skills:
-          type: array
-          items:
-            $ref: "#/components/schemas/CareerSkill"
-    UserCareer:
-      type: object
-      description: "１キャリアグループのキャリア"
-      properties:
-        id:
-          $ref: "./components/schemas/career.yml#/CareerId"
-        name:
-          $ref: "#/components/schemas/CareerName"
-        description:
-          $ref: "#/components/schemas/CareerDescription"
-        from:
-          $ref: "#/components/schemas/CareerPeriodFrom"
-        to:
-          $ref: "#/components/schemas/CareerPeriodTo"
-        tasks:
-          type: array
-          description: "１キャリアのタスク群"
-          items:
-            $ref: "#/components/schemas/CareerTask"
-        skillGroups:
-          type: array
-          description: "１キャリアのスキルグループ群"
-          items:
-            $ref: "#/components/schemas/CareerSkillGroup"
-    UserCareerGroup:
-      type: object
-      description: "１ユーザーのキャリアグループ"
-      properties:
-        id:
-          $ref: "./components/schemas/careerGroup.yml#/CareerGroupId"
-        label:
-          $ref: "#/components/schemas/CareerGroupLabel"
-        careers:
-          type: array
-          description: "１ユーザーのキャリアグループのキャリア群"
-          items:
-            $ref: "#/components/schemas/UserCareer"
-    UserCareerGroupOwn:
-      type: object
-      description: "１ユーザーのキャリアグループ自身"
-      properties:
-        id:
-          $ref: "./components/schemas/careerGroup.yml#/CareerGroupId"
-        label:
-          $ref: "#/components/schemas/CareerGroupLabel"
-    UserNoteItem:
-      type: object
-      description: "１ユーザーの注釈内の１要素"
-      properties:
-        text:
-          $ref: "#/components/schemas/NoteItemText"
-    UserNoteOwn:
-      type: object
-      description: "１ユーザーの注釈自身"
-      properties:
-        label:
-          $ref: "#/components/schemas/NoteLabel"
-        memo:
-          $ref: "#/components/schemas/NoteMemo"
-    UserNote:
-      type: object
-      description: "１ユーザーの注釈"
-      properties:
-        label:
-          $ref: "#/components/schemas/NoteLabel"
-        memo:
-          $ref: "#/components/schemas/NoteMemo"
-        items:
-          type: array
-          items:
-            $ref: "#/components/schemas/UserNoteItem"
-    UserSkillVersion:
-      type: object
-      description: "１ユーザーのスキルVersionを使用期間別に保持したもの"
-      properties:
-        version:
-          $ref: "#/components/schemas/SkillVersion"
-        from:
-          $ref: "#/components/schemas/CareerPeriodFrom"
-        to:
-          $ref: "#/components/schemas/CareerPeriodTo"
-        period:
-          $ref: "#/components/schemas/CareerPeriodMonth"
-    UserSkill:
-      type: object
-      description: "１ユーザーのスキルを使用Version・使用期間別に保持したもの"
-      properties:
-        name:
-          $ref: "./components/schemas/skill.yml#/SkillName"
-        url:
-          $ref: "./components/schemas/common.yml#/Url"
-        versions:
-          type: array
-          items:
-            $ref: "#/components/schemas/UserSkillVersion"
-        period:
-          $ref: "#/components/schemas/CareerPeriodMonth"
-    UserSkillTag:
-      type: object
-      description: "１ユーザーのスキルタグ及び配下のスキル群を使用Version・使用期間別に保持したもの"
-      properties:
-        tagName:
-          $ref: "./components/schemas/skillTag.yml#/SkillTagName"
-        skills:
-          type: array
-          items:
-            $ref: "#/components/schemas/UserSkill"
+    $ref: "./paths/users_skills.yml#/usersByUserIdSkills"

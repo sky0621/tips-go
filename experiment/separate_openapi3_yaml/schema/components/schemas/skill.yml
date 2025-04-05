@@ -8,7 +8,17 @@ SkillId:
 SkillName:
   type: string
   description: スキル名
-  example: Golang
+  example: "Golang"
+
+SkillVersion:
+  type: string
+  description: "スキルバージョン"
+  example: "v1.19"
+
+SkillGroupLabel:
+  type: string
+  description: "スキルグループラベル"
+  example: "Backend"
 
 Skill:
   type: object

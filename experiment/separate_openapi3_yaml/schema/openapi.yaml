@@ -716,210 +716,6 @@ paths:
           $ref: '#/components/responses/404-NotFound'
 components:
   schemas:
-    CareerName:
-      type: string
-      description: キャリア名
-      example: 物流システム開発
-    CareerDescription:
-      type: array
-      description: キャリア説明
-      example: '[''静的サイトのリニューアル'', ''動画配信サイト構築'']'
-      items:
-        type: string
-        description: キャリア説明１文
-        example: 静的サイトのリニューアル
-    CareerPeriodFrom:
-      type: object
-      description: キャリア期間年月From
-      example: '{year: 2021, month: 9}'
-      properties:
-        year:
-          $ref: '#/components/schemas/Year'
-        month:
-          $ref: '#/components/schemas/Month'
-    CareerPeriodTo:
-      type: object
-      description: キャリア期間年月To
-      example: '{year: 2022, month: 10}'
-      properties:
-        year:
-          $ref: '#/components/schemas/Year'
-        month:
-          $ref: '#/components/schemas/Month'
-    CareerPeriodMonth:
-      type: integer
-      format: int
-      description: キャリア期間(月)
-      example: 6
-    CareerGroupLabel:
-      type: string
-      description: キャリアグループラベル
-      example: 某コンサルティング会社にて就労
-    TaskName:
-      type: string
-      description: タスク名
-      example: バックエンドの機能拡張、不具合改修。
-    TaskDescription:
-      type: array
-      description: タスク説明
-      example: '[''・分析APIのベース開発'', ''・各種バッチ開発'']'
-      items:
-        type: string
-        description: タスク説明１文
-        example: ・分析APIのベース開発
-    SkillVersion:
-      type: string
-      description: スキルバージョン
-      example: v1.19
-    SkillGroupLabel:
-      type: string
-      description: スキルグループラベル
-      example: Backend
-    NoteItemText:
-      type: string
-      description: 注釈内の１要素
-      example: GraphQLを使っている
-    NoteLabel:
-      type: string
-      description: ラベル
-      example: 就労条件
-    NoteMemo:
-      type: string
-      description: メモ
-      example: 以下、順不同。
-    CareerTask:
-      type: object
-      description: １キャリアのタスク
-      properties:
-        name:
-          $ref: '#/components/schemas/TaskName'
-        description:
-          $ref: '#/components/schemas/TaskDescription'
-    CareerSkill:
-      type: object
-      description: １キャリアのスキル
-      properties:
-        skill:
-          $ref: '#/components/schemas/Skill'
-        version:
-          $ref: '#/components/schemas/SkillVersion'
-    CareerSkillGroup:
-      type: object
-      description: １キャリアのスキルグループ
-      properties:
-        label:
-          $ref: '#/components/schemas/SkillGroupLabel'
-        skills:
-          type: array
-          items:
-            $ref: '#/components/schemas/CareerSkill'
-    UserCareer:
-      type: object
-      description: １キャリアグループのキャリア
-      properties:
-        id:
-          $ref: '#/components/schemas/CareerId'
-        name:
-          $ref: '#/components/schemas/CareerName'
-        description:
-          $ref: '#/components/schemas/CareerDescription'
-        from:
-          $ref: '#/components/schemas/CareerPeriodFrom'
-        to:
-          $ref: '#/components/schemas/CareerPeriodTo'
-        tasks:
-          type: array
-          description: １キャリアのタスク群
-          items:
-            $ref: '#/components/schemas/CareerTask'
-        skillGroups:
-          type: array
-          description: １キャリアのスキルグループ群
-          items:
-            $ref: '#/components/schemas/CareerSkillGroup'
-    UserCareerGroup:
-      type: object
-      description: １ユーザーのキャリアグループ
-      properties:
-        id:
-          $ref: '#/components/schemas/CareerGroupId'
-        label:
-          $ref: '#/components/schemas/CareerGroupLabel'
-        careers:
-          type: array
-          description: １ユーザーのキャリアグループのキャリア群
-          items:
-            $ref: '#/components/schemas/UserCareer'
-    UserCareerGroupOwn:
-      type: object
-      description: １ユーザーのキャリアグループ自身
-      properties:
-        id:
-          $ref: '#/components/schemas/CareerGroupId'
-        label:
-          $ref: '#/components/schemas/CareerGroupLabel'
-    UserNoteItem:
-      type: object
-      description: １ユーザーの注釈内の１要素
-      properties:
-        text:
-          $ref: '#/components/schemas/NoteItemText'
-    UserNoteOwn:
-      type: object
-      description: １ユーザーの注釈自身
-      properties:
-        label:
-          $ref: '#/components/schemas/NoteLabel'
-        memo:
-          $ref: '#/components/schemas/NoteMemo'
-    UserNote:
-      type: object
-      description: １ユーザーの注釈
-      properties:
-        label:
-          $ref: '#/components/schemas/NoteLabel'
-        memo:
-          $ref: '#/components/schemas/NoteMemo'
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserNoteItem'
-    UserSkillVersion:
-      type: object
-      description: １ユーザーのスキルVersionを使用期間別に保持したもの
-      properties:
-        version:
-          $ref: '#/components/schemas/SkillVersion'
-        from:
-          $ref: '#/components/schemas/CareerPeriodFrom'
-        to:
-          $ref: '#/components/schemas/CareerPeriodTo'
-        period:
-          $ref: '#/components/schemas/CareerPeriodMonth'
-    UserSkill:
-      type: object
-      description: １ユーザーのスキルを使用Version・使用期間別に保持したもの
-      properties:
-        name:
-          $ref: '#/components/schemas/SkillName'
-        url:
-          $ref: '#/components/schemas/Url'
-        versions:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserSkillVersion'
-        period:
-          $ref: '#/components/schemas/CareerPeriodMonth'
-    UserSkillTag:
-      type: object
-      description: １ユーザーのスキルタグ及び配下のスキル群を使用Version・使用期間別に保持したもの
-      properties:
-        tagName:
-          $ref: '#/components/schemas/SkillTagName'
-        skills:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserSkill'
     SkillTagId:
       type: integer
       format: int
@@ -988,17 +784,17 @@ components:
     Year:
       type: integer
       format: int
-      description: 生年月日の「年」
+      description: 「年」
       example: 2022
     Month:
       type: integer
       format: int
-      description: 生年月日の「月」
+      description: 「月」
       example: 9
     Day:
       type: integer
       format: int
-      description: 生年月日の「日」
+      description: 「日」
       example: 10
     BirthDay:
       type: object
@@ -1118,18 +914,222 @@ components:
       description: キャリアグループを一意に識別するID
       example: 1
       x-go-name: CareerGroupID
+    CareerGroupLabel:
+      type: string
+      description: キャリアグループラベル
+      example: 某コンサルティング会社にて就労
     CareerId:
       type: integer
       format: int
       description: キャリアを一意に識別するID
       example: 1
       x-go-name: CareerID
+    CareerName:
+      type: string
+      description: キャリア名
+      example: 物流システム開発
+    CareerDescription:
+      type: array
+      description: キャリア説明
+      example: '[''静的サイトのリニューアル'', ''動画配信サイト構築'']'
+      items:
+        type: string
+        description: キャリア説明１文
+        example: 静的サイトのリニューアル
+    CareerPeriodFrom:
+      type: object
+      description: キャリア期間年月From
+      example: '{year: 2021, month: 9}'
+      properties:
+        year:
+          $ref: '#/components/schemas/Year'
+        month:
+          $ref: '#/components/schemas/Month'
+    CareerPeriodTo:
+      type: object
+      description: キャリア期間年月To
+      example: '{year: 2022, month: 10}'
+      properties:
+        year:
+          $ref: '#/components/schemas/Year'
+        month:
+          $ref: '#/components/schemas/Month'
+    TaskName:
+      type: string
+      description: タスク名
+      example: バックエンドの機能拡張、不具合改修。
+    TaskDescription:
+      type: array
+      description: タスク説明
+      example: '[''・分析APIのベース開発'', ''・各種バッチ開発'']'
+      items:
+        type: string
+        description: タスク説明１文
+        example: ・分析APIのベース開発
+    CareerTask:
+      type: object
+      description: １キャリアのタスク
+      properties:
+        name:
+          $ref: '#/components/schemas/TaskName'
+        description:
+          $ref: '#/components/schemas/TaskDescription'
+    SkillGroupLabel:
+      type: string
+      description: スキルグループラベル
+      example: Backend
+    SkillVersion:
+      type: string
+      description: スキルバージョン
+      example: v1.19
+    CareerSkill:
+      type: object
+      description: １キャリアのスキル
+      properties:
+        skill:
+          $ref: '#/components/schemas/Skill'
+        version:
+          $ref: '#/components/schemas/SkillVersion'
+    CareerSkillGroup:
+      type: object
+      description: １キャリアのスキルグループ
+      properties:
+        label:
+          $ref: '#/components/schemas/SkillGroupLabel'
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/CareerSkill'
+    UserCareer:
+      type: object
+      description: １キャリアグループのキャリア
+      properties:
+        id:
+          $ref: '#/components/schemas/CareerId'
+        name:
+          $ref: '#/components/schemas/CareerName'
+        description:
+          $ref: '#/components/schemas/CareerDescription'
+        from:
+          $ref: '#/components/schemas/CareerPeriodFrom'
+        to:
+          $ref: '#/components/schemas/CareerPeriodTo'
+        tasks:
+          type: array
+          description: １キャリアのタスク群
+          items:
+            $ref: '#/components/schemas/CareerTask'
+        skillGroups:
+          type: array
+          description: １キャリアのスキルグループ群
+          items:
+            $ref: '#/components/schemas/CareerSkillGroup'
+    UserCareerGroup:
+      type: object
+      description: １ユーザーのキャリアグループ
+      properties:
+        id:
+          $ref: '#/components/schemas/CareerGroupId'
+        label:
+          $ref: '#/components/schemas/CareerGroupLabel'
+        careers:
+          type: array
+          description: １ユーザーのキャリアグループのキャリア群
+          items:
+            $ref: '#/components/schemas/UserCareer'
+    UserCareerGroupOwn:
+      type: object
+      description: １ユーザーのキャリアグループ自身
+      properties:
+        id:
+          $ref: '#/components/schemas/CareerGroupId'
+        label:
+          $ref: '#/components/schemas/CareerGroupLabel'
+    NoteLabel:
+      type: string
+      description: ラベル
+      example: 就労条件
+    NoteMemo:
+      type: string
+      description: メモ
+      example: 以下、順不同。
+    NoteItemText:
+      type: string
+      description: 注釈内の１要素
+      example: GraphQLを使っている
+    UserNoteItem:
+      type: object
+      description: １ユーザーの注釈内の１要素
+      properties:
+        text:
+          $ref: '#/components/schemas/NoteItemText'
+    UserNote:
+      type: object
+      description: １ユーザーの注釈
+      properties:
+        label:
+          $ref: '#/components/schemas/NoteLabel'
+        memo:
+          $ref: '#/components/schemas/NoteMemo'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserNoteItem'
     NoteId:
       type: integer
       format: int
       description: 注釈を一意に識別するID
       example: 1
       x-go-name: NoteID
+    UserNoteOwn:
+      type: object
+      description: １ユーザーの注釈自身
+      properties:
+        label:
+          $ref: '#/components/schemas/NoteLabel'
+        memo:
+          $ref: '#/components/schemas/NoteMemo'
+    CareerPeriodMonth:
+      type: integer
+      format: int
+      description: キャリア期間(月)
+      example: 6
+    UserSkillVersion:
+      type: object
+      description: １ユーザーのスキルVersionを使用期間別に保持したもの
+      properties:
+        version:
+          $ref: '#/components/schemas/SkillVersion'
+        from:
+          $ref: '#/components/schemas/CareerPeriodFrom'
+        to:
+          $ref: '#/components/schemas/CareerPeriodTo'
+        period:
+          $ref: '#/components/schemas/CareerPeriodMonth'
+    UserSkill:
+      type: object
+      description: １ユーザーのスキルを使用Version・使用期間別に保持したもの
+      properties:
+        name:
+          $ref: '#/components/schemas/SkillName'
+        url:
+          $ref: '#/components/schemas/Url'
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserSkillVersion'
+        period:
+          $ref: '#/components/schemas/CareerPeriodMonth'
+    UserSkillTag:
+      type: object
+      description: １ユーザーのスキルタグ及び配下のスキル群を使用Version・使用期間別に保持したもの
+      properties:
+        tagName:
+          $ref: '#/components/schemas/SkillTagName'
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserSkill'
   responses:
     400-BadRequest:
       description: 'Bad Request: 属性に誤りがある。'

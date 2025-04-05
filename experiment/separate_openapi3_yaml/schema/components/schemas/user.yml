@@ -15,35 +15,17 @@ UserNickName:
   description: "ユーザーのニックネーム"
   example: "ドカベン"
 
-Year:
-  type: integer
-  format: int
-  description: "生年月日の「年」"
-  example: 2022
-
-Month:
-  type: integer
-  format: int
-  description: "生年月日の「月」"
-  example: 9
-
-Day:
-  type: integer
-  format: int
-  description: "生年月日の「日」"
-  example: 10
-
 BirthDay:
   type: object
   description: "生年月日"
   example: "{year: 2022, month: 9, day:10}"
   properties:
     year:
-      $ref: "#/Year"
+      $ref: "./common.yml#/Year"
     month:
-      $ref: "#/Month"
+      $ref: "./common.yml#/Month"
     day:
-      $ref: "#/Day"
+      $ref: "./common.yml#/Day"
 
 Job:
   type: string

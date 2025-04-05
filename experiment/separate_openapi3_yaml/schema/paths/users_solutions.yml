@@ -4,7 +4,7 @@ usersByUserIdSolutions:
   put:
     summary: "課題解決事例群最新化"
     description: "指定ユーザーの課題解決事例群を最新化（総洗い替え）する。"
-    tags: ["users"]
+    tags: [ "users" ]
     requestBody:
       description: "課題解決事例群"
       required: true
@@ -31,7 +31,7 @@ usersByUserIdSolutions:
   get:
     summary: "課題解決事例群取得"
     description: "指定ユーザーの課題解決事例群を取得する。"
-    tags: ["users"]
+    tags: [ "users" ]
     responses:
       "200":
         description: "OK: 指定ユーザーの課題解決事例群を返却する。"
@@ -43,4 +43,3 @@ usersByUserIdSolutions:
                 $ref: "../components/schemas/user.yml#/UserSolution"
       "404":
         $ref: "../components/responses/error.yml#/404-NotFound"
-

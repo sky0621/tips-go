@@ -4,7 +4,7 @@ usersByUserIdAttribute:
   put:
     summary: "属性更新"
     description: "指定ユーザーの属性を更新する。"
-    tags: ["users"]
+    tags: [ "users" ]
     requestBody:
       description: "属性"
       required: true
@@ -26,7 +26,7 @@ usersByUserIdAttribute:
   get:
     summary: "属性取得"
     description: "指定ユーザーの属性を取得する。"
-    tags: ["users"]
+    tags: [ "users" ]
     responses:
       "200":
         description: "OK: 指定ユーザーの属性を返却する。"
@@ -36,4 +36,3 @@ usersByUserIdAttribute:
               $ref: "../components/schemas/user.yml#/UserAttribute"
       "404":
         $ref: "../components/responses/error.yml#/404-NotFound"
-

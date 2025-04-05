@@ -2,7 +2,7 @@ users:
   post:
     summary: "ユーザーアカウント登録"
     description: "ユーザーアカウントを登録する。"
-    tags: ["users"]
+    tags: [ "users" ]
     requestBody:
       required: true
       content:
@@ -21,7 +21,7 @@ users:
   get:
     summary: "ユーザー一覧取得"
     description: "ユーザー一覧を取得する。"
-    tags: ["users"]
+    tags: [ "users" ]
     responses:
       "200":
         description: "OK: ユーザーの一覧を返却する。"
@@ -38,10 +38,9 @@ usersByUserId:
   delete:
     summary: "指定ユーザーアカウント削除"
     description: "指定ユーザーアカウントを削除する。"
-    tags: ["users"]
+    tags: [ "users" ]
     responses:
       "204":
         description: "No Content: 指定ユーザーアカウントの削除に成功。"
       "404":
         $ref: "../components/responses/error.yml#/404-NotFound"
-
