@@ -1,6 +1,14 @@
+.PHONY: redoc-lint
+redoc-lint:
+	npx @redocly/cli lint ./schema/root.yml
+
+.PHONY: redoc
+redoc: redoc-lint
+	npx @redocly/cli bundle ./schema/root.yml -o ./schema/openapi.yaml
+
 .PHONY: gen
-gen:
-	go tool oapi-codegen --config=config.yml ./schema/openapi.yml
+gen: redoc
+	go tool oapi-codegen --config=config.yml ./schema/openapi.yaml
 
 .PHONY: build
 build:

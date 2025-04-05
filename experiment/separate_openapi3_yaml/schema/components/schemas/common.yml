@@ -1,0 +1,5 @@
+Url:
+  type: string
+  format: uri
+  description: "URL"
+  example: "https:/example.com/205e460b479e2e2248aec07710c08d50"
