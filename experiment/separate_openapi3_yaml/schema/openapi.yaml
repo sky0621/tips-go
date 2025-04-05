@@ -716,39 +716,6 @@ paths:
           $ref: '#/components/responses/404-NotFound'
 components:
   schemas:
-    ActivityName:
-      type: string
-      description: アクティビティ名
-      example: GitHub
-    ActivityIcon:
-      type: string
-      description: アクティビティアイコン
-      example: github
-    QualificationName:
-      type: string
-      description: 資格名
-      example: Oracle Master
-    QualificationOrg:
-      type: string
-      description: 組織名
-      example: Oracle
-    QualificationGotDate:
-      type: string
-      format: date
-      description: 取得日
-      example: '2022-09-10'
-    QualificationMemo:
-      type: string
-      description: メモ
-      example: 期限切れ
-    AppealContent:
-      type: string
-      description: アピール事項
-      example: 20年以上、多様なプロジェクトに参画してきたので、大抵の現場には順応できます。
-    SolutionContent:
-      type: string
-      description: 課題解決事例
-      example: Goroutineの導入で夜間バッチ実行時間を８時間から１時間に短縮した。
     CareerName:
       type: string
       description: キャリア名
@@ -820,42 +787,6 @@ components:
       type: string
       description: メモ
       example: 以下、順不同。
-    UserActivity:
-      type: object
-      description: １ユーザーのアクティビティ
-      properties:
-        name:
-          $ref: '#/components/schemas/ActivityName'
-        url:
-          $ref: '#/components/schemas/Url'
-        icon:
-          $ref: '#/components/schemas/ActivityIcon'
-    UserQualification:
-      type: object
-      description: １ユーザーの資格情報
-      properties:
-        name:
-          $ref: '#/components/schemas/QualificationName'
-        organization:
-          $ref: '#/components/schemas/QualificationOrg'
-        url:
-          $ref: '#/components/schemas/Url'
-        gotDate:
-          $ref: '#/components/schemas/QualificationGotDate'
-        memo:
-          $ref: '#/components/schemas/QualificationMemo'
-    UserAppeal:
-      type: object
-      description: １ユーザーのアピール事項
-      properties:
-        content:
-          $ref: '#/components/schemas/AppealContent'
-    UserSolution:
-      type: object
-      description: １ユーザーの課題解決事例
-      properties:
-        content:
-          $ref: '#/components/schemas/SolutionContent'
     CareerTask:
       type: object
       description: １キャリアのタスク
@@ -1112,6 +1043,75 @@ components:
           $ref: '#/components/schemas/BelongTo'
         pr:
           $ref: '#/components/schemas/PR'
+    ActivityName:
+      type: string
+      description: アクティビティ名
+      example: GitHub
+    ActivityIcon:
+      type: string
+      description: アクティビティアイコン
+      example: github
+    UserActivity:
+      type: object
+      description: １ユーザーのアクティビティ
+      properties:
+        name:
+          $ref: '#/components/schemas/ActivityName'
+        url:
+          $ref: '#/components/schemas/Url'
+        icon:
+          $ref: '#/components/schemas/ActivityIcon'
+    QualificationName:
+      type: string
+      description: 資格名
+      example: Oracle Master
+    QualificationOrg:
+      type: string
+      description: 組織名
+      example: Oracle
+    QualificationGotDate:
+      type: string
+      format: date
+      description: 取得日
+      example: '2022-09-10'
+    QualificationMemo:
+      type: string
+      description: メモ
+      example: 期限切れ
+    UserQualification:
+      type: object
+      description: １ユーザーの資格情報
+      properties:
+        name:
+          $ref: '#/components/schemas/QualificationName'
+        organization:
+          $ref: '#/components/schemas/QualificationOrg'
+        url:
+          $ref: '#/components/schemas/Url'
+        gotDate:
+          $ref: '#/components/schemas/QualificationGotDate'
+        memo:
+          $ref: '#/components/schemas/QualificationMemo'
+    AppealContent:
+      type: string
+      description: アピール事項
+      example: 20年以上、多様なプロジェクトに参画してきたので、大抵の現場には順応できます。
+    UserAppeal:
+      type: object
+      description: １ユーザーのアピール事項
+      properties:
+        content:
+          $ref: '#/components/schemas/AppealContent'
+    SolutionContent:
+      type: string
+      description: 課題解決事例
+      example: Goroutineの導入で夜間バッチ実行時間を８時間から１時間に短縮した。
+    UserSolution:
+      type: object
+      description: １ユーザーの課題解決事例
+      properties:
+        content:
+          $ref: '#/components/schemas/SolutionContent'
     CareerGroupId:
       type: integer
       format: int

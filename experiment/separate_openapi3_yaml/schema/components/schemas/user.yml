@@ -60,6 +60,61 @@ PR:
   description: "PR"
   example: "私は20年以上のキャリアを持ち、〜〜"
 
+ActivityName:
+  type: string
+  description: "アクティビティ名"
+  example: "GitHub"
+
+ActivityIcon:
+  type: string
+  description: "アクティビティアイコン"
+  example: "github"
+
+QualificationName:
+  type: string
+  description: "資格名"
+  example: "Oracle Master"
+
+QualificationOrg:
+  type: string
+  description: "組織名"
+  example: "Oracle"
+
+QualificationGotDate:
+  type: string
+  format: date
+  description: "取得日"
+  example: "2022-09-10"
+
+QualificationMemo:
+  type: string
+  description: "メモ"
+  example: "期限切れ"
+
+AppealContent:
+  type: string
+  description: "アピール事項"
+  example: "20年以上、多様なプロジェクトに参画してきたので、大抵の現場には順応できます。"
+
+SolutionContent:
+  type: string
+  description: "課題解決事例"
+  example: "Goroutineの導入で夜間バッチ実行時間を８時間から１時間に短縮した。"
+
+UserAppeal:
+  type: object
+  description: "１ユーザーのアピール事項"
+  properties:
+    content:
+      $ref: "#/AppealContent"
+
+UserSolution:
+  type: object
+  description: "１ユーザーの課題解決事例"
+  properties:
+    content:
+      $ref: "#/SolutionContent"
+
 UserAttribute:
   type: object
   description: "１ユーザーの属性"
@@ -80,3 +135,29 @@ UserAttribute:
       $ref: "#/BelongTo"
     pr:
       $ref: "#/PR"
+
+UserActivity:
+  type: object
+  description: "１ユーザーのアクティビティ"
+  properties:
+    name:
+      $ref: "#/ActivityName"
+    url:
+      $ref: "./common.yml#/Url"
+    icon:
+      $ref: "#/ActivityIcon"
+
+UserQualification:
+  type: object
+  description: "１ユーザーの資格情報"
+  properties:
+    name:
+      $ref: "#/QualificationName"
+    organization:
+      $ref: "#/QualificationOrg"
+    url:
+      $ref: "./common.yml#/Url"
+    gotDate:
+      $ref: "#/QualificationGotDate"
+    memo:
+      $ref: "#/QualificationMemo"
