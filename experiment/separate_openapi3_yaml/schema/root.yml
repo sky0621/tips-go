@@ -42,7 +42,7 @@ paths:
               schema:
                 $ref: "./components/schemas/skillTag.yml#/SkillTag"
         "400":
-          $ref: "#/components/responses/400-BadRequest"
+          $ref: "./components/responses/error.yml#/400-BadRequest"
     get:
       summary: "全スキルタグ取得"
       description: "全スキルタグを取得する。"
@@ -72,7 +72,7 @@ paths:
               schema:
                 $ref: "./components/schemas/skillTag.yml#/SkillTag"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
 
   "/skills":
     parameters:
@@ -95,7 +95,7 @@ paths:
               schema:
                 $ref: "./components/schemas/skill.yml#/Skill"
         "400":
-          $ref: "#/components/responses/400-BadRequest"
+          $ref: "./components/responses/error.yml#/400-BadRequest"
     get:
       summary: "スキル群取得"
       description: "全スキルを取得する。パラメータ(tag)が指定された場合は該当するタグを持つスキルを取得する。"
@@ -133,7 +133,7 @@ paths:
                 items:
                   $ref: "./components/schemas/skill.yml#/Skill"
         "400":
-          $ref: "#/components/responses/400-BadRequest"
+          $ref: "./components/responses/error.yml#/400-BadRequest"
 
   "/skills/{bySkillId}":
     parameters:
@@ -150,7 +150,7 @@ paths:
               schema:
                 $ref: "./components/schemas/skill.yml#/Skill"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
 
   "/users":
     post:
@@ -171,7 +171,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/UserAttribute"
         "400":
-          $ref: "#/components/responses/400-BadRequest"
+          $ref: "./components/responses/error.yml#/400-BadRequest"
     get:
       summary: "ユーザー一覧取得"
       description: "ユーザー一覧を取得する。"
@@ -197,7 +197,7 @@ paths:
         "204":
           description: "No Content: 指定ユーザーアカウントの削除に成功。"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
 
   "/users/{byUserId}/attribute":
     parameters:
@@ -221,9 +221,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/UserAttribute"
         "400":
-          $ref: "#/components/responses/400-BadRequest"
+          $ref: "./components/responses/error.yml#/400-BadRequest"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
     get:
       summary: "属性取得"
       description: "指定ユーザーの属性を取得する。"
@@ -236,7 +236,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/UserAttribute"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
 
   "/users/{byUserId}/activities":
     parameters:
@@ -265,9 +265,9 @@ paths:
                 items:
                   $ref: "#/components/schemas/UserActivity"
         "400":
-          $ref: "#/components/responses/400-BadRequest"
+          $ref: "./components/responses/error.yml#/400-BadRequest"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
     get:
       summary: "アクティビティ群取得"
       description: "指定ユーザーのアクティビティ群を取得する。"
@@ -282,7 +282,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/UserActivity"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
 
   "/users/{byUserId}/qualifications":
     parameters:
@@ -311,9 +311,9 @@ paths:
                 items:
                   $ref: "#/components/schemas/UserQualification"
         "400":
-          $ref: "#/components/responses/400-BadRequest"
+          $ref: "./components/responses/error.yml#/400-BadRequest"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
     get:
       summary: "資格情報群取得"
       description: "指定ユーザーの資格情報群を取得する。"
@@ -328,7 +328,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/UserQualification"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
 
   "/users/{byUserId}/appeals":
     parameters:
@@ -357,9 +357,9 @@ paths:
                 items:
                   $ref: "#/components/schemas/UserAppeal"
         "400":
-          $ref: "#/components/responses/400-BadRequest"
+          $ref: "./components/responses/error.yml#/400-BadRequest"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
     get:
       summary: "アピール事項群取得"
       description: "指定ユーザーのアピール事項群を取得する。"
@@ -374,7 +374,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/UserAppeal"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
 
   "/users/{byUserId}/solutions":
     parameters:
@@ -403,9 +403,9 @@ paths:
                 items:
                   $ref: "#/components/schemas/UserSolution"
         "400":
-          $ref: "#/components/responses/400-BadRequest"
+          $ref: "./components/responses/error.yml#/400-BadRequest"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
     get:
       summary: "課題解決事例群取得"
       description: "指定ユーザーの課題解決事例群を取得する。"
@@ -420,7 +420,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/UserSolution"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
 
   "/users/{byUserId}/careergroups":
     parameters:
@@ -443,9 +443,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/UserCareerGroup"
         "400":
-          $ref: "#/components/responses/400-BadRequest"
+          $ref: "./components/responses/error.yml#/400-BadRequest"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
     get:
       summary: "キャリアグループ群取得"
       description: "指定ユーザーのキャリアグループ群を取得する。"
@@ -460,7 +460,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/UserCareerGroup"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
 
   "/users/{byUserId}/careergroups/{byCareerGroupId}":
     parameters:
@@ -478,7 +478,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/UserCareerGroup"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
     put:
       summary: "【未実装】キャリアグループ更新"
       description: "１キャリアグループを更新する。"
@@ -497,9 +497,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/UserCareerGroupOwn"
         "400":
-          $ref: "#/components/responses/400-BadRequest"
+          $ref: "./components/responses/error.yml#/400-BadRequest"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
     delete:
       summary: "【未実装】キャリアグループ削除"
       description: "１キャリアグループを削除する。"
@@ -508,7 +508,7 @@ paths:
         "204":
           description: "No Content: 指定キャリアグループの削除に成功。"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
 
   "/users/{byUserId}/careergroups/{byCareerGroupId}/careers":
     parameters:
@@ -532,7 +532,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/UserCareer"
         "400":
-          $ref: "#/components/responses/400-BadRequest"
+          $ref: "./components/responses/error.yml#/400-BadRequest"
     put:
       summary: "【未実装】キャリアグループ内キャリア群最新化"
       description: "１キャリアグループ内のキャリア群を最新化（総洗い替え）する。"
@@ -556,9 +556,9 @@ paths:
                 items:
                   $ref: "#/components/schemas/UserCareer"
         "400":
-          $ref: "#/components/responses/400-BadRequest"
+          $ref: "./components/responses/error.yml#/400-BadRequest"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
 
   "/users/{byUserId}/careergroups/{byCareerGroupId}/careers/{byCareerId}":
     parameters:
@@ -577,7 +577,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/UserCareer"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
 
   "/users/{byUserId}/notes":
     parameters:
@@ -600,9 +600,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/UserNote"
         "400":
-          $ref: "#/components/responses/400-BadRequest"
+          $ref: "./components/responses/error.yml#/400-BadRequest"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
     get:
       summary: "注釈群取得"
       description: "指定ユーザーの注釈群を取得する。"
@@ -617,7 +617,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/UserNote"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
 
   "/users/{byUserId}/notes/{byNoteId}":
     parameters:
@@ -641,9 +641,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/UserNoteOwn"
         "400":
-          $ref: "#/components/responses/400-BadRequest"
+          $ref: "./components/responses/error.yml#/400-BadRequest"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
     delete:
       summary: "【未実装】注釈削除"
       description: "１注釈を削除する。"
@@ -652,7 +652,7 @@ paths:
         "204":
           description: "No Content: 指定注釈の削除に成功。"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
 
   "/users/{byUserId}/notes/{byNoteId}/items":
     parameters:
@@ -680,9 +680,9 @@ paths:
                 items:
                   $ref: "#/components/schemas/UserNoteItem"
         "400":
-          $ref: "#/components/responses/400-BadRequest"
+          $ref: "./components/responses/error.yml#/400-BadRequest"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
 
   "/users/{byUserId}/skills":
     parameters:
@@ -701,7 +701,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/UserSkillTag"
         "404":
-          $ref: "#/components/responses/404-NotFound"
+          $ref: "./components/responses/error.yml#/404-NotFound"
 
 components:
   schemas:
@@ -1044,36 +1044,3 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/UserSkill"
-    ErrorMessage:
-      type: string
-      description: "エラーメッセージ"
-      example: "too long"
-      minLength: 1
-      maxLength: 80
-    NotFoundError:
-      type: object
-      properties:
-        message:
-          $ref: "#/components/schemas/ErrorMessage"
-
-  responses:
-    400-BadRequest:
-      description: "Bad Request: 属性に誤りがある。"
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                $ref: "#/components/schemas/ErrorMessage"
-    404-NotFound:
-      description: "Not Found: 指定リソースが存在しない。"
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                $ref: "#/components/schemas/ErrorMessage"
-    500-InternalServerError:
-      description: "Internal Server Error"

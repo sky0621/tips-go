@@ -1055,17 +1055,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserSkill'
-    ErrorMessage:
-      type: string
-      description: エラーメッセージ
-      example: too long
-      minLength: 1
-      maxLength: 80
-    NotFoundError:
-      type: object
-      properties:
-        message:
-          $ref: '#/components/schemas/ErrorMessage'
     SkillTagId:
       type: integer
       format: int
@@ -1084,6 +1073,12 @@ components:
           $ref: '#/components/schemas/SkillTagId'
         name:
           $ref: '#/components/schemas/SkillTagName'
+    ErrorMessage:
+      type: string
+      description: エラーメッセージ
+      example: too long
+      minLength: 1
+      maxLength: 80
     SkillId:
       type: integer
       format: int
@@ -1154,8 +1149,6 @@ components:
             properties:
               message:
                 $ref: '#/components/schemas/ErrorMessage'
-    500-InternalServerError:
-      description: Internal Server Error
   parameters:
     skillTagId:
       name: bySkillTagId
