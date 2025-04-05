@@ -15,7 +15,7 @@ go get -u tool
 ## exec
 
 ```
-go tool stringer
+go tool sqlc generate
 ```
 
 ## check

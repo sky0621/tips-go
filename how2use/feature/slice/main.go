@@ -5,6 +5,16 @@ import "fmt"
 // スライスは要素の集合体。配列に似ているが厳密には違う。
 // スライスは参照型。（マップやチャネルも参照型）
 
+/*
+runtime/slice.go
+
+type slice struct {
+	array unsafe.Pointer
+	len   int
+	cap   int
+}
+*/
+
 func main() {
 	iSliceOrg := fn1()
 	iSliceNew := fn2(iSliceOrg)
