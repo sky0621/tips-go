@@ -20,14 +20,12 @@ go get -u tool
 
 ## exec
 
-### sqlc
-```
-go tool sqlc generate
-```
-
 ### golang-migrate
 ```
 go tool migrate create -ext sql -dir migrations -seq create_users_table
+```
+```
+go tool migrate create -ext sql -dir migrations -seq add_age_to_users
 ```
 
 ## check
