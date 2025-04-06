@@ -11,6 +11,8 @@ import (
 
 type Querier interface {
 	CreateComment(ctx context.Context, arg CreateCommentParams) (int64, error)
+	CreateDepartmentsBatch(ctx context.Context) (sql.Result, error)
+	CreateEmployeesBatch(ctx context.Context) (sql.Result, error)
 	CreatePost(ctx context.Context, arg CreatePostParams) (int64, error)
 	CreateUser(ctx context.Context, name string) (int64, error)
 	CreateUsersBatch(ctx context.Context, arg CreateUsersBatchParams) (sql.Result, error)
@@ -21,6 +23,8 @@ type Querier interface {
 	GetPost(ctx context.Context, id int64) (Post, error)
 	GetUser(ctx context.Context, id int64) (User, error)
 	ListCommentsByPost(ctx context.Context, postID sql.NullInt64) ([]Comment, error)
+	ListEmployeesOrderBySalary(ctx context.Context) ([]Employee, error)
+	ListEmployeesOrderByXXXX(ctx context.Context, dollar_1 interface{}) ([]Employee, error)
 	ListPostsByLikeTitle(ctx context.Context, title string) ([]Post, error)
 	ListPostsByUser(ctx context.Context, userID sql.NullInt64) ([]Post, error)
 	ListRecentCommentByPosts(ctx context.Context) ([]ListRecentCommentByPostsRow, error)

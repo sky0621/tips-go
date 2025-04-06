@@ -50,7 +50,10 @@ func main() {
 	case "B":
 		crud.InsertBatch(ctx, q)
 	case "CM":
-		crud.Complex(ctx, q)
+	case "OS":
+		crud.OtherSetup(ctx, q)
+	case "O":
+		crud.Other(ctx, q)
 	default:
 		crud.Select(ctx, q)
 	}

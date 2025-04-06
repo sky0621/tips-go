@@ -18,6 +18,20 @@ type Comment struct {
 	UpdatedAt time.Time
 }
 
+type Department struct {
+	DepartmentID   int64
+	DepartmentName string
+}
+
+type Employee struct {
+	EmployeeID   int64
+	FirstName    string
+	LastName     string
+	Salary       sql.NullString
+	DepartmentID sql.NullInt64
+	JoinDate     sql.NullTime
+}
+
 type Post struct {
 	ID        int64
 	Title     string

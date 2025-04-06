@@ -14,6 +14,14 @@ run-migration: build-migration
 build:
 	go build -o ./bin/sqlc ./main.go
 
-.PHONY: run
-run: build
+.PHONY: run-select
+run-select: build
 	./bin/sqlc
+
+.PHONY: run-other-setup
+run-other-setup: build
+	./bin/sqlc OS
+
+.PHONY: run-other
+run-other: build
+	./bin/sqlc O

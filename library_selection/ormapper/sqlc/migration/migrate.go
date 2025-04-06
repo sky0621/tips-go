@@ -20,5 +20,15 @@ func Migrate(db *sql.DB) error {
 		return err
 	}
 
+	_, err = db.Exec(createDepartments)
+	if err != nil {
+		return err
+	}
+
+	_, err = db.Exec(createEmployees)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
