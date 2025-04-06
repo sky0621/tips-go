@@ -38,12 +38,182 @@ func (q *Queries) CreateEmployeesBatch(ctx context.Context) (sql.Result, error) 
 	return q.db.ExecContext(ctx, createEmployeesBatch)
 }
 
-const listEmployeesOrderBySalary = `-- name: ListEmployeesOrderBySalary :many
+const listEmployeesOrderByDepartmentIdAsc = `-- name: ListEmployeesOrderByDepartmentIdAsc :many
+SELECT employee_id, first_name, last_name, salary, department_id, join_date FROM employees ORDER BY department_id
+`
+
+func (q *Queries) ListEmployeesOrderByDepartmentIdAsc(ctx context.Context) ([]Employee, error) {
+	rows, err := q.db.QueryContext(ctx, listEmployeesOrderByDepartmentIdAsc)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Employee{}
+	for rows.Next() {
+		var i Employee
+		if err := rows.Scan(
+			&i.EmployeeID,
+			&i.FirstName,
+			&i.LastName,
+			&i.Salary,
+			&i.DepartmentID,
+			&i.JoinDate,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listEmployeesOrderByDepartmentIdDesc = `-- name: ListEmployeesOrderByDepartmentIdDesc :many
+SELECT employee_id, first_name, last_name, salary, department_id, join_date FROM employees ORDER BY department_id DESC
+`
+
+func (q *Queries) ListEmployeesOrderByDepartmentIdDesc(ctx context.Context) ([]Employee, error) {
+	rows, err := q.db.QueryContext(ctx, listEmployeesOrderByDepartmentIdDesc)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Employee{}
+	for rows.Next() {
+		var i Employee
+		if err := rows.Scan(
+			&i.EmployeeID,
+			&i.FirstName,
+			&i.LastName,
+			&i.Salary,
+			&i.DepartmentID,
+			&i.JoinDate,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listEmployeesOrderByJoinDateAsc = `-- name: ListEmployeesOrderByJoinDateAsc :many
+SELECT employee_id, first_name, last_name, salary, department_id, join_date FROM employees ORDER BY join_date
+`
+
+func (q *Queries) ListEmployeesOrderByJoinDateAsc(ctx context.Context) ([]Employee, error) {
+	rows, err := q.db.QueryContext(ctx, listEmployeesOrderByJoinDateAsc)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Employee{}
+	for rows.Next() {
+		var i Employee
+		if err := rows.Scan(
+			&i.EmployeeID,
+			&i.FirstName,
+			&i.LastName,
+			&i.Salary,
+			&i.DepartmentID,
+			&i.JoinDate,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listEmployeesOrderByJoinDateDesc = `-- name: ListEmployeesOrderByJoinDateDesc :many
+SELECT employee_id, first_name, last_name, salary, department_id, join_date FROM employees ORDER BY join_date DESC
+`
+
+func (q *Queries) ListEmployeesOrderByJoinDateDesc(ctx context.Context) ([]Employee, error) {
+	rows, err := q.db.QueryContext(ctx, listEmployeesOrderByJoinDateDesc)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Employee{}
+	for rows.Next() {
+		var i Employee
+		if err := rows.Scan(
+			&i.EmployeeID,
+			&i.FirstName,
+			&i.LastName,
+			&i.Salary,
+			&i.DepartmentID,
+			&i.JoinDate,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listEmployeesOrderBySalaryAsc = `-- name: ListEmployeesOrderBySalaryAsc :many
+SELECT employee_id, first_name, last_name, salary, department_id, join_date FROM employees ORDER BY salary
+`
+
+func (q *Queries) ListEmployeesOrderBySalaryAsc(ctx context.Context) ([]Employee, error) {
+	rows, err := q.db.QueryContext(ctx, listEmployeesOrderBySalaryAsc)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Employee{}
+	for rows.Next() {
+		var i Employee
+		if err := rows.Scan(
+			&i.EmployeeID,
+			&i.FirstName,
+			&i.LastName,
+			&i.Salary,
+			&i.DepartmentID,
+			&i.JoinDate,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listEmployeesOrderBySalaryDesc = `-- name: ListEmployeesOrderBySalaryDesc :many
 SELECT employee_id, first_name, last_name, salary, department_id, join_date FROM employees ORDER BY salary DESC
 `
 
-func (q *Queries) ListEmployeesOrderBySalary(ctx context.Context) ([]Employee, error) {
-	rows, err := q.db.QueryContext(ctx, listEmployeesOrderBySalary)
+func (q *Queries) ListEmployeesOrderBySalaryDesc(ctx context.Context) ([]Employee, error) {
+	rows, err := q.db.QueryContext(ctx, listEmployeesOrderBySalaryDesc)
 	if err != nil {
 		return nil, err
 	}
@@ -76,6 +246,7 @@ const listEmployeesOrderByXXXX = `-- name: ListEmployeesOrderByXXXX :many
 SELECT employee_id, first_name, last_name, salary, department_id, join_date FROM employees ORDER BY ? DESC
 `
 
+// これは機能しない。
 func (q *Queries) ListEmployeesOrderByXXXX(ctx context.Context, dollar_1 interface{}) ([]Employee, error) {
 	rows, err := q.db.QueryContext(ctx, listEmployeesOrderByXXXX, dollar_1)
 	if err != nil {

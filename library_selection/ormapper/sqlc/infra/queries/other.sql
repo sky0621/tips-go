@@ -16,8 +16,21 @@ VALUES (101, 'John', 'Doe', 55000.00, 1, '2020-01-15'),
        (107, 'Frank', 'Green', 60000.00, 3, '2023-01-10'),
        (108, 'Grace', 'Hall', 70000.00, 4, '2019-09-15');
 
--- name: ListEmployeesOrderBySalary :many
-SELECT * FROM employees ORDER BY salary DESC;
-
+# これは機能しない。
 -- name: ListEmployeesOrderByXXXX :many
 SELECT * FROM employees ORDER BY ? DESC;
+
+-- name: ListEmployeesOrderBySalaryDesc :many
+SELECT * FROM employees ORDER BY salary DESC;
+-- name: ListEmployeesOrderBySalaryAsc :many
+SELECT * FROM employees ORDER BY salary;
+
+-- name: ListEmployeesOrderByDepartmentIdDesc :many
+SELECT * FROM employees ORDER BY department_id DESC;
+-- name: ListEmployeesOrderByDepartmentIdAsc :many
+SELECT * FROM employees ORDER BY department_id;
+
+-- name: ListEmployeesOrderByJoinDateDesc :many
+SELECT * FROM employees ORDER BY join_date DESC;
+-- name: ListEmployeesOrderByJoinDateAsc :many
+SELECT * FROM employees ORDER BY join_date;

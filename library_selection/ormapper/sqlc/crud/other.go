@@ -22,19 +22,6 @@ func OtherSetup(ctx context.Context, q *infra.Queries) {
 }
 
 func Other(ctx context.Context, q *infra.Queries) {
-	salaries, err := q.ListEmployeesOrderBySalary(ctx)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("ListEmployeesOrderBySalary success")
-	for _, s := range salaries {
-		fmt.Println(s)
-	}
-
-	fmt.Println()
-	fmt.Println("==========================")
-	fmt.Println()
-
 	/*
 	 * ここでカラム名を指定しても、並べ替えは機能しない。。
 	 */
@@ -44,6 +31,84 @@ func Other(ctx context.Context, q *infra.Queries) {
 	}
 	fmt.Println("ListEmployeesOrderByXXXX success")
 	for _, s := range xxxx {
+		fmt.Println(s)
+	}
+
+	fmt.Println()
+	fmt.Println("==========================")
+	fmt.Println()
+
+	employeesOrderBySalaryDesc, err := q.ListEmployeesOrderBySalaryDesc(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("ListEmployeesOrderBySalaryDesc success")
+	for _, s := range employeesOrderBySalaryDesc {
+		fmt.Println(s)
+	}
+
+	fmt.Println()
+	fmt.Println("==========================")
+	fmt.Println()
+
+	employeesOrderBySalaryAsc, err := q.ListEmployeesOrderBySalaryAsc(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("ListEmployeesOrderBySalaryAsc success")
+	for _, s := range employeesOrderBySalaryAsc {
+		fmt.Println(s)
+	}
+
+	fmt.Println()
+	fmt.Println("==========================")
+	fmt.Println()
+
+	employeesOrderByDepartmentIdDesc, err := q.ListEmployeesOrderByDepartmentIdDesc(ctx)
+	if err != nil {
+		return
+	}
+	fmt.Println("ListEmployeesOrderByDepartmentIdDesc success")
+	for _, s := range employeesOrderByDepartmentIdDesc {
+		fmt.Println(s)
+	}
+
+	fmt.Println()
+	fmt.Println("==========================")
+	fmt.Println()
+
+	employeesOrderByDepartmentIdAsc, err := q.ListEmployeesOrderByDepartmentIdAsc(ctx)
+	if err != nil {
+		return
+	}
+	fmt.Println("ListEmployeesOrderByDepartmentIdAsc success")
+	for _, s := range employeesOrderByDepartmentIdAsc {
+		fmt.Println(s)
+	}
+
+	fmt.Println()
+	fmt.Println("==========================")
+	fmt.Println()
+
+	employeesOrderByJoinDateDesc, err := q.ListEmployeesOrderByJoinDateDesc(ctx)
+	if err != nil {
+		return
+	}
+	fmt.Println("ListEmployeesOrderByJoinDateDesc success")
+	for _, s := range employeesOrderByJoinDateDesc {
+		fmt.Println(s)
+	}
+
+	fmt.Println()
+	fmt.Println("==========================")
+	fmt.Println()
+
+	employeesOrderByJoinDateAsc, err := q.ListEmployeesOrderByJoinDateAsc(ctx)
+	if err != nil {
+		return
+	}
+	fmt.Println("ListEmployeesOrderByJoinDateAsc success")
+	for _, s := range employeesOrderByJoinDateAsc {
 		fmt.Println(s)
 	}
 
