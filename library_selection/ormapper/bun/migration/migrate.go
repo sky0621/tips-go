@@ -1,24 +1,20 @@
 package migration
 
 import (
+	"context"
+	"github.com/sky0621/tips-go/library_selection/ormapper/bun/models"
 	"github.com/uptrace/bun"
+	"log"
 )
 
-func Migrate(db *bun.DB) error {
-	_, err := db.Exec(createUsers)
+func Migrate(db *bun.DB) {
+	ctx := context.Background()
+	err := db.ResetModel(ctx,
+		&models.User{},
+		&models.Post{},
+		&models.Comment{},
+	)
 	if err != nil {
-		return err
+		log.Fatal(err)
 	}
-
-	_, err = db.Exec(createPosts)
-	if err != nil {
-		return err
-	}
-
-	_, err = db.Exec(createComments)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
