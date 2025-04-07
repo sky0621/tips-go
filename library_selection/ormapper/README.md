@@ -22,7 +22,7 @@
 | ~~[SQL Boiler](https://github.com/volatiletech/sqlboiler)~~<br>メンテナンスモード   | 2024-12-11 | 6.8k  | 77    | v4.17.1       | BSD-3-Clause | Volatile Technologies Inc. | -                                     |
 | [Bun](https://github.com/uptrace/bun)                                      | 2025-01-01 | 3.9k  | 28    | v1.2.7        | BSD-2-Clause | [Uptrace](https://uptrace.dev/)                          | https://bun.uptrace.dev/              |
 | ~~[xorm](https://github.com/go-xorm/xorm?tab=readme-ov-file)~~<br>Giteaに移行 | 2019-10-15 | 6.7k  | 265   | v0.5.6        | BSD-3-Clause | ？                          | https://xorm.io/                      |
-| [sqlc](https://github.com/sqlc-dev/sqlc)                                   | 2024-12-28 | 13.9k | 82    | v1.27.0       | MIT          | ？                          | https://sqlc.dev/                     |
+| [sqlc](https://github.com/sqlc-dev/sqlc)                                   | 2024-12-28 | 13.9k | 82    | v1.27.0       | MIT          | [Riza, Inc.](https://riza.io/)                          | https://sqlc.dev/                     |
 
 ### GitHub Star History
 
