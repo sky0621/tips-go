@@ -25,3 +25,7 @@ run-other-setup: build
 .PHONY: run-other
 run-other: build
 	./bin/sqlc O
+
+.PHONY: run-search
+run-search: build
+	./bin/sqlc S

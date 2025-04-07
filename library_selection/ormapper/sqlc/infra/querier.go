@@ -44,6 +44,7 @@ type Querier interface {
 	MaxUsersID(ctx context.Context) (interface{}, error)
 	OrgListUsersByIDs(ctx context.Context, id int64) ([]User, error)
 	Relations(ctx context.Context) ([]RelationsRow, error)
+	SearchEmployees(ctx context.Context) ([]Employee, error)
 	UpdatePost(ctx context.Context, arg UpdatePostParams) error
 	UpdateUserName(ctx context.Context, arg UpdateUserNameParams) error
 }

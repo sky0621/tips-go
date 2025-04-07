@@ -54,6 +54,8 @@ func main() {
 		crud.OtherSetup(ctx, q)
 	case "O":
 		crud.Other(ctx, q)
+	case "S":
+		crud.Search(ctx, q)
 	default:
 		crud.Select(ctx, q)
 	}
