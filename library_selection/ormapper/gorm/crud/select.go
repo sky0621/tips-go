@@ -22,4 +22,11 @@ func Select(db *gorm.DB) {
 	}
 	fmt.Println("-- リレーションテーブル込みの全件取得 --")
 	fmt.Println(allUsersWithPostsWithComments)
+
+	var userAlice models.User
+	if err := db.Where(&models.User{Name: "Alice"}).First(&userAlice).Error; err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("-- 単一テーブル(users)の条件付き取得 --")
+	fmt.Println(userAlice)
 }

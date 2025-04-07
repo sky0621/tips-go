@@ -25,3 +25,7 @@ exec-update: build
 .PHONY: exec-delete
 exec-delete: build
 	./bin/bun D
+
+.PHONY: exec-various
+exec-various: build
+	./bin/bun V
