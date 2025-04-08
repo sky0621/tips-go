@@ -9,6 +9,12 @@ import (
 	"time"
 )
 
+type Class struct {
+	ClassID   int64
+	ClassName string
+	GradeID   sql.NullInt64
+}
+
 type Comment struct {
 	ID        int64
 	Content   sql.NullString
@@ -32,6 +38,12 @@ type Employee struct {
 	JoinDate     sql.NullTime
 }
 
+type Grade struct {
+	GradeID   int64
+	GradeName string
+	SchoolID  sql.NullInt64
+}
+
 type Post struct {
 	ID        int64
 	Title     string
@@ -39,6 +51,17 @@ type Post struct {
 	UserID    sql.NullInt64
 	CreatedAt time.Time
 	UpdatedAt time.Time
+}
+
+type School struct {
+	SchoolID   int64
+	SchoolName string
+}
+
+type Student struct {
+	StudentID int64
+	Name      string
+	ClassID   sql.NullInt64
 }
 
 type User struct {

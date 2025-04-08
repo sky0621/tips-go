@@ -50,12 +50,17 @@ func main() {
 	case "B":
 		crud.InsertBatch(ctx, q)
 	case "CM":
+		crud.Complex(ctx, q)
 	case "OS":
 		crud.OtherSetup(ctx, q)
 	case "O":
 		crud.Other(ctx, q)
 	case "S":
 		crud.Search(ctx, q)
+	case "SCS":
+		crud.SchoolSetup(ctx, q)
+	case "SC":
+		crud.School(ctx, q)
 	default:
 		crud.Select(ctx, q)
 	}

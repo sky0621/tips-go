@@ -18,6 +18,10 @@ build:
 run-select: build
 	./bin/sqlc
 
+.PHONY: run-complex
+run-complex: build
+	./bin/sqlc CM
+
 .PHONY: run-other-setup
 run-other-setup: build
 	./bin/sqlc OS
@@ -29,3 +33,11 @@ run-other: build
 .PHONY: run-search
 run-search: build
 	./bin/sqlc S
+
+.PHONY: run-school-setup
+run-school-setup: build
+	./bin/sqlc SCS
+
+.PHONY: run-school
+run-school: build
+	./bin/sqlc SC

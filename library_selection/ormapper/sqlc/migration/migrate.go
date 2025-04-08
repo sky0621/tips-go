@@ -5,30 +5,22 @@ import (
 )
 
 func Migrate(db *sql.DB) error {
-	_, err := db.Exec(createUsers)
-	if err != nil {
-		return err
+	ddls := []string{
+		createUsers,
+		createPosts,
+		createComments,
+		createDepartments,
+		createEmployees,
+		createSchool,
+		createGrade,
+		createClass,
+		createStudent,
 	}
-
-	_, err = db.Exec(createPosts)
-	if err != nil {
-		return err
+	for _, ddl := range ddls {
+		_, err := db.Exec(ddl)
+		if err != nil {
+			return err
+		}
 	}
-
-	_, err = db.Exec(createComments)
-	if err != nil {
-		return err
-	}
-
-	_, err = db.Exec(createDepartments)
-	if err != nil {
-		return err
-	}
-
-	_, err = db.Exec(createEmployees)
-	if err != nil {
-		return err
-	}
-
 	return nil
 }

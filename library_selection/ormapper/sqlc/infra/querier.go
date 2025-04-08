@@ -10,10 +10,14 @@ import (
 )
 
 type Querier interface {
+	CreateClassBatch(ctx context.Context) (sql.Result, error)
 	CreateComment(ctx context.Context, arg CreateCommentParams) (int64, error)
 	CreateDepartmentsBatch(ctx context.Context) (sql.Result, error)
 	CreateEmployeesBatch(ctx context.Context) (sql.Result, error)
+	CreateGrade(ctx context.Context) (int64, error)
 	CreatePost(ctx context.Context, arg CreatePostParams) (int64, error)
+	CreateSchool(ctx context.Context) (int64, error)
+	CreateStudentBatch(ctx context.Context) (sql.Result, error)
 	CreateUser(ctx context.Context, name string) (int64, error)
 	CreateUsersBatch(ctx context.Context, arg CreateUsersBatchParams) (sql.Result, error)
 	DeleteComment(ctx context.Context, id int64) error
@@ -21,7 +25,9 @@ type Querier interface {
 	DeleteUser(ctx context.Context, id int64) error
 	GetComment(ctx context.Context, id int64) (Comment, error)
 	GetPost(ctx context.Context, id int64) (Post, error)
+	GetSchoolByID(ctx context.Context, schoolID int64) (School, error)
 	GetUser(ctx context.Context, id int64) (User, error)
+	ListClassByGradeID(ctx context.Context, gradeID sql.NullInt64) ([]Class, error)
 	ListCommentsByPost(ctx context.Context, postID sql.NullInt64) ([]Comment, error)
 	ListEmployeesOrderByDepartmentIdAsc(ctx context.Context) ([]Employee, error)
 	ListEmployeesOrderByDepartmentIdDesc(ctx context.Context) ([]Employee, error)
@@ -31,9 +37,12 @@ type Querier interface {
 	ListEmployeesOrderBySalaryDesc(ctx context.Context) ([]Employee, error)
 	// これは機能しない。
 	ListEmployeesOrderByXXXX(ctx context.Context, dollar_1 interface{}) ([]Employee, error)
+	ListGradeBySchoolID(ctx context.Context, schoolID sql.NullInt64) ([]Grade, error)
 	ListPostsByLikeTitle(ctx context.Context, title string) ([]Post, error)
 	ListPostsByUser(ctx context.Context, userID sql.NullInt64) ([]Post, error)
 	ListRecentCommentByPosts(ctx context.Context) ([]ListRecentCommentByPostsRow, error)
+	ListStudentByClassID(ctx context.Context, classID sql.NullInt64) ([]Student, error)
+	ListStudentsWithClassWithGradeWithSchool(ctx context.Context, schoolID int64) ([]ListStudentsWithClassWithGradeWithSchoolRow, error)
 	ListUserWithPostAndComments(ctx context.Context) ([]ListUserWithPostAndCommentsRow, error)
 	ListUsers(ctx context.Context) ([]User, error)
 	// https://docs.sqlc.dev/en/latest/howto/select.html#mysql-and-sqlite
