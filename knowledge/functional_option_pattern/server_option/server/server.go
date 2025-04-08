@@ -19,21 +19,26 @@ func (s *Server) Start() error {
 func New(host string, port int, options ...Option) *Server {
 	svr := &Server{host: host, port: port}
 	for _, opt := range options {
-		opt(svr)
+		err := opt(svr)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 	return svr
 }
 
-type Option func(*Server)
+type Option func(*Server) error
 
 func WithTimeout(timeout time.Duration) Option {
-	return func(svr *Server) {
+	return func(svr *Server) error {
 		svr.timeout = timeout
+		return nil
 	}
 }
 
 func WithLogger(logger *log.Logger) Option {
-	return func(svr *Server) {
+	return func(svr *Server) error {
 		svr.logger = logger
+		return nil
 	}
 }
