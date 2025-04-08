@@ -2,11 +2,14 @@ package main
 
 import (
 	"fmt"
-
 	"github.com/sky0621/tips-go/experiment/value_object/person"
 )
 
 func main() {
+	samplePerson()
+}
+
+func samplePerson() {
 	p, err := person.New(3, "Saburo")
 	if err != nil {
 		panic(err)
