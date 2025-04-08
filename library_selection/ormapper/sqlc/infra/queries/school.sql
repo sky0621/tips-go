@@ -10,13 +10,13 @@ VALUES ('１年１組', 1),
        ('１年２組', 1);
 -- name: CreateStudentBatch :execresult
 INSERT INTO student(name, class_id)
-VALUES ('山田太郎', 1),
-       ('田中花子', 1),
-       ('佐藤次郎', 1),
-       ('鈴木三郎', 1),
-       ('高橋四郎', 2),
-       ('伊藤五郎', 2),
-       ('渡辺六郎', 2);
+VALUES ('山田太郎1', 1),
+       ('田中花子1', 1),
+       ('佐藤次郎2', 2),
+       ('鈴木三郎1', 1),
+       ('高橋四郎2', 2),
+       ('伊藤五郎1', 1),
+       ('渡辺六郎2', 2);
 
 -- name: ListStudentsWithClassWithGradeWithSchool :many
 SELECT sc.school_id,

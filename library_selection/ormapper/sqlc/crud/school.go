@@ -32,8 +32,9 @@ func School(ctx context.Context, q *infra.Queries) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	for _, student := range students {
-		fmt.Println(student)
+	aggregatedStructs := aggregateRows(students)
+	for _, school := range aggregatedStructs {
+		fmt.Println(school)
 	}
 }
 
