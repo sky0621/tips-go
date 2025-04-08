@@ -44,3 +44,9 @@ SELECT * FROM class WHERE grade_id = ?;
 
 -- name: ListStudentByClassID :many
 SELECT * FROM student WHERE class_id = ?;
+
+-- name: ListClassInGradeIDs :many
+SELECT * FROM class WHERE grade_id IN (sqlc.slice('gradeIDs'));
+
+-- name: ListStudentInClassIDs :many
+SELECT * FROM student WHERE class_id IN (sqlc.slice('classIDs'));

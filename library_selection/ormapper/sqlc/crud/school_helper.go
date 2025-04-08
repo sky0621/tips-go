@@ -97,3 +97,11 @@ func aggregateRows(rows []infra.ListStudentsWithClassWithGradeWithSchoolRow) []S
 	}
 	return result
 }
+
+func extract[T any, R any](items []T, selector func(T) R) []R {
+	result := make([]R, len(items))
+	for i, item := range items {
+		result[i] = selector(item)
+	}
+	return result
+}

@@ -63,3 +63,22 @@ func School2(ctx context.Context, q *infra.Queries) {
 		}
 	}
 }
+
+func School3(ctx context.Context, q *infra.Queries) {
+	school, err := q.GetSchoolByID(ctx, 1)
+	if err != nil {
+		log.Fatal(err)
+	}
+	grades, err := q.ListGradeBySchoolID(ctx, sql.NullInt64{Int64: school.SchoolID, Valid: true})
+	if err != nil {
+		return
+	}
+
+	gradeIDs := extract(grades, func(g infra.Grade) sql.NullInt64 { return sql.NullInt64{Int64: g.GradeID, Valid: true} })
+	classes, err := q.ListClassInGradeIDs(ctx, gradeIDs)
+
+	classIDs := extract(classes, func(c infra.Class) sql.NullInt64 { return sql.NullInt64{Int64: c.ClassID, Valid: true} })
+	students, err := q.ListStudentInClassIDs(ctx, classIDs)
+
+	fmt.Println(students)
+}

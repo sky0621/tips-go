@@ -8,6 +8,7 @@ package infra
 import (
 	"context"
 	"database/sql"
+	"strings"
 )
 
 const createClassBatch = `-- name: CreateClassBatch :execresult
@@ -48,13 +49,13 @@ func (q *Queries) CreateSchool(ctx context.Context) (int64, error) {
 
 const createStudentBatch = `-- name: CreateStudentBatch :execresult
 INSERT INTO student(name, class_id)
-VALUES ('山田太郎', 1),
-       ('田中花子', 1),
-       ('佐藤次郎', 1),
-       ('鈴木三郎', 1),
-       ('高橋四郎', 2),
-       ('伊藤五郎', 2),
-       ('渡辺六郎', 2)
+VALUES ('山田太郎1', 1),
+       ('田中花子1', 1),
+       ('佐藤次郎2', 2),
+       ('鈴木三郎1', 1),
+       ('高橋四郎2', 2),
+       ('伊藤五郎1', 1),
+       ('渡辺六郎2', 2)
 `
 
 func (q *Queries) CreateStudentBatch(ctx context.Context) (sql.Result, error) {
@@ -78,6 +79,43 @@ SELECT class_id, class_name, grade_id FROM class WHERE grade_id = ?
 
 func (q *Queries) ListClassByGradeID(ctx context.Context, gradeID sql.NullInt64) ([]Class, error) {
 	rows, err := q.db.QueryContext(ctx, listClassByGradeID, gradeID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Class{}
+	for rows.Next() {
+		var i Class
+		if err := rows.Scan(&i.ClassID, &i.ClassName, &i.GradeID); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listClassInGradeIDs = `-- name: ListClassInGradeIDs :many
+SELECT class_id, class_name, grade_id FROM class WHERE grade_id IN (/*SLICE:gradeIDs*/?)
+`
+
+func (q *Queries) ListClassInGradeIDs(ctx context.Context, gradeids []sql.NullInt64) ([]Class, error) {
+	query := listClassInGradeIDs
+	var queryParams []interface{}
+	if len(gradeids) > 0 {
+		for _, v := range gradeids {
+			queryParams = append(queryParams, v)
+		}
+		query = strings.Replace(query, "/*SLICE:gradeIDs*/?", strings.Repeat(",?", len(gradeids))[1:], 1)
+	} else {
+		query = strings.Replace(query, "/*SLICE:gradeIDs*/?", "NULL", 1)
+	}
+	rows, err := q.db.QueryContext(ctx, query, queryParams...)
 	if err != nil {
 		return nil, err
 	}
@@ -132,6 +170,43 @@ SELECT student_id, name, class_id FROM student WHERE class_id = ?
 
 func (q *Queries) ListStudentByClassID(ctx context.Context, classID sql.NullInt64) ([]Student, error) {
 	rows, err := q.db.QueryContext(ctx, listStudentByClassID, classID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Student{}
+	for rows.Next() {
+		var i Student
+		if err := rows.Scan(&i.StudentID, &i.Name, &i.ClassID); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listStudentInClassIDs = `-- name: ListStudentInClassIDs :many
+SELECT student_id, name, class_id FROM student WHERE class_id IN (/*SLICE:classIDs*/?)
+`
+
+func (q *Queries) ListStudentInClassIDs(ctx context.Context, classids []sql.NullInt64) ([]Student, error) {
+	query := listStudentInClassIDs
+	var queryParams []interface{}
+	if len(classids) > 0 {
+		for _, v := range classids {
+			queryParams = append(queryParams, v)
+		}
+		query = strings.Replace(query, "/*SLICE:classIDs*/?", strings.Repeat(",?", len(classids))[1:], 1)
+	} else {
+		query = strings.Replace(query, "/*SLICE:classIDs*/?", "NULL", 1)
+	}
+	rows, err := q.db.QueryContext(ctx, query, queryParams...)
 	if err != nil {
 		return nil, err
 	}
