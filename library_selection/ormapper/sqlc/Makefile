@@ -41,3 +41,7 @@ run-school-setup: build
 .PHONY: run-school
 run-school: build
 	./bin/sqlc SC
+
+.PHONY: run-school2
+run-school2: build
+	./bin/sqlc SC2

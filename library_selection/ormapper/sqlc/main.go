@@ -61,6 +61,8 @@ func main() {
 		crud.SchoolSetup(ctx, q)
 	case "SC":
 		crud.School(ctx, q)
+	case "SC2":
+		crud.School2(ctx, q)
 	default:
 		crud.Select(ctx, q)
 	}
