@@ -60,11 +60,11 @@ func main() {
 	case "SCS":
 		crud.SchoolSetup(ctx, q)
 	case "SC":
-		crud.School(ctx, q)
+		crud.GetSchool(ctx, q)
 	case "SC2":
-		crud.School2(ctx, q)
+		crud.GetSchool2(ctx, q)
 	case "SC3":
-		crud.School3(ctx, q)
+		crud.GetSchool3(ctx, q)
 	default:
 		crud.Select(ctx, q)
 	}

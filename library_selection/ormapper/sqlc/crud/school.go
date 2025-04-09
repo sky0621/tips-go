@@ -27,18 +27,16 @@ func SchoolSetup(ctx context.Context, q *infra.Queries) {
 	}
 }
 
-func School(ctx context.Context, q *infra.Queries) {
+func GetSchool(ctx context.Context, q *infra.Queries) {
 	students, err := q.ListStudentsWithClassWithGradeWithSchool(ctx, 1)
 	if err != nil {
 		log.Fatal(err)
 	}
-	aggregatedStructs := aggregateRows(students)
-	for _, school := range aggregatedStructs {
-		fmt.Println(school)
-	}
+	result := aggregateRows(students)
+	fmt.Println(result)
 }
 
-func School2(ctx context.Context, q *infra.Queries) {
+func GetSchool2(ctx context.Context, q *infra.Queries) {
 	school, err := q.GetSchoolByID(ctx, 1)
 	if err != nil {
 		log.Fatal(err)
@@ -64,7 +62,7 @@ func School2(ctx context.Context, q *infra.Queries) {
 	}
 }
 
-func School3(ctx context.Context, q *infra.Queries) {
+func GetSchool3(ctx context.Context, q *infra.Queries) {
 	school, err := q.GetSchoolByID(ctx, 1)
 	if err != nil {
 		log.Fatal(err)
