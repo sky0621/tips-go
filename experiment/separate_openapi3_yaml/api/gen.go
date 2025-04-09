@@ -6,7 +6,9 @@ package api
 import (
 	"bytes"
 	"compress/gzip"
+	"context"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -16,6 +18,7 @@ import (
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/labstack/echo/v4"
 	"github.com/oapi-codegen/runtime"
+	strictecho "github.com/oapi-codegen/runtime/strictmiddleware/echo"
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
@@ -1264,6 +1267,2054 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 	router.GET(baseURL+"/users/:byUserId/solutions", wrapper.GetUsersByUserIdSolutions)
 	router.PUT(baseURL+"/users/:byUserId/solutions", wrapper.PutUsersByUserIdSolutions)
 
+}
+
+type N400BadRequestJSONResponse struct {
+	// Message エラーメッセージ
+	Message *ErrorMessage `json:"message,omitempty"`
+}
+
+type N404NotFoundJSONResponse struct {
+	// Message エラーメッセージ
+	Message *ErrorMessage `json:"message,omitempty"`
+}
+
+type PostSkillrecordsRequestObject struct {
+	Body *PostSkillrecordsJSONRequestBody
+}
+
+type PostSkillrecordsResponseObject interface {
+	VisitPostSkillrecordsResponse(w http.ResponseWriter) error
+}
+
+type PostSkillrecords201JSONResponse []Skill
+
+func (response PostSkillrecords201JSONResponse) VisitPostSkillrecordsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostSkillrecords400JSONResponse struct{ N400BadRequestJSONResponse }
+
+func (response PostSkillrecords400JSONResponse) VisitPostSkillrecordsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSkillsRequestObject struct {
+	Params GetSkillsParams
+}
+
+type GetSkillsResponseObject interface {
+	VisitGetSkillsResponse(w http.ResponseWriter) error
+}
+
+type GetSkills200JSONResponse []Skill
+
+func (response GetSkills200JSONResponse) VisitGetSkillsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostSkillsRequestObject struct {
+	Params PostSkillsParams
+	Body   *PostSkillsJSONRequestBody
+}
+
+type PostSkillsResponseObject interface {
+	VisitPostSkillsResponse(w http.ResponseWriter) error
+}
+
+type PostSkills201JSONResponse Skill
+
+func (response PostSkills201JSONResponse) VisitPostSkillsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostSkills400JSONResponse struct{ N400BadRequestJSONResponse }
+
+func (response PostSkills400JSONResponse) VisitPostSkillsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSkillsBySkillIdRequestObject struct {
+	BySkillId SkillId `json:"bySkillId"`
+}
+
+type GetSkillsBySkillIdResponseObject interface {
+	VisitGetSkillsBySkillIdResponse(w http.ResponseWriter) error
+}
+
+type GetSkillsBySkillId200JSONResponse Skill
+
+func (response GetSkillsBySkillId200JSONResponse) VisitGetSkillsBySkillIdResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSkillsBySkillId404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response GetSkillsBySkillId404JSONResponse) VisitGetSkillsBySkillIdResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSkilltagsRequestObject struct {
+}
+
+type GetSkilltagsResponseObject interface {
+	VisitGetSkilltagsResponse(w http.ResponseWriter) error
+}
+
+type GetSkilltags200JSONResponse []SkillTag
+
+func (response GetSkilltags200JSONResponse) VisitGetSkilltagsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostSkilltagsRequestObject struct {
+	Body *PostSkilltagsJSONRequestBody
+}
+
+type PostSkilltagsResponseObject interface {
+	VisitPostSkilltagsResponse(w http.ResponseWriter) error
+}
+
+type PostSkilltags201JSONResponse SkillTag
+
+func (response PostSkilltags201JSONResponse) VisitPostSkilltagsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostSkilltags400JSONResponse struct{ N400BadRequestJSONResponse }
+
+func (response PostSkilltags400JSONResponse) VisitPostSkilltagsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSkilltagsBySkillTagIdRequestObject struct {
+	BySkillTagId SkillTagId `json:"bySkillTagId"`
+}
+
+type GetSkilltagsBySkillTagIdResponseObject interface {
+	VisitGetSkilltagsBySkillTagIdResponse(w http.ResponseWriter) error
+}
+
+type GetSkilltagsBySkillTagId200JSONResponse SkillTag
+
+func (response GetSkilltagsBySkillTagId200JSONResponse) VisitGetSkilltagsBySkillTagIdResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetSkilltagsBySkillTagId404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response GetSkilltagsBySkillTagId404JSONResponse) VisitGetSkilltagsBySkillTagIdResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsersRequestObject struct {
+}
+
+type GetUsersResponseObject interface {
+	VisitGetUsersResponse(w http.ResponseWriter) error
+}
+
+type GetUsers200JSONResponse []UserAttribute
+
+func (response GetUsers200JSONResponse) VisitGetUsersResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostUsersRequestObject struct {
+	Body *PostUsersJSONRequestBody
+}
+
+type PostUsersResponseObject interface {
+	VisitPostUsersResponse(w http.ResponseWriter) error
+}
+
+type PostUsers201JSONResponse UserAttribute
+
+func (response PostUsers201JSONResponse) VisitPostUsersResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostUsers400JSONResponse struct{ N400BadRequestJSONResponse }
+
+func (response PostUsers400JSONResponse) VisitPostUsersResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DeleteUsersByUserIdRequestObject struct {
+	ByUserId UserId `json:"byUserId"`
+}
+
+type DeleteUsersByUserIdResponseObject interface {
+	VisitDeleteUsersByUserIdResponse(w http.ResponseWriter) error
+}
+
+type DeleteUsersByUserId204Response struct {
+}
+
+func (response DeleteUsersByUserId204Response) VisitDeleteUsersByUserIdResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
+	return nil
+}
+
+type DeleteUsersByUserId404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response DeleteUsersByUserId404JSONResponse) VisitDeleteUsersByUserIdResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsersByUserIdActivitiesRequestObject struct {
+	ByUserId UserId `json:"byUserId"`
+}
+
+type GetUsersByUserIdActivitiesResponseObject interface {
+	VisitGetUsersByUserIdActivitiesResponse(w http.ResponseWriter) error
+}
+
+type GetUsersByUserIdActivities200JSONResponse []UserActivity
+
+func (response GetUsersByUserIdActivities200JSONResponse) VisitGetUsersByUserIdActivitiesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsersByUserIdActivities404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response GetUsersByUserIdActivities404JSONResponse) VisitGetUsersByUserIdActivitiesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdActivitiesRequestObject struct {
+	ByUserId UserId `json:"byUserId"`
+	Body     *PutUsersByUserIdActivitiesJSONRequestBody
+}
+
+type PutUsersByUserIdActivitiesResponseObject interface {
+	VisitPutUsersByUserIdActivitiesResponse(w http.ResponseWriter) error
+}
+
+type PutUsersByUserIdActivities200JSONResponse []UserActivity
+
+func (response PutUsersByUserIdActivities200JSONResponse) VisitPutUsersByUserIdActivitiesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdActivities400JSONResponse struct{ N400BadRequestJSONResponse }
+
+func (response PutUsersByUserIdActivities400JSONResponse) VisitPutUsersByUserIdActivitiesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdActivities404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response PutUsersByUserIdActivities404JSONResponse) VisitPutUsersByUserIdActivitiesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsersByUserIdAppealsRequestObject struct {
+	ByUserId UserId `json:"byUserId"`
+}
+
+type GetUsersByUserIdAppealsResponseObject interface {
+	VisitGetUsersByUserIdAppealsResponse(w http.ResponseWriter) error
+}
+
+type GetUsersByUserIdAppeals200JSONResponse []UserAppeal
+
+func (response GetUsersByUserIdAppeals200JSONResponse) VisitGetUsersByUserIdAppealsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsersByUserIdAppeals404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response GetUsersByUserIdAppeals404JSONResponse) VisitGetUsersByUserIdAppealsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdAppealsRequestObject struct {
+	ByUserId UserId `json:"byUserId"`
+	Body     *PutUsersByUserIdAppealsJSONRequestBody
+}
+
+type PutUsersByUserIdAppealsResponseObject interface {
+	VisitPutUsersByUserIdAppealsResponse(w http.ResponseWriter) error
+}
+
+type PutUsersByUserIdAppeals200JSONResponse []UserAppeal
+
+func (response PutUsersByUserIdAppeals200JSONResponse) VisitPutUsersByUserIdAppealsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdAppeals400JSONResponse struct{ N400BadRequestJSONResponse }
+
+func (response PutUsersByUserIdAppeals400JSONResponse) VisitPutUsersByUserIdAppealsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdAppeals404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response PutUsersByUserIdAppeals404JSONResponse) VisitPutUsersByUserIdAppealsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsersByUserIdAttributeRequestObject struct {
+	ByUserId UserId `json:"byUserId"`
+}
+
+type GetUsersByUserIdAttributeResponseObject interface {
+	VisitGetUsersByUserIdAttributeResponse(w http.ResponseWriter) error
+}
+
+type GetUsersByUserIdAttribute200JSONResponse UserAttribute
+
+func (response GetUsersByUserIdAttribute200JSONResponse) VisitGetUsersByUserIdAttributeResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsersByUserIdAttribute404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response GetUsersByUserIdAttribute404JSONResponse) VisitGetUsersByUserIdAttributeResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdAttributeRequestObject struct {
+	ByUserId UserId `json:"byUserId"`
+	Body     *PutUsersByUserIdAttributeJSONRequestBody
+}
+
+type PutUsersByUserIdAttributeResponseObject interface {
+	VisitPutUsersByUserIdAttributeResponse(w http.ResponseWriter) error
+}
+
+type PutUsersByUserIdAttribute200JSONResponse UserAttribute
+
+func (response PutUsersByUserIdAttribute200JSONResponse) VisitPutUsersByUserIdAttributeResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdAttribute400JSONResponse struct{ N400BadRequestJSONResponse }
+
+func (response PutUsersByUserIdAttribute400JSONResponse) VisitPutUsersByUserIdAttributeResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdAttribute404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response PutUsersByUserIdAttribute404JSONResponse) VisitPutUsersByUserIdAttributeResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsersByUserIdCareergroupsRequestObject struct {
+	ByUserId UserId `json:"byUserId"`
+}
+
+type GetUsersByUserIdCareergroupsResponseObject interface {
+	VisitGetUsersByUserIdCareergroupsResponse(w http.ResponseWriter) error
+}
+
+type GetUsersByUserIdCareergroups200JSONResponse []UserCareerGroup
+
+func (response GetUsersByUserIdCareergroups200JSONResponse) VisitGetUsersByUserIdCareergroupsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsersByUserIdCareergroups404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response GetUsersByUserIdCareergroups404JSONResponse) VisitGetUsersByUserIdCareergroupsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostUsersByUserIdCareergroupsRequestObject struct {
+	ByUserId UserId `json:"byUserId"`
+	Body     *PostUsersByUserIdCareergroupsJSONRequestBody
+}
+
+type PostUsersByUserIdCareergroupsResponseObject interface {
+	VisitPostUsersByUserIdCareergroupsResponse(w http.ResponseWriter) error
+}
+
+type PostUsersByUserIdCareergroups201JSONResponse UserCareerGroup
+
+func (response PostUsersByUserIdCareergroups201JSONResponse) VisitPostUsersByUserIdCareergroupsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostUsersByUserIdCareergroups400JSONResponse struct{ N400BadRequestJSONResponse }
+
+func (response PostUsersByUserIdCareergroups400JSONResponse) VisitPostUsersByUserIdCareergroupsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostUsersByUserIdCareergroups404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response PostUsersByUserIdCareergroups404JSONResponse) VisitPostUsersByUserIdCareergroupsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DeleteUsersByUserIdCareergroupsByCareerGroupIdRequestObject struct {
+	ByUserId        UserId        `json:"byUserId"`
+	ByCareerGroupId CareerGroupId `json:"byCareerGroupId"`
+}
+
+type DeleteUsersByUserIdCareergroupsByCareerGroupIdResponseObject interface {
+	VisitDeleteUsersByUserIdCareergroupsByCareerGroupIdResponse(w http.ResponseWriter) error
+}
+
+type DeleteUsersByUserIdCareergroupsByCareerGroupId204Response struct {
+}
+
+func (response DeleteUsersByUserIdCareergroupsByCareerGroupId204Response) VisitDeleteUsersByUserIdCareergroupsByCareerGroupIdResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
+	return nil
+}
+
+type DeleteUsersByUserIdCareergroupsByCareerGroupId404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response DeleteUsersByUserIdCareergroupsByCareerGroupId404JSONResponse) VisitDeleteUsersByUserIdCareergroupsByCareerGroupIdResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsersByUserIdCareergroupsByCareerGroupIdRequestObject struct {
+	ByUserId        UserId        `json:"byUserId"`
+	ByCareerGroupId CareerGroupId `json:"byCareerGroupId"`
+}
+
+type GetUsersByUserIdCareergroupsByCareerGroupIdResponseObject interface {
+	VisitGetUsersByUserIdCareergroupsByCareerGroupIdResponse(w http.ResponseWriter) error
+}
+
+type GetUsersByUserIdCareergroupsByCareerGroupId200JSONResponse UserCareerGroup
+
+func (response GetUsersByUserIdCareergroupsByCareerGroupId200JSONResponse) VisitGetUsersByUserIdCareergroupsByCareerGroupIdResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsersByUserIdCareergroupsByCareerGroupId404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response GetUsersByUserIdCareergroupsByCareerGroupId404JSONResponse) VisitGetUsersByUserIdCareergroupsByCareerGroupIdResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdCareergroupsByCareerGroupIdRequestObject struct {
+	ByUserId        UserId        `json:"byUserId"`
+	ByCareerGroupId CareerGroupId `json:"byCareerGroupId"`
+	Body            *PutUsersByUserIdCareergroupsByCareerGroupIdJSONRequestBody
+}
+
+type PutUsersByUserIdCareergroupsByCareerGroupIdResponseObject interface {
+	VisitPutUsersByUserIdCareergroupsByCareerGroupIdResponse(w http.ResponseWriter) error
+}
+
+type PutUsersByUserIdCareergroupsByCareerGroupId200JSONResponse UserCareerGroupOwn
+
+func (response PutUsersByUserIdCareergroupsByCareerGroupId200JSONResponse) VisitPutUsersByUserIdCareergroupsByCareerGroupIdResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdCareergroupsByCareerGroupId400JSONResponse struct{ N400BadRequestJSONResponse }
+
+func (response PutUsersByUserIdCareergroupsByCareerGroupId400JSONResponse) VisitPutUsersByUserIdCareergroupsByCareerGroupIdResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdCareergroupsByCareerGroupId404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response PutUsersByUserIdCareergroupsByCareerGroupId404JSONResponse) VisitPutUsersByUserIdCareergroupsByCareerGroupIdResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostUsersByUserIdCareergroupsByCareerGroupIdCareersRequestObject struct {
+	ByUserId        UserId        `json:"byUserId"`
+	ByCareerGroupId CareerGroupId `json:"byCareerGroupId"`
+	Body            *PostUsersByUserIdCareergroupsByCareerGroupIdCareersJSONRequestBody
+}
+
+type PostUsersByUserIdCareergroupsByCareerGroupIdCareersResponseObject interface {
+	VisitPostUsersByUserIdCareergroupsByCareerGroupIdCareersResponse(w http.ResponseWriter) error
+}
+
+type PostUsersByUserIdCareergroupsByCareerGroupIdCareers201JSONResponse UserCareer
+
+func (response PostUsersByUserIdCareergroupsByCareerGroupIdCareers201JSONResponse) VisitPostUsersByUserIdCareergroupsByCareerGroupIdCareersResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostUsersByUserIdCareergroupsByCareerGroupIdCareers400JSONResponse struct{ N400BadRequestJSONResponse }
+
+func (response PostUsersByUserIdCareergroupsByCareerGroupIdCareers400JSONResponse) VisitPostUsersByUserIdCareergroupsByCareerGroupIdCareersResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdCareergroupsByCareerGroupIdCareersRequestObject struct {
+	ByUserId        UserId        `json:"byUserId"`
+	ByCareerGroupId CareerGroupId `json:"byCareerGroupId"`
+	Body            *PutUsersByUserIdCareergroupsByCareerGroupIdCareersJSONRequestBody
+}
+
+type PutUsersByUserIdCareergroupsByCareerGroupIdCareersResponseObject interface {
+	VisitPutUsersByUserIdCareergroupsByCareerGroupIdCareersResponse(w http.ResponseWriter) error
+}
+
+type PutUsersByUserIdCareergroupsByCareerGroupIdCareers200JSONResponse []UserCareer
+
+func (response PutUsersByUserIdCareergroupsByCareerGroupIdCareers200JSONResponse) VisitPutUsersByUserIdCareergroupsByCareerGroupIdCareersResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdCareergroupsByCareerGroupIdCareers400JSONResponse struct{ N400BadRequestJSONResponse }
+
+func (response PutUsersByUserIdCareergroupsByCareerGroupIdCareers400JSONResponse) VisitPutUsersByUserIdCareergroupsByCareerGroupIdCareersResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdCareergroupsByCareerGroupIdCareers404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response PutUsersByUserIdCareergroupsByCareerGroupIdCareers404JSONResponse) VisitPutUsersByUserIdCareergroupsByCareerGroupIdCareersResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsersByUserIdCareergroupsByCareerGroupIdCareersByCareerIdRequestObject struct {
+	ByUserId        UserId        `json:"byUserId"`
+	ByCareerGroupId CareerGroupId `json:"byCareerGroupId"`
+	ByCareerId      CareerId      `json:"byCareerId"`
+}
+
+type GetUsersByUserIdCareergroupsByCareerGroupIdCareersByCareerIdResponseObject interface {
+	VisitGetUsersByUserIdCareergroupsByCareerGroupIdCareersByCareerIdResponse(w http.ResponseWriter) error
+}
+
+type GetUsersByUserIdCareergroupsByCareerGroupIdCareersByCareerId200JSONResponse UserCareer
+
+func (response GetUsersByUserIdCareergroupsByCareerGroupIdCareersByCareerId200JSONResponse) VisitGetUsersByUserIdCareergroupsByCareerGroupIdCareersByCareerIdResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsersByUserIdCareergroupsByCareerGroupIdCareersByCareerId404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response GetUsersByUserIdCareergroupsByCareerGroupIdCareersByCareerId404JSONResponse) VisitGetUsersByUserIdCareergroupsByCareerGroupIdCareersByCareerIdResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsersByUserIdNotesRequestObject struct {
+	ByUserId UserId `json:"byUserId"`
+}
+
+type GetUsersByUserIdNotesResponseObject interface {
+	VisitGetUsersByUserIdNotesResponse(w http.ResponseWriter) error
+}
+
+type GetUsersByUserIdNotes200JSONResponse []UserNote
+
+func (response GetUsersByUserIdNotes200JSONResponse) VisitGetUsersByUserIdNotesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsersByUserIdNotes404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response GetUsersByUserIdNotes404JSONResponse) VisitGetUsersByUserIdNotesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostUsersByUserIdNotesRequestObject struct {
+	ByUserId UserId `json:"byUserId"`
+	Body     *PostUsersByUserIdNotesJSONRequestBody
+}
+
+type PostUsersByUserIdNotesResponseObject interface {
+	VisitPostUsersByUserIdNotesResponse(w http.ResponseWriter) error
+}
+
+type PostUsersByUserIdNotes201JSONResponse UserNote
+
+func (response PostUsersByUserIdNotes201JSONResponse) VisitPostUsersByUserIdNotesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostUsersByUserIdNotes400JSONResponse struct{ N400BadRequestJSONResponse }
+
+func (response PostUsersByUserIdNotes400JSONResponse) VisitPostUsersByUserIdNotesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PostUsersByUserIdNotes404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response PostUsersByUserIdNotes404JSONResponse) VisitPostUsersByUserIdNotesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DeleteUsersByUserIdNotesByNoteIdRequestObject struct {
+	ByUserId UserId `json:"byUserId"`
+	ByNoteId NoteId `json:"byNoteId"`
+}
+
+type DeleteUsersByUserIdNotesByNoteIdResponseObject interface {
+	VisitDeleteUsersByUserIdNotesByNoteIdResponse(w http.ResponseWriter) error
+}
+
+type DeleteUsersByUserIdNotesByNoteId204Response struct {
+}
+
+func (response DeleteUsersByUserIdNotesByNoteId204Response) VisitDeleteUsersByUserIdNotesByNoteIdResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
+	return nil
+}
+
+type DeleteUsersByUserIdNotesByNoteId404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response DeleteUsersByUserIdNotesByNoteId404JSONResponse) VisitDeleteUsersByUserIdNotesByNoteIdResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdNotesByNoteIdRequestObject struct {
+	ByUserId UserId `json:"byUserId"`
+	ByNoteId NoteId `json:"byNoteId"`
+	Body     *PutUsersByUserIdNotesByNoteIdJSONRequestBody
+}
+
+type PutUsersByUserIdNotesByNoteIdResponseObject interface {
+	VisitPutUsersByUserIdNotesByNoteIdResponse(w http.ResponseWriter) error
+}
+
+type PutUsersByUserIdNotesByNoteId200JSONResponse UserNoteOwn
+
+func (response PutUsersByUserIdNotesByNoteId200JSONResponse) VisitPutUsersByUserIdNotesByNoteIdResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdNotesByNoteId400JSONResponse struct{ N400BadRequestJSONResponse }
+
+func (response PutUsersByUserIdNotesByNoteId400JSONResponse) VisitPutUsersByUserIdNotesByNoteIdResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdNotesByNoteId404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response PutUsersByUserIdNotesByNoteId404JSONResponse) VisitPutUsersByUserIdNotesByNoteIdResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdNotesByNoteIdItemsRequestObject struct {
+	ByUserId UserId `json:"byUserId"`
+	ByNoteId NoteId `json:"byNoteId"`
+	Body     *PutUsersByUserIdNotesByNoteIdItemsJSONRequestBody
+}
+
+type PutUsersByUserIdNotesByNoteIdItemsResponseObject interface {
+	VisitPutUsersByUserIdNotesByNoteIdItemsResponse(w http.ResponseWriter) error
+}
+
+type PutUsersByUserIdNotesByNoteIdItems200JSONResponse []UserNoteItem
+
+func (response PutUsersByUserIdNotesByNoteIdItems200JSONResponse) VisitPutUsersByUserIdNotesByNoteIdItemsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdNotesByNoteIdItems400JSONResponse struct{ N400BadRequestJSONResponse }
+
+func (response PutUsersByUserIdNotesByNoteIdItems400JSONResponse) VisitPutUsersByUserIdNotesByNoteIdItemsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdNotesByNoteIdItems404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response PutUsersByUserIdNotesByNoteIdItems404JSONResponse) VisitPutUsersByUserIdNotesByNoteIdItemsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsersByUserIdQualificationsRequestObject struct {
+	ByUserId UserId `json:"byUserId"`
+}
+
+type GetUsersByUserIdQualificationsResponseObject interface {
+	VisitGetUsersByUserIdQualificationsResponse(w http.ResponseWriter) error
+}
+
+type GetUsersByUserIdQualifications200JSONResponse []UserQualification
+
+func (response GetUsersByUserIdQualifications200JSONResponse) VisitGetUsersByUserIdQualificationsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsersByUserIdQualifications404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response GetUsersByUserIdQualifications404JSONResponse) VisitGetUsersByUserIdQualificationsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdQualificationsRequestObject struct {
+	ByUserId UserId `json:"byUserId"`
+	Body     *PutUsersByUserIdQualificationsJSONRequestBody
+}
+
+type PutUsersByUserIdQualificationsResponseObject interface {
+	VisitPutUsersByUserIdQualificationsResponse(w http.ResponseWriter) error
+}
+
+type PutUsersByUserIdQualifications200JSONResponse []UserQualification
+
+func (response PutUsersByUserIdQualifications200JSONResponse) VisitPutUsersByUserIdQualificationsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdQualifications400JSONResponse struct{ N400BadRequestJSONResponse }
+
+func (response PutUsersByUserIdQualifications400JSONResponse) VisitPutUsersByUserIdQualificationsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdQualifications404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response PutUsersByUserIdQualifications404JSONResponse) VisitPutUsersByUserIdQualificationsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsersByUserIdSkillsRequestObject struct {
+	ByUserId UserId `json:"byUserId"`
+}
+
+type GetUsersByUserIdSkillsResponseObject interface {
+	VisitGetUsersByUserIdSkillsResponse(w http.ResponseWriter) error
+}
+
+type GetUsersByUserIdSkills200JSONResponse []UserSkillTag
+
+func (response GetUsersByUserIdSkills200JSONResponse) VisitGetUsersByUserIdSkillsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsersByUserIdSkills404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response GetUsersByUserIdSkills404JSONResponse) VisitGetUsersByUserIdSkillsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsersByUserIdSolutionsRequestObject struct {
+	ByUserId UserId `json:"byUserId"`
+}
+
+type GetUsersByUserIdSolutionsResponseObject interface {
+	VisitGetUsersByUserIdSolutionsResponse(w http.ResponseWriter) error
+}
+
+type GetUsersByUserIdSolutions200JSONResponse []UserSolution
+
+func (response GetUsersByUserIdSolutions200JSONResponse) VisitGetUsersByUserIdSolutionsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUsersByUserIdSolutions404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response GetUsersByUserIdSolutions404JSONResponse) VisitGetUsersByUserIdSolutionsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdSolutionsRequestObject struct {
+	ByUserId UserId `json:"byUserId"`
+	Body     *PutUsersByUserIdSolutionsJSONRequestBody
+}
+
+type PutUsersByUserIdSolutionsResponseObject interface {
+	VisitPutUsersByUserIdSolutionsResponse(w http.ResponseWriter) error
+}
+
+type PutUsersByUserIdSolutions200JSONResponse []UserSolution
+
+func (response PutUsersByUserIdSolutions200JSONResponse) VisitPutUsersByUserIdSolutionsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdSolutions400JSONResponse struct{ N400BadRequestJSONResponse }
+
+func (response PutUsersByUserIdSolutions400JSONResponse) VisitPutUsersByUserIdSolutionsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type PutUsersByUserIdSolutions404JSONResponse struct{ N404NotFoundJSONResponse }
+
+func (response PutUsersByUserIdSolutions404JSONResponse) VisitPutUsersByUserIdSolutionsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+// StrictServerInterface represents all server handlers.
+type StrictServerInterface interface {
+	// スキル一括登録
+	// (POST /skillrecords)
+	PostSkillrecords(ctx context.Context, request PostSkillrecordsRequestObject) (PostSkillrecordsResponseObject, error)
+	// スキル群取得
+	// (GET /skills)
+	GetSkills(ctx context.Context, request GetSkillsRequestObject) (GetSkillsResponseObject, error)
+	// スキル登録
+	// (POST /skills)
+	PostSkills(ctx context.Context, request PostSkillsRequestObject) (PostSkillsResponseObject, error)
+	// 指定スキル取得
+	// (GET /skills/{bySkillId})
+	GetSkillsBySkillId(ctx context.Context, request GetSkillsBySkillIdRequestObject) (GetSkillsBySkillIdResponseObject, error)
+	// 全スキルタグ取得
+	// (GET /skilltags)
+	GetSkilltags(ctx context.Context, request GetSkilltagsRequestObject) (GetSkilltagsResponseObject, error)
+	// スキルタグ登録
+	// (POST /skilltags)
+	PostSkilltags(ctx context.Context, request PostSkilltagsRequestObject) (PostSkilltagsResponseObject, error)
+	// 指定スキルタグ取得
+	// (GET /skilltags/{bySkillTagId})
+	GetSkilltagsBySkillTagId(ctx context.Context, request GetSkilltagsBySkillTagIdRequestObject) (GetSkilltagsBySkillTagIdResponseObject, error)
+	// ユーザー一覧取得
+	// (GET /users)
+	GetUsers(ctx context.Context, request GetUsersRequestObject) (GetUsersResponseObject, error)
+	// ユーザーアカウント登録
+	// (POST /users)
+	PostUsers(ctx context.Context, request PostUsersRequestObject) (PostUsersResponseObject, error)
+	// 指定ユーザーアカウント削除
+	// (DELETE /users/{byUserId})
+	DeleteUsersByUserId(ctx context.Context, request DeleteUsersByUserIdRequestObject) (DeleteUsersByUserIdResponseObject, error)
+	// アクティビティ群取得
+	// (GET /users/{byUserId}/activities)
+	GetUsersByUserIdActivities(ctx context.Context, request GetUsersByUserIdActivitiesRequestObject) (GetUsersByUserIdActivitiesResponseObject, error)
+	// アクティビティ群最新化
+	// (PUT /users/{byUserId}/activities)
+	PutUsersByUserIdActivities(ctx context.Context, request PutUsersByUserIdActivitiesRequestObject) (PutUsersByUserIdActivitiesResponseObject, error)
+	// アピール事項群取得
+	// (GET /users/{byUserId}/appeals)
+	GetUsersByUserIdAppeals(ctx context.Context, request GetUsersByUserIdAppealsRequestObject) (GetUsersByUserIdAppealsResponseObject, error)
+	// アピール事項群最新化
+	// (PUT /users/{byUserId}/appeals)
+	PutUsersByUserIdAppeals(ctx context.Context, request PutUsersByUserIdAppealsRequestObject) (PutUsersByUserIdAppealsResponseObject, error)
+	// 属性取得
+	// (GET /users/{byUserId}/attribute)
+	GetUsersByUserIdAttribute(ctx context.Context, request GetUsersByUserIdAttributeRequestObject) (GetUsersByUserIdAttributeResponseObject, error)
+	// 属性更新
+	// (PUT /users/{byUserId}/attribute)
+	PutUsersByUserIdAttribute(ctx context.Context, request PutUsersByUserIdAttributeRequestObject) (PutUsersByUserIdAttributeResponseObject, error)
+	// キャリアグループ群取得
+	// (GET /users/{byUserId}/careergroups)
+	GetUsersByUserIdCareergroups(ctx context.Context, request GetUsersByUserIdCareergroupsRequestObject) (GetUsersByUserIdCareergroupsResponseObject, error)
+	// キャリアグループ新規登録
+	// (POST /users/{byUserId}/careergroups)
+	PostUsersByUserIdCareergroups(ctx context.Context, request PostUsersByUserIdCareergroupsRequestObject) (PostUsersByUserIdCareergroupsResponseObject, error)
+	// 【未実装】キャリアグループ削除
+	// (DELETE /users/{byUserId}/careergroups/{byCareerGroupId})
+	DeleteUsersByUserIdCareergroupsByCareerGroupId(ctx context.Context, request DeleteUsersByUserIdCareergroupsByCareerGroupIdRequestObject) (DeleteUsersByUserIdCareergroupsByCareerGroupIdResponseObject, error)
+	// １キャリアグループ取得
+	// (GET /users/{byUserId}/careergroups/{byCareerGroupId})
+	GetUsersByUserIdCareergroupsByCareerGroupId(ctx context.Context, request GetUsersByUserIdCareergroupsByCareerGroupIdRequestObject) (GetUsersByUserIdCareergroupsByCareerGroupIdResponseObject, error)
+	// 【未実装】キャリアグループ更新
+	// (PUT /users/{byUserId}/careergroups/{byCareerGroupId})
+	PutUsersByUserIdCareergroupsByCareerGroupId(ctx context.Context, request PutUsersByUserIdCareergroupsByCareerGroupIdRequestObject) (PutUsersByUserIdCareergroupsByCareerGroupIdResponseObject, error)
+	// １キャリアグループ内の１キャリア登録
+	// (POST /users/{byUserId}/careergroups/{byCareerGroupId}/careers)
+	PostUsersByUserIdCareergroupsByCareerGroupIdCareers(ctx context.Context, request PostUsersByUserIdCareergroupsByCareerGroupIdCareersRequestObject) (PostUsersByUserIdCareergroupsByCareerGroupIdCareersResponseObject, error)
+	// 【未実装】キャリアグループ内キャリア群最新化
+	// (PUT /users/{byUserId}/careergroups/{byCareerGroupId}/careers)
+	PutUsersByUserIdCareergroupsByCareerGroupIdCareers(ctx context.Context, request PutUsersByUserIdCareergroupsByCareerGroupIdCareersRequestObject) (PutUsersByUserIdCareergroupsByCareerGroupIdCareersResponseObject, error)
+	// １キャリア取得
+	// (GET /users/{byUserId}/careergroups/{byCareerGroupId}/careers/{byCareerId})
+	GetUsersByUserIdCareergroupsByCareerGroupIdCareersByCareerId(ctx context.Context, request GetUsersByUserIdCareergroupsByCareerGroupIdCareersByCareerIdRequestObject) (GetUsersByUserIdCareergroupsByCareerGroupIdCareersByCareerIdResponseObject, error)
+	// 注釈群取得
+	// (GET /users/{byUserId}/notes)
+	GetUsersByUserIdNotes(ctx context.Context, request GetUsersByUserIdNotesRequestObject) (GetUsersByUserIdNotesResponseObject, error)
+	// 注釈新規登録
+	// (POST /users/{byUserId}/notes)
+	PostUsersByUserIdNotes(ctx context.Context, request PostUsersByUserIdNotesRequestObject) (PostUsersByUserIdNotesResponseObject, error)
+	// 【未実装】注釈削除
+	// (DELETE /users/{byUserId}/notes/{byNoteId})
+	DeleteUsersByUserIdNotesByNoteId(ctx context.Context, request DeleteUsersByUserIdNotesByNoteIdRequestObject) (DeleteUsersByUserIdNotesByNoteIdResponseObject, error)
+	// 【未実装】注釈更新
+	// (PUT /users/{byUserId}/notes/{byNoteId})
+	PutUsersByUserIdNotesByNoteId(ctx context.Context, request PutUsersByUserIdNotesByNoteIdRequestObject) (PutUsersByUserIdNotesByNoteIdResponseObject, error)
+	// 【未実装】注釈内要素群最新化
+	// (PUT /users/{byUserId}/notes/{byNoteId}/items)
+	PutUsersByUserIdNotesByNoteIdItems(ctx context.Context, request PutUsersByUserIdNotesByNoteIdItemsRequestObject) (PutUsersByUserIdNotesByNoteIdItemsResponseObject, error)
+	// 資格情報群取得
+	// (GET /users/{byUserId}/qualifications)
+	GetUsersByUserIdQualifications(ctx context.Context, request GetUsersByUserIdQualificationsRequestObject) (GetUsersByUserIdQualificationsResponseObject, error)
+	// 資格情報群最新化
+	// (PUT /users/{byUserId}/qualifications)
+	PutUsersByUserIdQualifications(ctx context.Context, request PutUsersByUserIdQualificationsRequestObject) (PutUsersByUserIdQualificationsResponseObject, error)
+	// スキル群取得
+	// (GET /users/{byUserId}/skills)
+	GetUsersByUserIdSkills(ctx context.Context, request GetUsersByUserIdSkillsRequestObject) (GetUsersByUserIdSkillsResponseObject, error)
+	// 課題解決事例群取得
+	// (GET /users/{byUserId}/solutions)
+	GetUsersByUserIdSolutions(ctx context.Context, request GetUsersByUserIdSolutionsRequestObject) (GetUsersByUserIdSolutionsResponseObject, error)
+	// 課題解決事例群最新化
+	// (PUT /users/{byUserId}/solutions)
+	PutUsersByUserIdSolutions(ctx context.Context, request PutUsersByUserIdSolutionsRequestObject) (PutUsersByUserIdSolutionsResponseObject, error)
+}
+
+type StrictHandlerFunc = strictecho.StrictEchoHandlerFunc
+type StrictMiddlewareFunc = strictecho.StrictEchoMiddlewareFunc
+
+func NewStrictHandler(ssi StrictServerInterface, middlewares []StrictMiddlewareFunc) ServerInterface {
+	return &strictHandler{ssi: ssi, middlewares: middlewares}
+}
+
+type strictHandler struct {
+	ssi         StrictServerInterface
+	middlewares []StrictMiddlewareFunc
+}
+
+// PostSkillrecords operation middleware
+func (sh *strictHandler) PostSkillrecords(ctx echo.Context) error {
+	var request PostSkillrecordsRequestObject
+
+	var body PostSkillrecordsJSONRequestBody
+	if err := ctx.Bind(&body); err != nil {
+		return err
+	}
+	request.Body = &body
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.PostSkillrecords(ctx.Request().Context(), request.(PostSkillrecordsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostSkillrecords")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(PostSkillrecordsResponseObject); ok {
+		return validResponse.VisitPostSkillrecordsResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// GetSkills operation middleware
+func (sh *strictHandler) GetSkills(ctx echo.Context, params GetSkillsParams) error {
+	var request GetSkillsRequestObject
+
+	request.Params = params
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.GetSkills(ctx.Request().Context(), request.(GetSkillsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetSkills")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(GetSkillsResponseObject); ok {
+		return validResponse.VisitGetSkillsResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// PostSkills operation middleware
+func (sh *strictHandler) PostSkills(ctx echo.Context, params PostSkillsParams) error {
+	var request PostSkillsRequestObject
+
+	request.Params = params
+
+	var body PostSkillsJSONRequestBody
+	if err := ctx.Bind(&body); err != nil {
+		return err
+	}
+	request.Body = &body
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.PostSkills(ctx.Request().Context(), request.(PostSkillsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostSkills")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(PostSkillsResponseObject); ok {
+		return validResponse.VisitPostSkillsResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// GetSkillsBySkillId operation middleware
+func (sh *strictHandler) GetSkillsBySkillId(ctx echo.Context, bySkillId SkillId) error {
+	var request GetSkillsBySkillIdRequestObject
+
+	request.BySkillId = bySkillId
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.GetSkillsBySkillId(ctx.Request().Context(), request.(GetSkillsBySkillIdRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetSkillsBySkillId")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(GetSkillsBySkillIdResponseObject); ok {
+		return validResponse.VisitGetSkillsBySkillIdResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// GetSkilltags operation middleware
+func (sh *strictHandler) GetSkilltags(ctx echo.Context) error {
+	var request GetSkilltagsRequestObject
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.GetSkilltags(ctx.Request().Context(), request.(GetSkilltagsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetSkilltags")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(GetSkilltagsResponseObject); ok {
+		return validResponse.VisitGetSkilltagsResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// PostSkilltags operation middleware
+func (sh *strictHandler) PostSkilltags(ctx echo.Context) error {
+	var request PostSkilltagsRequestObject
+
+	var body PostSkilltagsJSONRequestBody
+	if err := ctx.Bind(&body); err != nil {
+		return err
+	}
+	request.Body = &body
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.PostSkilltags(ctx.Request().Context(), request.(PostSkilltagsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostSkilltags")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(PostSkilltagsResponseObject); ok {
+		return validResponse.VisitPostSkilltagsResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// GetSkilltagsBySkillTagId operation middleware
+func (sh *strictHandler) GetSkilltagsBySkillTagId(ctx echo.Context, bySkillTagId SkillTagId) error {
+	var request GetSkilltagsBySkillTagIdRequestObject
+
+	request.BySkillTagId = bySkillTagId
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.GetSkilltagsBySkillTagId(ctx.Request().Context(), request.(GetSkilltagsBySkillTagIdRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetSkilltagsBySkillTagId")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(GetSkilltagsBySkillTagIdResponseObject); ok {
+		return validResponse.VisitGetSkilltagsBySkillTagIdResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// GetUsers operation middleware
+func (sh *strictHandler) GetUsers(ctx echo.Context) error {
+	var request GetUsersRequestObject
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.GetUsers(ctx.Request().Context(), request.(GetUsersRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetUsers")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(GetUsersResponseObject); ok {
+		return validResponse.VisitGetUsersResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// PostUsers operation middleware
+func (sh *strictHandler) PostUsers(ctx echo.Context) error {
+	var request PostUsersRequestObject
+
+	var body PostUsersJSONRequestBody
+	if err := ctx.Bind(&body); err != nil {
+		return err
+	}
+	request.Body = &body
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.PostUsers(ctx.Request().Context(), request.(PostUsersRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostUsers")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(PostUsersResponseObject); ok {
+		return validResponse.VisitPostUsersResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// DeleteUsersByUserId operation middleware
+func (sh *strictHandler) DeleteUsersByUserId(ctx echo.Context, byUserId UserId) error {
+	var request DeleteUsersByUserIdRequestObject
+
+	request.ByUserId = byUserId
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteUsersByUserId(ctx.Request().Context(), request.(DeleteUsersByUserIdRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteUsersByUserId")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(DeleteUsersByUserIdResponseObject); ok {
+		return validResponse.VisitDeleteUsersByUserIdResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// GetUsersByUserIdActivities operation middleware
+func (sh *strictHandler) GetUsersByUserIdActivities(ctx echo.Context, byUserId UserId) error {
+	var request GetUsersByUserIdActivitiesRequestObject
+
+	request.ByUserId = byUserId
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.GetUsersByUserIdActivities(ctx.Request().Context(), request.(GetUsersByUserIdActivitiesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetUsersByUserIdActivities")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(GetUsersByUserIdActivitiesResponseObject); ok {
+		return validResponse.VisitGetUsersByUserIdActivitiesResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// PutUsersByUserIdActivities operation middleware
+func (sh *strictHandler) PutUsersByUserIdActivities(ctx echo.Context, byUserId UserId) error {
+	var request PutUsersByUserIdActivitiesRequestObject
+
+	request.ByUserId = byUserId
+
+	var body PutUsersByUserIdActivitiesJSONRequestBody
+	if err := ctx.Bind(&body); err != nil {
+		return err
+	}
+	request.Body = &body
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.PutUsersByUserIdActivities(ctx.Request().Context(), request.(PutUsersByUserIdActivitiesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PutUsersByUserIdActivities")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(PutUsersByUserIdActivitiesResponseObject); ok {
+		return validResponse.VisitPutUsersByUserIdActivitiesResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// GetUsersByUserIdAppeals operation middleware
+func (sh *strictHandler) GetUsersByUserIdAppeals(ctx echo.Context, byUserId UserId) error {
+	var request GetUsersByUserIdAppealsRequestObject
+
+	request.ByUserId = byUserId
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.GetUsersByUserIdAppeals(ctx.Request().Context(), request.(GetUsersByUserIdAppealsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetUsersByUserIdAppeals")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(GetUsersByUserIdAppealsResponseObject); ok {
+		return validResponse.VisitGetUsersByUserIdAppealsResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// PutUsersByUserIdAppeals operation middleware
+func (sh *strictHandler) PutUsersByUserIdAppeals(ctx echo.Context, byUserId UserId) error {
+	var request PutUsersByUserIdAppealsRequestObject
+
+	request.ByUserId = byUserId
+
+	var body PutUsersByUserIdAppealsJSONRequestBody
+	if err := ctx.Bind(&body); err != nil {
+		return err
+	}
+	request.Body = &body
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.PutUsersByUserIdAppeals(ctx.Request().Context(), request.(PutUsersByUserIdAppealsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PutUsersByUserIdAppeals")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(PutUsersByUserIdAppealsResponseObject); ok {
+		return validResponse.VisitPutUsersByUserIdAppealsResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// GetUsersByUserIdAttribute operation middleware
+func (sh *strictHandler) GetUsersByUserIdAttribute(ctx echo.Context, byUserId UserId) error {
+	var request GetUsersByUserIdAttributeRequestObject
+
+	request.ByUserId = byUserId
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.GetUsersByUserIdAttribute(ctx.Request().Context(), request.(GetUsersByUserIdAttributeRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetUsersByUserIdAttribute")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(GetUsersByUserIdAttributeResponseObject); ok {
+		return validResponse.VisitGetUsersByUserIdAttributeResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// PutUsersByUserIdAttribute operation middleware
+func (sh *strictHandler) PutUsersByUserIdAttribute(ctx echo.Context, byUserId UserId) error {
+	var request PutUsersByUserIdAttributeRequestObject
+
+	request.ByUserId = byUserId
+
+	var body PutUsersByUserIdAttributeJSONRequestBody
+	if err := ctx.Bind(&body); err != nil {
+		return err
+	}
+	request.Body = &body
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.PutUsersByUserIdAttribute(ctx.Request().Context(), request.(PutUsersByUserIdAttributeRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PutUsersByUserIdAttribute")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(PutUsersByUserIdAttributeResponseObject); ok {
+		return validResponse.VisitPutUsersByUserIdAttributeResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// GetUsersByUserIdCareergroups operation middleware
+func (sh *strictHandler) GetUsersByUserIdCareergroups(ctx echo.Context, byUserId UserId) error {
+	var request GetUsersByUserIdCareergroupsRequestObject
+
+	request.ByUserId = byUserId
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.GetUsersByUserIdCareergroups(ctx.Request().Context(), request.(GetUsersByUserIdCareergroupsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetUsersByUserIdCareergroups")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(GetUsersByUserIdCareergroupsResponseObject); ok {
+		return validResponse.VisitGetUsersByUserIdCareergroupsResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// PostUsersByUserIdCareergroups operation middleware
+func (sh *strictHandler) PostUsersByUserIdCareergroups(ctx echo.Context, byUserId UserId) error {
+	var request PostUsersByUserIdCareergroupsRequestObject
+
+	request.ByUserId = byUserId
+
+	var body PostUsersByUserIdCareergroupsJSONRequestBody
+	if err := ctx.Bind(&body); err != nil {
+		return err
+	}
+	request.Body = &body
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.PostUsersByUserIdCareergroups(ctx.Request().Context(), request.(PostUsersByUserIdCareergroupsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostUsersByUserIdCareergroups")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(PostUsersByUserIdCareergroupsResponseObject); ok {
+		return validResponse.VisitPostUsersByUserIdCareergroupsResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// DeleteUsersByUserIdCareergroupsByCareerGroupId operation middleware
+func (sh *strictHandler) DeleteUsersByUserIdCareergroupsByCareerGroupId(ctx echo.Context, byUserId UserId, byCareerGroupId CareerGroupId) error {
+	var request DeleteUsersByUserIdCareergroupsByCareerGroupIdRequestObject
+
+	request.ByUserId = byUserId
+	request.ByCareerGroupId = byCareerGroupId
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteUsersByUserIdCareergroupsByCareerGroupId(ctx.Request().Context(), request.(DeleteUsersByUserIdCareergroupsByCareerGroupIdRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteUsersByUserIdCareergroupsByCareerGroupId")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(DeleteUsersByUserIdCareergroupsByCareerGroupIdResponseObject); ok {
+		return validResponse.VisitDeleteUsersByUserIdCareergroupsByCareerGroupIdResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// GetUsersByUserIdCareergroupsByCareerGroupId operation middleware
+func (sh *strictHandler) GetUsersByUserIdCareergroupsByCareerGroupId(ctx echo.Context, byUserId UserId, byCareerGroupId CareerGroupId) error {
+	var request GetUsersByUserIdCareergroupsByCareerGroupIdRequestObject
+
+	request.ByUserId = byUserId
+	request.ByCareerGroupId = byCareerGroupId
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.GetUsersByUserIdCareergroupsByCareerGroupId(ctx.Request().Context(), request.(GetUsersByUserIdCareergroupsByCareerGroupIdRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetUsersByUserIdCareergroupsByCareerGroupId")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(GetUsersByUserIdCareergroupsByCareerGroupIdResponseObject); ok {
+		return validResponse.VisitGetUsersByUserIdCareergroupsByCareerGroupIdResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// PutUsersByUserIdCareergroupsByCareerGroupId operation middleware
+func (sh *strictHandler) PutUsersByUserIdCareergroupsByCareerGroupId(ctx echo.Context, byUserId UserId, byCareerGroupId CareerGroupId) error {
+	var request PutUsersByUserIdCareergroupsByCareerGroupIdRequestObject
+
+	request.ByUserId = byUserId
+	request.ByCareerGroupId = byCareerGroupId
+
+	var body PutUsersByUserIdCareergroupsByCareerGroupIdJSONRequestBody
+	if err := ctx.Bind(&body); err != nil {
+		return err
+	}
+	request.Body = &body
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.PutUsersByUserIdCareergroupsByCareerGroupId(ctx.Request().Context(), request.(PutUsersByUserIdCareergroupsByCareerGroupIdRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PutUsersByUserIdCareergroupsByCareerGroupId")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(PutUsersByUserIdCareergroupsByCareerGroupIdResponseObject); ok {
+		return validResponse.VisitPutUsersByUserIdCareergroupsByCareerGroupIdResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// PostUsersByUserIdCareergroupsByCareerGroupIdCareers operation middleware
+func (sh *strictHandler) PostUsersByUserIdCareergroupsByCareerGroupIdCareers(ctx echo.Context, byUserId UserId, byCareerGroupId CareerGroupId) error {
+	var request PostUsersByUserIdCareergroupsByCareerGroupIdCareersRequestObject
+
+	request.ByUserId = byUserId
+	request.ByCareerGroupId = byCareerGroupId
+
+	var body PostUsersByUserIdCareergroupsByCareerGroupIdCareersJSONRequestBody
+	if err := ctx.Bind(&body); err != nil {
+		return err
+	}
+	request.Body = &body
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.PostUsersByUserIdCareergroupsByCareerGroupIdCareers(ctx.Request().Context(), request.(PostUsersByUserIdCareergroupsByCareerGroupIdCareersRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostUsersByUserIdCareergroupsByCareerGroupIdCareers")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(PostUsersByUserIdCareergroupsByCareerGroupIdCareersResponseObject); ok {
+		return validResponse.VisitPostUsersByUserIdCareergroupsByCareerGroupIdCareersResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// PutUsersByUserIdCareergroupsByCareerGroupIdCareers operation middleware
+func (sh *strictHandler) PutUsersByUserIdCareergroupsByCareerGroupIdCareers(ctx echo.Context, byUserId UserId, byCareerGroupId CareerGroupId) error {
+	var request PutUsersByUserIdCareergroupsByCareerGroupIdCareersRequestObject
+
+	request.ByUserId = byUserId
+	request.ByCareerGroupId = byCareerGroupId
+
+	var body PutUsersByUserIdCareergroupsByCareerGroupIdCareersJSONRequestBody
+	if err := ctx.Bind(&body); err != nil {
+		return err
+	}
+	request.Body = &body
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.PutUsersByUserIdCareergroupsByCareerGroupIdCareers(ctx.Request().Context(), request.(PutUsersByUserIdCareergroupsByCareerGroupIdCareersRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PutUsersByUserIdCareergroupsByCareerGroupIdCareers")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(PutUsersByUserIdCareergroupsByCareerGroupIdCareersResponseObject); ok {
+		return validResponse.VisitPutUsersByUserIdCareergroupsByCareerGroupIdCareersResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// GetUsersByUserIdCareergroupsByCareerGroupIdCareersByCareerId operation middleware
+func (sh *strictHandler) GetUsersByUserIdCareergroupsByCareerGroupIdCareersByCareerId(ctx echo.Context, byUserId UserId, byCareerGroupId CareerGroupId, byCareerId CareerId) error {
+	var request GetUsersByUserIdCareergroupsByCareerGroupIdCareersByCareerIdRequestObject
+
+	request.ByUserId = byUserId
+	request.ByCareerGroupId = byCareerGroupId
+	request.ByCareerId = byCareerId
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.GetUsersByUserIdCareergroupsByCareerGroupIdCareersByCareerId(ctx.Request().Context(), request.(GetUsersByUserIdCareergroupsByCareerGroupIdCareersByCareerIdRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetUsersByUserIdCareergroupsByCareerGroupIdCareersByCareerId")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(GetUsersByUserIdCareergroupsByCareerGroupIdCareersByCareerIdResponseObject); ok {
+		return validResponse.VisitGetUsersByUserIdCareergroupsByCareerGroupIdCareersByCareerIdResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// GetUsersByUserIdNotes operation middleware
+func (sh *strictHandler) GetUsersByUserIdNotes(ctx echo.Context, byUserId UserId) error {
+	var request GetUsersByUserIdNotesRequestObject
+
+	request.ByUserId = byUserId
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.GetUsersByUserIdNotes(ctx.Request().Context(), request.(GetUsersByUserIdNotesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetUsersByUserIdNotes")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(GetUsersByUserIdNotesResponseObject); ok {
+		return validResponse.VisitGetUsersByUserIdNotesResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// PostUsersByUserIdNotes operation middleware
+func (sh *strictHandler) PostUsersByUserIdNotes(ctx echo.Context, byUserId UserId) error {
+	var request PostUsersByUserIdNotesRequestObject
+
+	request.ByUserId = byUserId
+
+	var body PostUsersByUserIdNotesJSONRequestBody
+	if err := ctx.Bind(&body); err != nil {
+		return err
+	}
+	request.Body = &body
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.PostUsersByUserIdNotes(ctx.Request().Context(), request.(PostUsersByUserIdNotesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PostUsersByUserIdNotes")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(PostUsersByUserIdNotesResponseObject); ok {
+		return validResponse.VisitPostUsersByUserIdNotesResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// DeleteUsersByUserIdNotesByNoteId operation middleware
+func (sh *strictHandler) DeleteUsersByUserIdNotesByNoteId(ctx echo.Context, byUserId UserId, byNoteId NoteId) error {
+	var request DeleteUsersByUserIdNotesByNoteIdRequestObject
+
+	request.ByUserId = byUserId
+	request.ByNoteId = byNoteId
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteUsersByUserIdNotesByNoteId(ctx.Request().Context(), request.(DeleteUsersByUserIdNotesByNoteIdRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteUsersByUserIdNotesByNoteId")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(DeleteUsersByUserIdNotesByNoteIdResponseObject); ok {
+		return validResponse.VisitDeleteUsersByUserIdNotesByNoteIdResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// PutUsersByUserIdNotesByNoteId operation middleware
+func (sh *strictHandler) PutUsersByUserIdNotesByNoteId(ctx echo.Context, byUserId UserId, byNoteId NoteId) error {
+	var request PutUsersByUserIdNotesByNoteIdRequestObject
+
+	request.ByUserId = byUserId
+	request.ByNoteId = byNoteId
+
+	var body PutUsersByUserIdNotesByNoteIdJSONRequestBody
+	if err := ctx.Bind(&body); err != nil {
+		return err
+	}
+	request.Body = &body
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.PutUsersByUserIdNotesByNoteId(ctx.Request().Context(), request.(PutUsersByUserIdNotesByNoteIdRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PutUsersByUserIdNotesByNoteId")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(PutUsersByUserIdNotesByNoteIdResponseObject); ok {
+		return validResponse.VisitPutUsersByUserIdNotesByNoteIdResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// PutUsersByUserIdNotesByNoteIdItems operation middleware
+func (sh *strictHandler) PutUsersByUserIdNotesByNoteIdItems(ctx echo.Context, byUserId UserId, byNoteId NoteId) error {
+	var request PutUsersByUserIdNotesByNoteIdItemsRequestObject
+
+	request.ByUserId = byUserId
+	request.ByNoteId = byNoteId
+
+	var body PutUsersByUserIdNotesByNoteIdItemsJSONRequestBody
+	if err := ctx.Bind(&body); err != nil {
+		return err
+	}
+	request.Body = &body
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.PutUsersByUserIdNotesByNoteIdItems(ctx.Request().Context(), request.(PutUsersByUserIdNotesByNoteIdItemsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PutUsersByUserIdNotesByNoteIdItems")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(PutUsersByUserIdNotesByNoteIdItemsResponseObject); ok {
+		return validResponse.VisitPutUsersByUserIdNotesByNoteIdItemsResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// GetUsersByUserIdQualifications operation middleware
+func (sh *strictHandler) GetUsersByUserIdQualifications(ctx echo.Context, byUserId UserId) error {
+	var request GetUsersByUserIdQualificationsRequestObject
+
+	request.ByUserId = byUserId
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.GetUsersByUserIdQualifications(ctx.Request().Context(), request.(GetUsersByUserIdQualificationsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetUsersByUserIdQualifications")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(GetUsersByUserIdQualificationsResponseObject); ok {
+		return validResponse.VisitGetUsersByUserIdQualificationsResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// PutUsersByUserIdQualifications operation middleware
+func (sh *strictHandler) PutUsersByUserIdQualifications(ctx echo.Context, byUserId UserId) error {
+	var request PutUsersByUserIdQualificationsRequestObject
+
+	request.ByUserId = byUserId
+
+	var body PutUsersByUserIdQualificationsJSONRequestBody
+	if err := ctx.Bind(&body); err != nil {
+		return err
+	}
+	request.Body = &body
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.PutUsersByUserIdQualifications(ctx.Request().Context(), request.(PutUsersByUserIdQualificationsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PutUsersByUserIdQualifications")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(PutUsersByUserIdQualificationsResponseObject); ok {
+		return validResponse.VisitPutUsersByUserIdQualificationsResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// GetUsersByUserIdSkills operation middleware
+func (sh *strictHandler) GetUsersByUserIdSkills(ctx echo.Context, byUserId UserId) error {
+	var request GetUsersByUserIdSkillsRequestObject
+
+	request.ByUserId = byUserId
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.GetUsersByUserIdSkills(ctx.Request().Context(), request.(GetUsersByUserIdSkillsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetUsersByUserIdSkills")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(GetUsersByUserIdSkillsResponseObject); ok {
+		return validResponse.VisitGetUsersByUserIdSkillsResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// GetUsersByUserIdSolutions operation middleware
+func (sh *strictHandler) GetUsersByUserIdSolutions(ctx echo.Context, byUserId UserId) error {
+	var request GetUsersByUserIdSolutionsRequestObject
+
+	request.ByUserId = byUserId
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.GetUsersByUserIdSolutions(ctx.Request().Context(), request.(GetUsersByUserIdSolutionsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetUsersByUserIdSolutions")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(GetUsersByUserIdSolutionsResponseObject); ok {
+		return validResponse.VisitGetUsersByUserIdSolutionsResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
+// PutUsersByUserIdSolutions operation middleware
+func (sh *strictHandler) PutUsersByUserIdSolutions(ctx echo.Context, byUserId UserId) error {
+	var request PutUsersByUserIdSolutionsRequestObject
+
+	request.ByUserId = byUserId
+
+	var body PutUsersByUserIdSolutionsJSONRequestBody
+	if err := ctx.Bind(&body); err != nil {
+		return err
+	}
+	request.Body = &body
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.PutUsersByUserIdSolutions(ctx.Request().Context(), request.(PutUsersByUserIdSolutionsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "PutUsersByUserIdSolutions")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(PutUsersByUserIdSolutionsResponseObject); ok {
+		return validResponse.VisitPutUsersByUserIdSolutionsResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
 }
 
 // Base64 encoded, gzipped, json marshaled Swagger object
