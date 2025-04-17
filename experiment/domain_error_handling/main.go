@@ -1,10 +1,9 @@
 package main
 
 import (
+	"github.com/sky0621/tips-go/experiment/domain_error_handling/handler"
 	"log"
 	"net/http"
-
-	"github.com/sky0621/tips-go/experiment/domain_error_handling/handler"
 )
 
 func main() {
