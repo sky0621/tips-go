@@ -5,6 +5,8 @@ import (
 	"fmt"
 )
 
+// sentinel error
+
 var (
 	ErrNotFound = errors.New("not found")
 )

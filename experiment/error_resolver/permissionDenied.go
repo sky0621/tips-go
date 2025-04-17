@@ -5,6 +5,8 @@ import (
 	"fmt"
 )
 
+// sentinel error
+
 var (
 	ErrPermissionDenied = errors.New("permission denied")
 )
