@@ -1,0 +1,5 @@
+docker/
+terraform/
+deploy.sh
+MEMO.md
+docker-compose.yml
