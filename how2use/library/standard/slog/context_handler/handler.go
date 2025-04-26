@@ -19,6 +19,7 @@ type AppLogHandler struct {
 var _ slog.Handler = &AppLogHandler{}
 
 func (h *AppLogHandler) Handle(ctx context.Context, r slog.Record) error {
+	// ログに追加したいコンテキストのキーの分だけ処理
 	for _, key := range keys {
 		if v := ctx.Value(key); v != nil {
 			r.AddAttrs(slog.Attr{Key: key, Value: slog.AnyValue(v)})
