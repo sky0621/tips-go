@@ -2,8 +2,8 @@ package infra
 
 import (
 	"context"
-	"errors"
 	"fmt"
+	"github.com/pkg/errors"
 	"github.com/sky0621/tips-go/how2use/library/standard/slog/stacktrace/domain/model"
 	"github.com/sky0621/tips-go/how2use/library/standard/slog/stacktrace/domain/repository"
 )
