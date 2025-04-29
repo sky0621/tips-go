@@ -29,3 +29,7 @@ go tool migrate create -ext sql -dir schema/db -seq create_contents_table
 ```
 go tool migrate create -ext sql -dir schema/db -seq create_courses_table
 ```
+
+```
+go tool migrate create -ext sql -dir schema/db -seq create_programs_table
+```

@@ -18,3 +18,10 @@ type Course struct {
 	Name  string
 	Level int32
 }
+
+type Program struct {
+	ID        sql.NullString
+	Question  string
+	Answer    string
+	ContentID sql.NullString
+}

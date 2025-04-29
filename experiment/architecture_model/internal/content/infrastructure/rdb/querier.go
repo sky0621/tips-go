@@ -6,10 +6,16 @@ package rdb
 
 import (
 	"context"
+	"database/sql"
 )
 
 type Querier interface {
 	CreateContents(ctx context.Context, arg CreateContentsParams) error
+	CreateProgramsBatch01(ctx context.Context, arg CreateProgramsBatch01Params) (sql.Result, error)
+	CreateProgramsBatch02(ctx context.Context, arg CreateProgramsBatch02Params) (sql.Result, error)
+	CreateProgramsBatch03(ctx context.Context, arg CreateProgramsBatch03Params) (sql.Result, error)
+	CreateProgramsBatch04(ctx context.Context, arg CreateProgramsBatch04Params) (sql.Result, error)
+	CreateProgramsBatch05(ctx context.Context, arg CreateProgramsBatch05Params) (sql.Result, error)
 	GetContentById(ctx context.Context, uuidTOBIN string) (Content, error)
 	ListContents(ctx context.Context) ([]Content, error)
 	SearchContents(ctx context.Context, name string) ([]Content, error)
