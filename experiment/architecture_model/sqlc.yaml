@@ -1,0 +1,11 @@
+version: "2"
+sql:
+  - engine: "mysql"
+    queries: "./internal/shared/infrastructure/rdb/sql/**"
+    schema: "./schema/db"
+    gen:
+      go:
+        package: "rdb"
+        out: "./internal/shared/infrastructure/rdb"
+        emit_empty_slices: true
+        emit_interface: true

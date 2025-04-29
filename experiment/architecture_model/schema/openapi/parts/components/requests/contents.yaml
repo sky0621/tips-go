@@ -1,0 +1,7 @@
+ContentRequest:
+  type: object
+  properties:
+    name:
+      $ref: "../schemas/contents.yaml#/ContentName"
+  required:
+    - name

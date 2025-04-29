@@ -1,0 +1,10 @@
+ContentResponse:
+  type: object
+  properties:
+    id:
+      $ref: "../schemas/contents.yaml#/ContentId"
+    name:
+      $ref: "../schemas/contents.yaml#/ContentName"
+  required:
+    - id
+    - name
