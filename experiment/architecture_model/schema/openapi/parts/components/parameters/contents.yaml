@@ -5,3 +5,12 @@ ContentPartialNameQuery:
   required: false
   schema:
     $ref: "../schemas/contents.yaml#/ContentName"
+
+ContentIDQuery:
+  name: "id"
+  description: "コンテンツID文字列"
+  in: "path"
+  required: true
+  x-go-name: ID
+  schema:
+    $ref: "../schemas/contents.yaml#/ContentId"

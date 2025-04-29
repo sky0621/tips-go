@@ -7,4 +7,5 @@ import (
 
 type Content interface {
 	SearchContents(ctx context.Context, partialName *string) ([]entity.Content, error)
+	GetContent(ctx context.Context, id string) (entity.Content, error)
 }

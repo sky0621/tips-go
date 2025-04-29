@@ -49,6 +49,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/400-BadRequest'
+  /contents/{id}:
+    get:
+      summary: 指定コンテンツ取得
+      operationId: getContentsByID
+      parameters:
+        - $ref: '#/components/parameters/ContentIDQuery'
+      responses:
+        '200':
+          description: 'OK: 指定コンテンツを返却する。'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentResponse'
+        '400':
+          description: 'Bad Request: 無効なパラメータが指定された場合'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/400-BadRequest'
+        '404':
+          description: 'Not Found: 指定コンテンツが存在しない場合'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/404-NotFound'
   /courses:
     get:
       summary: コース一覧取得
@@ -130,6 +155,11 @@ components:
       properties:
         message:
           $ref: '#/components/schemas/ErrorMessage'
+    404-NotFound:
+      type: object
+      properties:
+        message:
+          $ref: '#/components/schemas/ErrorMessage'
     CourseLevel:
       type: string
       description: コースレベル
@@ -178,6 +208,14 @@ components:
       required: false
       schema:
         $ref: '#/components/schemas/ContentName'
+    ContentIDQuery:
+      name: id
+      description: コンテンツID文字列
+      in: path
+      required: true
+      x-go-name: ID
+      schema:
+        $ref: '#/components/schemas/ContentId'
     CourseLevelQuery:
       name: courseLevel
       description: コースレベル一致検索用文字列

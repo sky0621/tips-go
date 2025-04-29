@@ -6,6 +6,7 @@ import (
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/application"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/domain/query"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/handler/interfaces"
+	"github.com/sky0621/tips-go/experiment/architecture_model/internal/shared/converter"
 )
 
 func NewContent(q query.Content, saveService application.SaveContentService) Content {
@@ -44,4 +45,22 @@ func (c Content) GetContents(ctx context.Context, request interfaces.GetContents
 		}
 	}
 	return interfaces.GetContents200JSONResponse(responses), nil
+}
+
+func (c Content) GetContentsByID(ctx context.Context, request interfaces.GetContentsByIDRequestObject) (interfaces.GetContentsByIDResponseObject, error) {
+	_, err := uuid.Parse(request.ID)
+	if err != nil {
+		return interfaces.GetContentsByID400JSONResponse{Message: converter.ToPtr("not uuid")}, nil
+	}
+	content, err := c.q.GetContent(ctx, request.ID)
+	if err != nil {
+		return nil, err
+	}
+	if content.IsEmpty() {
+		return interfaces.GetContentsByID404JSONResponse{Message: converter.ToPtr("not found")}, nil
+	}
+	return interfaces.GetContentsByID200JSONResponse(interfaces.ContentResponse{
+		ID:   content.ID.String(),
+		Name: content.Name,
+	}), nil
 }

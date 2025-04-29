@@ -29,6 +29,10 @@ func (s strictServerImpl) GetContents(ctx context.Context, request interfaces.Ge
 	return s.contentsController.GetContents(ctx, request)
 }
 
+func (s strictServerImpl) GetContentsByID(ctx context.Context, request interfaces.GetContentsByIDRequestObject) (interfaces.GetContentsByIDResponseObject, error) {
+	return s.contentsController.GetContentsByID(ctx, request)
+}
+
 func (s strictServerImpl) PostContents(ctx context.Context, request interfaces.PostContentsRequestObject) (interfaces.PostContentsResponseObject, error) {
 	return s.contentsController.PostContents(ctx, request)
 }

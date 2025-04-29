@@ -19,6 +19,7 @@ courses:
           application/json:
             schema:
               $ref: "../components/responses/errors.yaml#/400-BadRequest"
+
   post:
     summary: "コース新規登録"
     operationId: postCourses

@@ -14,5 +14,8 @@ paths:
   /contents:
     $ref: "./paths/contents.yaml#/contents"
 
+  /contents/{id}:
+    $ref: "./paths/contents.yaml#/contentsById"
+
   /courses:
     $ref: "./paths/courses.yaml#/courses"

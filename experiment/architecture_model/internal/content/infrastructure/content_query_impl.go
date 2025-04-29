@@ -3,13 +3,12 @@ package infrastructure
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"github.com/google/uuid"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/domain/model/entity"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/domain/query"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/infrastructure/rdb"
 )
-
-var _ query.Content = (*contentQueryImpl)(nil)
 
 func NewContentQuery(db *sql.DB) query.Content {
 	return &contentQueryImpl{db: db}
@@ -43,4 +42,23 @@ func (c contentQueryImpl) SearchContents(ctx context.Context, partialName *strin
 		}
 	}
 	return results, nil
+}
+
+func (c contentQueryImpl) GetContent(ctx context.Context, id string) (entity.Content, error) {
+	q := rdb.New(c.db)
+	content, err := q.GetContentById(ctx, id)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return entity.Content{}, nil
+		}
+		return entity.Content{}, err
+	}
+	uuidID, err := uuid.FromBytes(content.ID)
+	if err != nil {
+		return entity.Content{}, err
+	}
+	return entity.Content{
+		ID:   uuidID,
+		Name: content.Name,
+	}, nil
 }

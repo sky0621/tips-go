@@ -34,6 +34,12 @@ type N400BadRequest struct {
 	Message *ErrorMessage `json:"message,omitempty"`
 }
 
+// N404NotFound defines model for 404-NotFound.
+type N404NotFound struct {
+	// Message エラーメッセージ
+	Message *ErrorMessage `json:"message,omitempty"`
+}
+
 // ID コンテンツを一意に識別するID（フォーマットはUUID v7）
 type ID = string
 
@@ -120,6 +126,9 @@ type ServerInterface interface {
 	// コンテンツ新規登録
 	// (POST /contents)
 	PostContents(ctx echo.Context) error
+	// 指定コンテンツ取得
+	// (GET /contents/{id})
+	GetContentsByID(ctx echo.Context, id ID) error
 	// コース一覧取得
 	// (GET /courses)
 	GetCourses(ctx echo.Context, params GetCoursesParams) error
@@ -157,6 +166,22 @@ func (w *ServerInterfaceWrapper) PostContents(ctx echo.Context) error {
 
 	// Invoke the callback with all the unmarshaled arguments
 	err = w.Handler.PostContents(ctx)
+	return err
+}
+
+// GetContentsByID converts echo context to params.
+func (w *ServerInterfaceWrapper) GetContentsByID(ctx echo.Context) error {
+	var err error
+	// ------------- Path parameter "id" -------------
+	var id ID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "id", ctx.Param("id"), &id, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter id: %s", err))
+	}
+
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.GetContentsByID(ctx, id)
 	return err
 }
 
@@ -217,6 +242,7 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 
 	router.GET(baseURL+"/contents", wrapper.GetContents)
 	router.POST(baseURL+"/contents", wrapper.PostContents)
+	router.GET(baseURL+"/contents/:id", wrapper.GetContentsByID)
 	router.GET(baseURL+"/courses", wrapper.GetCourses)
 	router.POST(baseURL+"/courses", wrapper.PostCourses)
 
@@ -261,6 +287,41 @@ type PostContents400JSONResponse N400BadRequest
 func (response PostContents400JSONResponse) VisitPostContentsResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetContentsByIDRequestObject struct {
+	ID ID `json:"id"`
+}
+
+type GetContentsByIDResponseObject interface {
+	VisitGetContentsByIDResponse(w http.ResponseWriter) error
+}
+
+type GetContentsByID200JSONResponse ContentResponse
+
+func (response GetContentsByID200JSONResponse) VisitGetContentsByIDResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetContentsByID400JSONResponse N400BadRequest
+
+func (response GetContentsByID400JSONResponse) VisitGetContentsByIDResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetContentsByID404JSONResponse N404NotFound
+
+func (response GetContentsByID404JSONResponse) VisitGetContentsByIDResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
 
 	return json.NewEncoder(w).Encode(response)
 }
@@ -325,6 +386,9 @@ type StrictServerInterface interface {
 	// コンテンツ新規登録
 	// (POST /contents)
 	PostContents(ctx context.Context, request PostContentsRequestObject) (PostContentsResponseObject, error)
+	// 指定コンテンツ取得
+	// (GET /contents/{id})
+	GetContentsByID(ctx context.Context, request GetContentsByIDRequestObject) (GetContentsByIDResponseObject, error)
 	// コース一覧取得
 	// (GET /courses)
 	GetCourses(ctx context.Context, request GetCoursesRequestObject) (GetCoursesResponseObject, error)
@@ -399,6 +463,31 @@ func (sh *strictHandler) PostContents(ctx echo.Context) error {
 	return nil
 }
 
+// GetContentsByID operation middleware
+func (sh *strictHandler) GetContentsByID(ctx echo.Context, id ID) error {
+	var request GetContentsByIDRequestObject
+
+	request.ID = id
+
+	handler := func(ctx echo.Context, request interface{}) (interface{}, error) {
+		return sh.ssi.GetContentsByID(ctx.Request().Context(), request.(GetContentsByIDRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetContentsByID")
+	}
+
+	response, err := handler(ctx, request)
+
+	if err != nil {
+		return err
+	} else if validResponse, ok := response.(GetContentsByIDResponseObject); ok {
+		return validResponse.VisitGetContentsByIDResponse(ctx.Response())
+	} else if response != nil {
+		return fmt.Errorf("unexpected response type: %T", response)
+	}
+	return nil
+}
+
 // GetCourses operation middleware
 func (sh *strictHandler) GetCourses(ctx echo.Context, params GetCoursesParams) error {
 	var request GetCoursesRequestObject
@@ -456,26 +545,28 @@ func (sh *strictHandler) PostCourses(ctx echo.Context) error {
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/9xXW08bRxT+K9a0j2vv2qGNs28JoMpqmtJUPEU8DLsHeyPvhdmxASFL7C4KTguFogRC",
-	"VbWlalMaCqkaHohCmx8zLJcn/kI1s2t8N7bSS9oXsDWX853zfeeb43mk2aZjW2BRF6nzyMEEm0CBiG/D",
-	"tkXBomOYUAMX72ATPikBmeNLOrgaMRxq2BZSEfNfsOAFCx6Iv4vh2grz9s+DnbD64Phw4Wzp4OSHr08P",
-	"vj99tHOysRTubYbVTSQhgx+dFjdKyMImIJUDqMVCEnK1ApiYx3uXwBRS0TtyHa8crbpyDFOcqVQkNGyX",
-	"iAu3oQzFXniPmP+SBb+wYIsFuwPC1OohBoBZP1PhOOMFfm5IUZK3sH4XpkvgUsEEsR0g1ACxboLr4jxc",
-	"FWKUEJt8FO/lIeicw+Hak/dBo0jURtQqp19JIvPXjw8XThZXmbd7tvckrP7IvC3mf54buTiqsuAx83/m",
-	"NQy+YUHAgirzno+P50YS5esXRw+RhGAWm06RB1fSN94fymYzSS09lEleT2eyyUklC0llCgNMZuG9G9lJ",
-	"dAnVpcSw8khCs8m8nYzLnRtpwC547kOCTSBak/P2w7WV8OFKW+B6nK5kWDGAQTRJYLpkENCRei86P9Gd",
-	"nLvgOrblQntkQ+8zbk7n970pUEOvKb4zWq7nrkoS7fUWaSiGO4KaHaIfc+BQrJLJS1K0Z5CETEPXi9yg",
-	"Cka+wIvTIjRx2tu/vODiqFq0Z9Tj379gC150WD0+3GMLHr9APd99EiXcQYocaA/F80gdtR5D6KVyfnVX",
-	"kRdrxenb0vrV22VGHftCiiN3V9ybtUes2Yr0b2RYb6heaTa5eAfad1gQtc02bxv/lSD7sEkC4xbMOqBR",
-	"0BPAb0vYmlYiHEWbEjhGw5qy2yPdHMtxnIYGcbXjTrrpYK0AiUxKQRIqkSJSUYFSx1VleWZmJoXFcsom",
-	"eTk+68q3c8Ojdz4dTWZSSqpATVFLalCBNQpTBuJGYdMpJaXwDbYDFnYMpKJrKSV1DUnIwbQgmJa1yLbE",
-	"lzwI/XIlYA6dWxL6AOhwbY/UNNfc60xffYvcbe6pTHA6I/WJyBlF4f9iMPwjdpyioQkY8n2X5zPfMB4Y",
-	"FEy3T0e+lHn9GceE4LmIsWamPv5QTbS8cHygefoT89fPXj8KVw4i32ULvtCkWzJNzAcj1PFUuLoR/rHJ",
-	"Azu226G2Y7bbWFwSecgtW58bqBp9FSGypw45tyA/2fj17Onq6dar8+XfWPCM+c95o3ATr6LGJqSkBJU2",
-	"GtN/PfAae+3IhwlgCnobZcxfb8rC22Tet+F3B+FalXMxNKDYeqFsmTc7gLyF9US8rCZOF7fDz14y7xkL",
-	"vhTmsy085zXzlk+Wl8L9r5j3mPnLDXB7iawxSbFTjsbpK5o52jJ4L7f8GPinmrjpqRqkh/nL3b17//M6",
-	"qKfXn83UaP97XKZxBupmMhzx22Mvzbq6yl3iKfx/7Cut7MS/rYGUaw7RNtUkyunLyUXGjiGX06gyUfkz",
-	"AAD//+/D5/8NEQAA",
+	"H4sIAAAAAAAC/9xYW08bRxT+K9a0j2vv2qGNs28Bp5XVlNJUPEU8DLuDvZH3wuzYgJAl1ouC00KhKOFS",
+	"RW2p2pRCIVXDA1Fo82OG5fLEX6hmdn3dtbELaZO+APZcznfO+c53zjALFFO3TAMZxAbyLLAghjoiCPNP",
+	"Q6ZBkEGymc+LCM+wb1RkK1iziGYaQAa08oK6L6j7kP+cz2ZO1ha8vXWvug4EoLEdFiR5IAAD6gjIQFOB",
+	"ADCaLGoYqUAmuIgEYCt5pEN2+fsYTQAZvCc2MIn+qi3WoKigLIDpeM6MB3dmM+ybYHkEYqLBwjDUUW+Q",
+	"vZUl6uyfu9te9eHx4dzZwsHJT09PD348fbwd8mWS31h3xmrYAn16wc+UOewittFdVEKFbniPaOUldX+j",
+	"7iZ1d/uEqTRM9AGzcabMcAYL7NyAJMUHoXoPTRaRTThnsGkhTDTE13Vk2zCHLjNxB2MTfxrsZSbIjMXg",
+	"muMPkEJYSgekgfiwST4yi4b6Bs00iHUZV2hl9fhw7mR+mTq7Z3sbXvVn6mzSylfZzMVRlbpPaOVXlir3",
+	"O+q61K1S5/noaDYTK928OHoEBICmoW4VmHEpeevDgXQ6FVeSA6n4zWQqHR+X0iguTUCExtPog1vpcVCH",
+	"ahOsGTnQhfWcTj0wvQVEu3POvrey5D1aChlu2OmYcyMA0A/1GzJw3z8/1jk595BtmYaNwpY1tS/huCpQ",
+	"LmBd0LKy6cgkXsVvEYcCuBnQKkS9aBCDYhR1FpKCOQUEoGuqWmA6mNdyeRacNqLx085+/YKLo2rBnJKP",
+	"//yazjn+Yfn4cI/OOewC+Xx3w3c4gooMaBfGM0uRXA8gdGM5u7ojyQu14PSsnL3yre5RZF0IgeXOjLta",
+	"eQScLQv/hYeNgurmZouKR6R9m7p+2Wyxsqm84sk+bKHAqIGmLaQQpMYQuy1mKkoRMxQhJjCMmjFhhi3d",
+	"HskynJqCgmgHlXTbgkoexVIJCQigiAtABnlCLFsWxampqQTkywkT58TgrC3ezQ7dGf7iTjyVkBJ5ovNY",
+	"Eo1wrL6ZEsK2bzaZkBIS22BayICWBmRwIyElbgCBz1c806Liyxb/kEOcv4wJkEFnkgQ+RmSotkdoGfTu",
+	"R6evsUXsNF6Vx1g6ffZxyylJYr8CMOxPaFkFTeEwxAc282e2aQrRCNLtHhW5TvNGG4cYwxk/Y62Z+uwT",
+	"OdbW4djc9OwXWlk9e/3YWzrwdZfOVTgn7aKuQzZ/gchT3vKa99c6M2yZdkRsR0y7ObjY15BBU53pKxo9",
+	"BcGXpwif25CfrP1+9mz5dPPV+eIf1N2hleesUJiIV0NTeDmUxuT1A69lL4x8CCNIkBpKGa2stnjhrFPn",
+	"e++HA2+l6k+I0rWhbBtrI0AOQjUWLMux0/kt78uX1Nmh7jdcfLa45rymzuLJ4oK3/y11ntDKYhPcbiRr",
+	"dpLvrFezOKup5V5KenAmm/mnZV173125mq9IA1a0QfRCPAgV7TuWfv6euUa4TW+jCLDDJonxxU4BdRa9",
+	"vQ3v6TYvqR3qzEfSNPJsTQt9mrLOfknP8bf0z822p/G/1WtaJqp+Wg0bMDs3mXderhru9dYNa2l/M82w",
+	"eVTv1AsZ4renC7by6rImGDwW/8ftrz07wX+aEC7VFCI0fMdKyfqALUJLE0tJUB4r/x0AAP//QMyguMUU",
+	"AAA=",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file
