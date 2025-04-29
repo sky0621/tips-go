@@ -7,24 +7,31 @@ package rdb
 
 import (
 	"context"
-	"database/sql"
 )
 
-const createContents = `-- name: CreateContents :execlastid
+const createContents = `-- name: CreateContents :exec
 INSERT INTO contents (id, name) VALUES (?, ?)
 `
 
 type CreateContentsParams struct {
-	ID   sql.NullString
+	ID   []byte
 	Name string
 }
 
-func (q *Queries) CreateContents(ctx context.Context, arg CreateContentsParams) (int64, error) {
-	result, err := q.db.ExecContext(ctx, createContents, arg.ID, arg.Name)
-	if err != nil {
-		return 0, err
-	}
-	return result.LastInsertId()
+func (q *Queries) CreateContents(ctx context.Context, arg CreateContentsParams) error {
+	_, err := q.db.ExecContext(ctx, createContents, arg.ID, arg.Name)
+	return err
+}
+
+const getContentById = `-- name: GetContentById :one
+SELECT id, name FROM contents WHERE id = UUID_TO_BIN(?)
+`
+
+func (q *Queries) GetContentById(ctx context.Context, uuidTOBIN string) (Content, error) {
+	row := q.db.QueryRowContext(ctx, getContentById, uuidTOBIN)
+	var i Content
+	err := row.Scan(&i.ID, &i.Name)
+	return i, err
 }
 
 const listContents = `-- name: ListContents :many

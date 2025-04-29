@@ -7,7 +7,6 @@ package rdb
 
 import (
 	"context"
-	"database/sql"
 )
 
 const createCourses = `-- name: CreateCourses :execlastid
@@ -15,7 +14,7 @@ INSERT INTO courses (id, name, level) VALUES (?, ?, ?)
 `
 
 type CreateCoursesParams struct {
-	ID    sql.NullString
+	ID    []byte
 	Name  string
 	Level int32
 }

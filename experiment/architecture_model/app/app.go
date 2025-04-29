@@ -1,29 +1,37 @@
 package app
 
 import (
+	"context"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	oapimiddleware "github.com/oapi-codegen/echo-middleware"
-	contentsController "github.com/sky0621/tips-go/experiment/architecture_model/internal/content/controller"
-	coursesController "github.com/sky0621/tips-go/experiment/architecture_model/internal/course/controller"
-	"github.com/sky0621/tips-go/experiment/architecture_model/internal/handler"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/handler/interfaces"
+	"github.com/sky0621/tips-go/experiment/architecture_model/internal/shared/config"
 	"log"
 )
 
 func New() App {
+	ctx := context.Background()
+	db, err := newDB(ctx, config.NewConfig())
+	if err != nil {
+		return nil
+	}
+
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORS())
+
 	swagger, err := interfaces.GetSwagger()
 	if err != nil {
 		log.Fatal(err)
 	}
 	oapiRequestValidator := oapimiddleware.OapiRequestValidator(swagger)
+
 	router := e.Group("/api/v1", oapiRequestValidator)
 
-	interfaces.RegisterHandlers(router, handler.New(contentsController.Content{}, coursesController.Course{}, nil))
+	interfaces.RegisterHandlers(router, createHandlers(db))
+
 	return &app{echo: e}
 }
 

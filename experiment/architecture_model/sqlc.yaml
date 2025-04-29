@@ -1,11 +1,30 @@
 version: "2"
 sql:
   - engine: "mysql"
-    queries: "./internal/shared/infrastructure/rdb/sql/**"
+    name: "contents"
+    queries: "./internal/content/infrastructure/rdb/sql/**"
     schema: "./schema/db"
     gen:
       go:
         package: "rdb"
-        out: "./internal/shared/infrastructure/rdb"
+        out: "./internal/content/infrastructure/rdb"
+        overrides:
+          - column: "contents.id"
+            go_type:
+              type: "[]byte"
+        emit_empty_slices: true
+        emit_interface: true
+
+  - engine: "mysql"
+    queries: "./internal/course/infrastructure/rdb/sql/**"
+    schema: "./schema/db"
+    gen:
+      go:
+        package: "rdb"
+        out: "./internal/course/infrastructure/rdb"
+        overrides:
+          - column: "courses.id"
+            go_type:
+              type: "[]byte"
         emit_empty_slices: true
         emit_interface: true

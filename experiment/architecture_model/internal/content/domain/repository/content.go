@@ -1,7 +1,10 @@
 package repository
 
-import "github.com/sky0621/tips-go/experiment/architecture_model/internal/content/domain/model"
+import (
+	"context"
+	"github.com/google/uuid"
+)
 
 type Content interface {
-	SearchContents(partialName *string) ([]model.Content, error)
+	Save(ctx context.Context, id uuid.UUID, name string) error
 }

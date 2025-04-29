@@ -9,12 +9,10 @@ import (
 )
 
 type Querier interface {
-	CreateContents(ctx context.Context, arg CreateContentsParams) (int64, error)
-	CreateCourses(ctx context.Context, arg CreateCoursesParams) (int64, error)
+	CreateContents(ctx context.Context, arg CreateContentsParams) error
+	GetContentById(ctx context.Context, uuidTOBIN string) (Content, error)
 	ListContents(ctx context.Context) ([]Content, error)
-	ListCourses(ctx context.Context) ([]Course, error)
 	SearchContents(ctx context.Context, name string) ([]Content, error)
-	SearchCourses(ctx context.Context, level int32) ([]Course, error)
 }
 
 var _ Querier = (*Queries)(nil)

@@ -9,7 +9,7 @@ import (
 )
 
 type Content struct {
-	ID   sql.NullString
+	ID   []byte
 	Name string
 }
 
