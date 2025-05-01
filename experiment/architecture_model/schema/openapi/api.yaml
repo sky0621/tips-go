@@ -139,13 +139,36 @@ components:
       required:
         - id
         - name
+    ProgramQuestion:
+      type: string
+      description: 問題
+      example: 問題
+    ProgramAnswer:
+      type: string
+      description: 解答
+      example: 解答
+    ProgramRequest:
+      type: object
+      properties:
+        question:
+          $ref: '#/components/schemas/ProgramQuestion'
+        answer:
+          $ref: '#/components/schemas/ProgramAnswer'
+      required:
+        - question
+        - answer
     ContentRequest:
       type: object
       properties:
         name:
           $ref: '#/components/schemas/ContentName'
+        programs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProgramRequest'
       required:
         - name
+        - programs
     ErrorMessage:
       type: string
       description: エラーメッセージ
