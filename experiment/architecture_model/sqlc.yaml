@@ -12,10 +12,17 @@ sql:
           - column: "contents.id"
             go_type:
               type: "[]byte"
+          - column: "programs.id"
+            go_type:
+              type: "[]byte"
+          - column: "programs.content_id"
+            go_type:
+              type: "[]byte"
         emit_empty_slices: true
         emit_interface: true
 
   - engine: "mysql"
+    name: "courses"
     queries: "./internal/course/infrastructure/rdb/sql/**"
     schema: "./schema/db"
     gen:

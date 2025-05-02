@@ -20,8 +20,8 @@ type Course struct {
 }
 
 type Program struct {
-	ID        sql.NullString
+	ID        []byte
 	Question  string
 	Answer    string
-	ContentID sql.NullString
+	ContentID []byte
 }

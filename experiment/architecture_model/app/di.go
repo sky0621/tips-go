@@ -2,7 +2,7 @@ package app
 
 import (
 	"database/sql"
-	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/application"
+	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/application/command"
 	contentsController "github.com/sky0621/tips-go/experiment/architecture_model/internal/content/controller"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/infrastructure"
 	coursesController "github.com/sky0621/tips-go/experiment/architecture_model/internal/course/controller"
@@ -13,8 +13,11 @@ import (
 func createHandlers(db *sql.DB) interfaces.ServerInterface {
 	return handler.New(
 		contentsController.NewContent(
-			infrastructure.NewContentQuery(db),
-			application.NewSaveContentService(infrastructure.NewContentRepository(db)),
+			infrastructure.NewSearchContents(db),
+			infrastructure.NewGetContent(db),
+			command.NewSaveContent(
+				infrastructure.NewContentRepository(db),
+			),
 		),
 		coursesController.Course{},
 		nil,

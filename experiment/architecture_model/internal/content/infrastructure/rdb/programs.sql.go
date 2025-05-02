@@ -16,10 +16,10 @@ INSERT INTO programs (id, question, answer, content_id) VALUES
 `
 
 type CreateProgramsBatch01Params struct {
-	ID        sql.NullString
+	ID        []byte
 	Question  string
 	Answer    string
-	ContentID sql.NullString
+	ContentID []byte
 }
 
 func (q *Queries) CreateProgramsBatch01(ctx context.Context, arg CreateProgramsBatch01Params) (sql.Result, error) {
@@ -38,14 +38,14 @@ INSERT INTO programs (id, question, answer, content_id) VALUES
 `
 
 type CreateProgramsBatch02Params struct {
-	ID          sql.NullString
+	ID          []byte
 	Question    string
 	Answer      string
-	ContentID   sql.NullString
-	ID_2        sql.NullString
+	ContentID   []byte
+	ID_2        []byte
 	Question_2  string
 	Answer_2    string
-	ContentID_2 sql.NullString
+	ContentID_2 []byte
 }
 
 func (q *Queries) CreateProgramsBatch02(ctx context.Context, arg CreateProgramsBatch02Params) (sql.Result, error) {
@@ -69,18 +69,18 @@ INSERT INTO programs (id, question, answer, content_id) VALUES
 `
 
 type CreateProgramsBatch03Params struct {
-	ID          sql.NullString
+	ID          []byte
 	Question    string
 	Answer      string
-	ContentID   sql.NullString
-	ID_2        sql.NullString
+	ContentID   []byte
+	ID_2        []byte
 	Question_2  string
 	Answer_2    string
-	ContentID_2 sql.NullString
-	ID_3        sql.NullString
+	ContentID_2 []byte
+	ID_3        []byte
 	Question_3  string
 	Answer_3    string
-	ContentID_3 sql.NullString
+	ContentID_3 []byte
 }
 
 func (q *Queries) CreateProgramsBatch03(ctx context.Context, arg CreateProgramsBatch03Params) (sql.Result, error) {
@@ -109,22 +109,22 @@ INSERT INTO programs (id, question, answer, content_id) VALUES
 `
 
 type CreateProgramsBatch04Params struct {
-	ID          sql.NullString
+	ID          []byte
 	Question    string
 	Answer      string
-	ContentID   sql.NullString
-	ID_2        sql.NullString
+	ContentID   []byte
+	ID_2        []byte
 	Question_2  string
 	Answer_2    string
-	ContentID_2 sql.NullString
-	ID_3        sql.NullString
+	ContentID_2 []byte
+	ID_3        []byte
 	Question_3  string
 	Answer_3    string
-	ContentID_3 sql.NullString
-	ID_4        sql.NullString
+	ContentID_3 []byte
+	ID_4        []byte
 	Question_4  string
 	Answer_4    string
-	ContentID_4 sql.NullString
+	ContentID_4 []byte
 }
 
 func (q *Queries) CreateProgramsBatch04(ctx context.Context, arg CreateProgramsBatch04Params) (sql.Result, error) {
@@ -158,26 +158,26 @@ INSERT INTO programs (id, question, answer, content_id) VALUES
 `
 
 type CreateProgramsBatch05Params struct {
-	ID          sql.NullString
+	ID          []byte
 	Question    string
 	Answer      string
-	ContentID   sql.NullString
-	ID_2        sql.NullString
+	ContentID   []byte
+	ID_2        []byte
 	Question_2  string
 	Answer_2    string
-	ContentID_2 sql.NullString
-	ID_3        sql.NullString
+	ContentID_2 []byte
+	ID_3        []byte
 	Question_3  string
 	Answer_3    string
-	ContentID_3 sql.NullString
-	ID_4        sql.NullString
+	ContentID_3 []byte
+	ID_4        []byte
 	Question_4  string
 	Answer_4    string
-	ContentID_4 sql.NullString
-	ID_5        sql.NullString
+	ContentID_4 []byte
+	ID_5        []byte
 	Question_5  string
 	Answer_5    string
-	ContentID_5 sql.NullString
+	ContentID_5 []byte
 }
 
 func (q *Queries) CreateProgramsBatch05(ctx context.Context, arg CreateProgramsBatch05Params) (sql.Result, error) {

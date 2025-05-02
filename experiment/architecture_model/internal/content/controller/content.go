@@ -3,19 +3,21 @@ package controller
 import (
 	"context"
 	"github.com/google/uuid"
-	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/application"
-	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/domain/query"
+	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/application/command"
+	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/application/query"
+	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/domain/model"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/handler/interfaces"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/shared/converter"
 )
 
-func NewContent(q query.Content, saveService application.SaveContentService) Content {
-	return Content{q: q, saveService: saveService}
+func NewContent(searchContents query.SearchContents, getContent query.GetContent, saveContent command.SaveContent) Content {
+	return Content{searchContents: searchContents, getContent: getContent, saveContent: saveContent}
 }
 
 type Content struct {
-	q           query.Content
-	saveService application.SaveContentService
+	searchContents query.SearchContents
+	getContent     query.GetContent
+	saveContent    command.SaveContent
 }
 
 func (c Content) PostContents(ctx context.Context, request interfaces.PostContentsRequestObject) (interfaces.PostContentsResponseObject, error) {
@@ -23,7 +25,24 @@ func (c Content) PostContents(ctx context.Context, request interfaces.PostConten
 	if err != nil {
 		return nil, err
 	}
-	if err := c.saveService.Save(ctx, uuidV7, request.Body.Name); err != nil {
+	programs := make([]model.ProgramWriteModel, len(request.Body.Programs))
+	for i, program := range request.Body.Programs {
+		uuidV7, err := uuid.NewV7()
+		if err != nil {
+			return nil, err
+		}
+		programs[i] = model.ProgramWriteModel{
+			ID:       uuidV7,
+			Question: program.Question,
+			Answer:   program.Answer,
+		}
+	}
+
+	if err := c.saveContent.Save(ctx, model.SaveContentWriteModel{
+		ID:       uuidV7,
+		Name:     request.Body.Name,
+		Programs: programs,
+	}); err != nil {
 		return nil, err
 	}
 	return interfaces.PostContents201JSONResponse(interfaces.ContentResponse{
@@ -33,7 +52,7 @@ func (c Content) PostContents(ctx context.Context, request interfaces.PostConten
 }
 
 func (c Content) GetContents(ctx context.Context, request interfaces.GetContentsRequestObject) (interfaces.GetContentsResponseObject, error) {
-	contents, err := c.q.SearchContents(ctx, request.Params.PartialName)
+	contents, err := c.searchContents.Exec(ctx, request.Params.PartialName)
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +71,7 @@ func (c Content) GetContentsByID(ctx context.Context, request interfaces.GetCont
 	if err != nil {
 		return interfaces.GetContentsByID400JSONResponse{Message: converter.ToPtr("not uuid")}, nil
 	}
-	content, err := c.q.GetContent(ctx, request.ID)
+	content, err := c.getContent.Exec(ctx, request.ID)
 	if err != nil {
 		return nil, err
 	}
