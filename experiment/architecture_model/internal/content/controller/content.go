@@ -2,11 +2,11 @@ package controller
 
 import (
 	"context"
-	"github.com/google/uuid"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/api"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/application/command"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/application/query"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/domain/model"
+	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/domain/service"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/shared/converter"
 )
 
@@ -21,33 +21,28 @@ type Content struct {
 }
 
 func (c Content) PostContents(ctx context.Context, request api.PostContentsRequestObject) (api.PostContentsResponseObject, error) {
-	uuidV7, err := uuid.NewV7()
-	if err != nil {
-		return nil, err
-	}
+	newContentID := service.MustCreateID()
+	name := request.Body.Name
 	programs := make([]model.ProgramWriteModel, len(request.Body.Programs))
 	for i, program := range request.Body.Programs {
-		uuidV7, err := uuid.NewV7()
-		if err != nil {
-			return nil, err
-		}
+		programID := service.MustCreateID()
 		programs[i] = model.ProgramWriteModel{
-			ID:       uuidV7,
+			ID:       programID,
 			Question: program.Question,
 			Answer:   program.Answer,
 		}
 	}
 
 	if err := c.saveContent.Save(ctx, model.SaveContentWriteModel{
-		ID:       uuidV7,
-		Name:     request.Body.Name,
+		ID:       newContentID,
+		Name:     name,
 		Programs: programs,
 	}); err != nil {
 		return nil, err
 	}
 	return api.PostContents201JSONResponse(api.ContentResponse{
-		ID:   uuidV7.String(),
-		Name: request.Body.Name,
+		ID:   newContentID.String(),
+		Name: name,
 		// TODO: programs
 	}), nil
 }
@@ -68,7 +63,7 @@ func (c Content) GetContents(ctx context.Context, request api.GetContentsRequest
 }
 
 func (c Content) GetContentsByID(ctx context.Context, request api.GetContentsByIDRequestObject) (api.GetContentsByIDResponseObject, error) {
-	_, err := uuid.Parse(request.ID)
+	_, err := service.ParseID(request.ID)
 	if err != nil {
 		return api.GetContentsByID400JSONResponse{Message: converter.ToPtr("not uuid")}, nil
 	}
