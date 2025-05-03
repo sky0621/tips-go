@@ -1,16 +1,18 @@
 package service
 
-import "github.com/google/uuid"
+import (
+	"github.com/google/uuid"
+)
 
-func MustCreateID() uuid.UUID {
-	u, e := CreateID()
+func MustCreateNewID() uuid.UUID {
+	u, e := CreateNewID()
 	if e != nil {
 		panic(e)
 	}
 	return u
 }
 
-func CreateID() (uuid.UUID, error) {
+func CreateNewID() (uuid.UUID, error) {
 	uuidV7, err := uuid.NewV7()
 	if err != nil {
 		return [16]byte{}, err
@@ -20,4 +22,12 @@ func CreateID() (uuid.UUID, error) {
 
 func ParseID(s string) (uuid.UUID, error) {
 	return uuid.Parse(s)
+}
+
+func CreateID(id []byte) (uuid.UUID, error) {
+	uuidID, err := uuid.FromBytes(id)
+	if err != nil {
+		return uuid.UUID{}, err
+	}
+	return uuidID, nil
 }

@@ -21,11 +21,11 @@ type Content struct {
 }
 
 func (c Content) PostContents(ctx context.Context, request api.PostContentsRequestObject) (api.PostContentsResponseObject, error) {
-	newContentID := service.MustCreateID()
+	newContentID := service.MustCreateNewID()
 	name := request.Body.Name
 	programs := make([]model.ProgramWriteModel, len(request.Body.Programs))
 	for i, program := range request.Body.Programs {
-		programID := service.MustCreateID()
+		programID := service.MustCreateNewID()
 		programs[i] = model.ProgramWriteModel{
 			ID:       programID,
 			Question: program.Question,

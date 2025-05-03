@@ -3,8 +3,8 @@ package infrastructure
 import (
 	"context"
 	"database/sql"
-	"github.com/google/uuid"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/application/query"
+	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/domain/service"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/infrastructure/rdb"
 )
 
@@ -32,7 +32,7 @@ func (s searchContentImpl) Exec(ctx context.Context, partialName *string) ([]que
 	}
 	results := make([]query.SearchContentsReadModel, len(contents))
 	for i, content := range contents {
-		id, err := uuid.FromBytes(content.ID)
+		id, err := service.CreateID(content.ID)
 		if err != nil {
 			return nil, err
 		}
