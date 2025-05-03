@@ -128,17 +128,12 @@ components:
       type: string
       description: コンテンツを一意に識別するID（フォーマットはUUID v7）
       example: 01964882-c142-7128-b08e-0faeeb8e598b
-      x-go-name: ID
-    ContentResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/ContentId'
-        name:
-          $ref: '#/components/schemas/ContentName'
-      required:
-        - id
-        - name
+      x-go-name: ContentID
+    ProgramId:
+      type: string
+      description: 問題を一意に識別するID（フォーマットはUUID v7）
+      example: 01964882-c142-7128-b08e-0faeeb8e598b
+      x-go-name: ProgramID
     ProgramQuestion:
       type: string
       description: 問題
@@ -147,6 +142,32 @@ components:
       type: string
       description: 解答
       example: 解答
+    ProgramResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ProgramId'
+        question:
+          $ref: '#/components/schemas/ProgramQuestion'
+        answer:
+          $ref: '#/components/schemas/ProgramAnswer'
+      required:
+        - id
+    ContentResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ContentId'
+        name:
+          $ref: '#/components/schemas/ContentName'
+        programs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProgramResponse'
+      required:
+        - id
+        - name
+        - programs
     ProgramRequest:
       type: object
       properties:

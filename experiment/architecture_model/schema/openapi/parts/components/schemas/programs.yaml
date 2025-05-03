@@ -2,7 +2,7 @@ ProgramId:
   type: string
   description: "問題を一意に識別するID（フォーマットはUUID v7）"
   example: "01964882-c142-7128-b08e-0faeeb8e598b"
-  x-go-name: ID
+  x-go-name: ProgramID
 
 ProgramQuestion:
   type: string

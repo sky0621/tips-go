@@ -10,8 +10,9 @@ type GetContent interface {
 }
 
 type GetContentReadModel struct {
-	ID   model.ID
-	Name string
+	ID       model.ID
+	Name     string
+	Programs []ProgramReadModel
 }
 
 func (m GetContentReadModel) IsEmpty() bool {

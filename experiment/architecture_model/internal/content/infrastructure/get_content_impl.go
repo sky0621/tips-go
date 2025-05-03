@@ -21,19 +21,38 @@ type getContentImpl struct {
 
 func (g getContentImpl) Exec(ctx context.Context, id string) (query.GetContentReadModel, error) {
 	q := rdb.New(g.db)
-	content, err := q.GetContentById(ctx, id)
+	contentWithPrograms, err := q.GetContentWithProgramsById(ctx, id)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return query.GetContentReadModel{}, nil
 		}
 		return query.GetContentReadModel{}, err
 	}
-	uuidID, err := service.CreateID(content.ID)
-	if err != nil {
-		return query.GetContentReadModel{}, err
+
+	result := query.GetContentReadModel{}
+
+	for i, row := range contentWithPrograms {
+		if result.IsEmpty() {
+			cID, err := service.ToID(row.ContentID)
+			if err != nil {
+				return query.GetContentReadModel{}, err
+			}
+			result.ID = cID
+			result.Name = row.ContentName
+			result.Programs = make([]query.ProgramReadModel, len(contentWithPrograms))
+		}
+		if row.ProgramID != nil && row.Question.Valid && row.Answer.Valid {
+			pID, err := service.ToID(row.ProgramID)
+			if err != nil {
+				return query.GetContentReadModel{}, err
+			}
+			result.Programs[i] = query.ProgramReadModel{
+				ID:       pID,
+				Question: row.Question.String,
+				Answer:   row.Answer.String,
+			}
+		}
 	}
-	return query.GetContentReadModel{
-		ID:   uuidID,
-		Name: content.Name,
-	}, nil
+
+	return result, nil
 }

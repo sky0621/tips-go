@@ -8,6 +8,14 @@ func ToVal[T any](p *T) T {
 	return *p
 }
 
+func ToVals[T any](ps []*T) []T {
+	results := make([]T, len(ps))
+	for i, v := range ps {
+		results[i] = *v
+	}
+	return results
+}
+
 func PtrIfNotNil[S any, T any](value *S, converter func(S) T) *T {
 	if value == nil {
 		return nil

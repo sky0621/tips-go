@@ -10,6 +10,7 @@ type SearchContents interface {
 }
 
 type SearchContentsReadModel struct {
-	ID   model.ID
-	Name string
+	ID       model.ID
+	Name     string
+	Programs []ProgramReadModel
 }

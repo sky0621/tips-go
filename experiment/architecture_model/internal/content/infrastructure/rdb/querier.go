@@ -16,9 +16,9 @@ type Querier interface {
 	CreateProgramsBatch03(ctx context.Context, arg CreateProgramsBatch03Params) (sql.Result, error)
 	CreateProgramsBatch04(ctx context.Context, arg CreateProgramsBatch04Params) (sql.Result, error)
 	CreateProgramsBatch05(ctx context.Context, arg CreateProgramsBatch05Params) (sql.Result, error)
-	GetContentById(ctx context.Context, uuidTOBIN string) (Content, error)
-	ListContents(ctx context.Context) ([]Content, error)
-	SearchContents(ctx context.Context, name string) ([]Content, error)
+	GetContentWithProgramsById(ctx context.Context, uuidTOBIN string) ([]GetContentWithProgramsByIdRow, error)
+	ListContentsWithPrograms(ctx context.Context) ([]ListContentsWithProgramsRow, error)
+	SearchContentsWithPrograms(ctx context.Context, name string) ([]SearchContentsWithProgramsRow, error)
 }
 
 var _ Querier = (*Queries)(nil)

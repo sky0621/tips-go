@@ -5,6 +5,11 @@ ContentResponse:
       $ref: "../schemas/contents.yaml#/ContentId"
     name:
       $ref: "../schemas/contents.yaml#/ContentName"
+    programs:
+      type: array
+      items:
+        $ref: "./programs.yaml#/ProgramResponse"
   required:
     - id
     - name
+    - programs

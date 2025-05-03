@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/application/query"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/infrastructure/rdb"
+	"github.com/sky0621/tips-go/experiment/architecture_model/internal/shared/converter"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/shared/service"
 )
 
@@ -20,26 +21,91 @@ type searchContentImpl struct {
 
 func (s searchContentImpl) Exec(ctx context.Context, partialName *string) ([]query.SearchContentsReadModel, error) {
 	q := rdb.New(s.db)
-	var contents []rdb.Content
-	var err error
 	if partialName == nil {
-		contents, err = q.ListContents(ctx)
+		return list(ctx, q)
 	} else {
-		contents, err = q.SearchContents(ctx, *partialName)
+		return search(ctx, q, *partialName)
 	}
+}
+
+func list(ctx context.Context, q *rdb.Queries) ([]query.SearchContentsReadModel, error) {
+	contentWithPrograms, err := q.ListContentsWithPrograms(ctx)
 	if err != nil {
 		return nil, err
 	}
-	results := make([]query.SearchContentsReadModel, len(contents))
-	for i, content := range contents {
-		id, err := service.CreateID(content.ID)
-		if err != nil {
-			return nil, err
+
+	// content_id をキーとするマップ
+	resultMap := make(map[string]*query.SearchContentsReadModel)
+
+	var results []*query.SearchContentsReadModel
+
+	for _, content := range contentWithPrograms {
+		if _, ok := resultMap[string(content.ContentID)]; !ok {
+			cID, err := service.ToID(content.ContentID)
+			if err != nil {
+				return nil, err
+			}
+			resultMap[string(content.ContentID)] = &query.SearchContentsReadModel{
+				ID:       cID,
+				Name:     content.ContentName,
+				Programs: []query.ProgramReadModel{},
+			}
+			results = append(results, resultMap[string(content.ContentID)])
 		}
-		results[i] = query.SearchContentsReadModel{
-			ID:   id,
-			Name: content.Name,
+
+		if content.ProgramID != nil && content.Question.Valid && content.Answer.Valid {
+			pID, err := service.ToID(content.ProgramID)
+			if err != nil {
+				return nil, err
+			}
+			resultMap[string(content.ContentID)].Programs = append(resultMap[string(content.ContentID)].Programs, query.ProgramReadModel{
+				ID:       pID,
+				Question: content.Question.String,
+				Answer:   content.Answer.String,
+			})
 		}
 	}
-	return results, nil
+
+	return converter.ToVals(results), nil
+}
+
+func search(ctx context.Context, q *rdb.Queries, partialName string) ([]query.SearchContentsReadModel, error) {
+	contentWithPrograms, err := q.SearchContentsWithPrograms(ctx, partialName)
+	if err != nil {
+		return nil, err
+	}
+
+	// content_id をキーとするマップ
+	resultMap := make(map[string]*query.SearchContentsReadModel)
+
+	var results []*query.SearchContentsReadModel
+
+	for _, content := range contentWithPrograms {
+		if _, ok := resultMap[string(content.ContentID)]; !ok {
+			cID, err := service.ToID(content.ContentID)
+			if err != nil {
+				return nil, err
+			}
+			resultMap[string(content.ContentID)] = &query.SearchContentsReadModel{
+				ID:       cID,
+				Name:     content.ContentName,
+				Programs: []query.ProgramReadModel{},
+			}
+			results = append(results, resultMap[string(content.ContentID)])
+		}
+
+		if content.ProgramID != nil && content.Question.Valid && content.Answer.Valid {
+			pID, err := service.ToID(content.ProgramID)
+			if err != nil {
+				return nil, err
+			}
+			resultMap[string(content.ContentID)].Programs = append(resultMap[string(content.ContentID)].Programs, query.ProgramReadModel{
+				ID:       pID,
+				Question: content.Question.String,
+				Answer:   content.Answer.String,
+			})
+		}
+	}
+
+	return converter.ToVals(results), nil
 }

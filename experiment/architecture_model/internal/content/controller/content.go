@@ -41,8 +41,8 @@ func (c Content) PostContents(ctx context.Context, request api.PostContentsReque
 		return nil, err
 	}
 	return api.PostContents201JSONResponse(api.ContentResponse{
-		ID:   newContentID.String(),
-		Name: name,
+		ContentID: newContentID.String(),
+		Name:      name,
 		// TODO: programs
 	}), nil
 }
@@ -55,8 +55,19 @@ func (c Content) GetContents(ctx context.Context, request api.GetContentsRequest
 	responses := make([]api.ContentResponse, len(contents))
 	for i, content := range contents {
 		responses[i] = api.ContentResponse{
-			ID:   content.ID.String(),
-			Name: content.Name,
+			ContentID: content.ID.String(),
+			Name:      content.Name,
+			Programs: func() []api.ProgramResponse {
+				programs := make([]api.ProgramResponse, len(content.Programs))
+				for i, program := range content.Programs {
+					programs[i] = api.ProgramResponse{
+						ProgramID: program.ID.String(),
+						Question:  &program.Question,
+						Answer:    &program.Answer,
+					}
+				}
+				return programs
+			}(),
 		}
 	}
 	return api.GetContents200JSONResponse(responses), nil
@@ -75,7 +86,18 @@ func (c Content) GetContentsByID(ctx context.Context, request api.GetContentsByI
 		return api.GetContentsByID404JSONResponse{Message: converter.ToPtr("not found")}, nil
 	}
 	return api.GetContentsByID200JSONResponse(api.ContentResponse{
-		ID:   content.ID.String(),
-		Name: content.Name,
+		ContentID: content.ID.String(),
+		Name:      content.Name,
+		Programs: func() []api.ProgramResponse {
+			programs := make([]api.ProgramResponse, len(content.Programs))
+			for i, program := range content.Programs {
+				programs[i] = api.ProgramResponse{
+					ProgramID: program.ID.String(),
+					Question:  &program.Question,
+					Answer:    &program.Answer,
+				}
+			}
+			return programs
+		}(),
 	}), nil
 }

@@ -29,7 +29,7 @@ func ParseID(s string) (model.ID, error) {
 	return model.NewID(id), nil
 }
 
-func CreateID(id []byte) (model.ID, error) {
+func ToID(id []byte) (model.ID, error) {
 	uuidID, err := uuid.FromBytes(id)
 	if err != nil {
 		return model.ID{}, err

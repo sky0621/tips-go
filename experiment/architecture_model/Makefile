@@ -15,6 +15,9 @@ redoc: redoc-lint
 generate-api: redoc
 	go tool oapi-codegen --config=oapi-codegen-config.yaml -o internal/api/generated.go $(OPENAPI_SCHEMA_YAML)
 
+.PHONY: generate-sqlc
+generate-sqlc:
+	go tool sqlc generate
 
 .PHONY: run-local-mysql
 run-local-mysql:
@@ -31,10 +34,6 @@ migrate-up:
 .PHONY: migrate-down
 migrate-down:
 	go run cmd/migration/main.go --down
-
-.PHONY: generate-sqlc
-generate-sqlc:
-	go tool sqlc generate
 
 .PHONY: test
 test:
