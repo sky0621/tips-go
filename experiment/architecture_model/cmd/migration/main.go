@@ -8,17 +8,11 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/mysql"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	"github.com/joho/godotenv"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/shared/config"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/shared/rdb"
-	"log"
 )
 
 func main() {
-	if err := godotenv.Load(); err != nil {
-		log.Println("Warning: .env ファイルが見つかりませんでした")
-	}
-
 	var up, down bool
 	flag.BoolVar(&up, "up", false, "全マイグレーション適用")
 	flag.BoolVar(&down, "down", false, "全マイグレーションロールバック")

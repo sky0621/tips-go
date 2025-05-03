@@ -2,6 +2,8 @@ package config
 
 import (
 	"fmt"
+	"github.com/joho/godotenv"
+	"log"
 	"os"
 )
 
@@ -15,6 +17,9 @@ type Config struct {
 }
 
 func NewConfig() Config {
+	if err := godotenv.Load(); err != nil {
+		log.Println("Warning: .env ファイルが見つかりませんでした")
+	}
 	useCloudSQL := os.Getenv("USE_CLOUD_SQL") == "true"
 	cfg := Config{
 		DBUser:      os.Getenv("DB_USER"),
