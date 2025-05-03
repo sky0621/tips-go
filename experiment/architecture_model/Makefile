@@ -13,7 +13,7 @@ redoc: redoc-lint
 
 .PHONY: generate-api
 generate-api: redoc
-	go tool oapi-codegen --config=oapi-codegen-config.yaml -o internal/handler/interfaces/generated_handler.go $(OPENAPI_SCHEMA_YAML)
+	go tool oapi-codegen --config=oapi-codegen-config.yaml -o internal/api/generated.go $(OPENAPI_SCHEMA_YAML)
 
 DB_USER := root
 DB_PASSWORD := yuckyjuice

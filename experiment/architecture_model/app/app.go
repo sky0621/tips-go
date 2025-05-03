@@ -5,7 +5,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	oapimiddleware "github.com/oapi-codegen/echo-middleware"
-	"github.com/sky0621/tips-go/experiment/architecture_model/internal/handler/interfaces"
+	"github.com/sky0621/tips-go/experiment/architecture_model/internal/api"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/shared/config"
 	"log"
 )
@@ -22,7 +22,7 @@ func New() App {
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORS())
 
-	swagger, err := interfaces.GetSwagger()
+	swagger, err := api.GetSwagger()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -30,7 +30,7 @@ func New() App {
 
 	router := e.Group("/api/v1", oapiRequestValidator)
 
-	interfaces.RegisterHandlers(router, createHandlers(db))
+	api.RegisterHandlers(router, createHandlers(db))
 
 	return &app{echo: e}
 }

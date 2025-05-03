@@ -3,10 +3,10 @@ package controller
 import (
 	"context"
 	"github.com/google/uuid"
+	"github.com/sky0621/tips-go/experiment/architecture_model/internal/api"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/application/command"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/application/query"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/domain/model"
-	"github.com/sky0621/tips-go/experiment/architecture_model/internal/handler/interfaces"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/shared/converter"
 )
 
@@ -20,7 +20,7 @@ type Content struct {
 	saveContent    command.SaveContent
 }
 
-func (c Content) PostContents(ctx context.Context, request interfaces.PostContentsRequestObject) (interfaces.PostContentsResponseObject, error) {
+func (c Content) PostContents(ctx context.Context, request api.PostContentsRequestObject) (api.PostContentsResponseObject, error) {
 	uuidV7, err := uuid.NewV7()
 	if err != nil {
 		return nil, err
@@ -45,40 +45,41 @@ func (c Content) PostContents(ctx context.Context, request interfaces.PostConten
 	}); err != nil {
 		return nil, err
 	}
-	return interfaces.PostContents201JSONResponse(interfaces.ContentResponse{
+	return api.PostContents201JSONResponse(api.ContentResponse{
 		ID:   uuidV7.String(),
 		Name: request.Body.Name,
+		// TODO: programs
 	}), nil
 }
 
-func (c Content) GetContents(ctx context.Context, request interfaces.GetContentsRequestObject) (interfaces.GetContentsResponseObject, error) {
+func (c Content) GetContents(ctx context.Context, request api.GetContentsRequestObject) (api.GetContentsResponseObject, error) {
 	contents, err := c.searchContents.Exec(ctx, request.Params.PartialName)
 	if err != nil {
 		return nil, err
 	}
-	responses := make([]interfaces.ContentResponse, len(contents))
+	responses := make([]api.ContentResponse, len(contents))
 	for i, content := range contents {
-		responses[i] = interfaces.ContentResponse{
+		responses[i] = api.ContentResponse{
 			ID:   content.ID.String(),
 			Name: content.Name,
 		}
 	}
-	return interfaces.GetContents200JSONResponse(responses), nil
+	return api.GetContents200JSONResponse(responses), nil
 }
 
-func (c Content) GetContentsByID(ctx context.Context, request interfaces.GetContentsByIDRequestObject) (interfaces.GetContentsByIDResponseObject, error) {
+func (c Content) GetContentsByID(ctx context.Context, request api.GetContentsByIDRequestObject) (api.GetContentsByIDResponseObject, error) {
 	_, err := uuid.Parse(request.ID)
 	if err != nil {
-		return interfaces.GetContentsByID400JSONResponse{Message: converter.ToPtr("not uuid")}, nil
+		return api.GetContentsByID400JSONResponse{Message: converter.ToPtr("not uuid")}, nil
 	}
 	content, err := c.getContent.Exec(ctx, request.ID)
 	if err != nil {
 		return nil, err
 	}
 	if content.IsEmpty() {
-		return interfaces.GetContentsByID404JSONResponse{Message: converter.ToPtr("not found")}, nil
+		return api.GetContentsByID404JSONResponse{Message: converter.ToPtr("not found")}, nil
 	}
-	return interfaces.GetContentsByID200JSONResponse(interfaces.ContentResponse{
+	return api.GetContentsByID200JSONResponse(api.ContentResponse{
 		ID:   content.ID.String(),
 		Name: content.Name,
 	}), nil
