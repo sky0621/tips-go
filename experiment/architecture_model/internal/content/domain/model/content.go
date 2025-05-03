@@ -2,8 +2,8 @@ package model
 
 import (
 	"errors"
-	"github.com/google/uuid"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/domain/model/entity"
+	"github.com/sky0621/tips-go/experiment/architecture_model/internal/shared/model"
 )
 
 func NewContentAggregate(m SaveContentWriteModel) (ContentAggregate, error) {
@@ -34,7 +34,7 @@ type ContentAggregate struct {
 	programs []entity.Program
 }
 
-func (a ContentAggregate) GetID() uuid.UUID {
+func (a ContentAggregate) GetID() model.ID {
 	return a.content.ID
 }
 

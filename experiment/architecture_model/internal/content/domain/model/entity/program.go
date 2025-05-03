@@ -1,9 +1,9 @@
 package entity
 
-import "github.com/google/uuid"
+import "github.com/sky0621/tips-go/experiment/architecture_model/internal/shared/model"
 
 type Program struct {
-	ID       uuid.UUID
+	ID       model.ID
 	Question string
 	Answer   string
 }

@@ -4,8 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/application/query"
-	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/domain/service"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/infrastructure/rdb"
+	"github.com/sky0621/tips-go/experiment/architecture_model/internal/shared/service"
 )
 
 var _ query.SearchContents = (*searchContentImpl)(nil)

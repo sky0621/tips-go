@@ -2,7 +2,7 @@ package query
 
 import (
 	"context"
-	"github.com/google/uuid"
+	"github.com/sky0621/tips-go/experiment/architecture_model/internal/shared/model"
 )
 
 type SearchContents interface {
@@ -10,6 +10,6 @@ type SearchContents interface {
 }
 
 type SearchContentsReadModel struct {
-	ID   uuid.UUID
+	ID   model.ID
 	Name string
 }
