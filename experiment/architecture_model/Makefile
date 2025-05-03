@@ -15,20 +15,22 @@ redoc: redoc-lint
 generate-api: redoc
 	go tool oapi-codegen --config=oapi-codegen-config.yaml -o internal/api/generated.go $(OPENAPI_SCHEMA_YAML)
 
-DB_USER := root
-DB_PASSWORD := yuckyjuice
-DB_HOST := 127.0.0.1
-DB_PORT := 22221
-DB_NAME := architecturemodelmysql01
-DSN := "mysql://$(DB_USER):$(DB_PASSWORD)@tcp($(DB_HOST):$(DB_PORT))/$(DB_NAME)?parseTime=true&charset=utf8mb4"
+
+.PHONY: run-local-mysql
+run-local-mysql:
+	docker compose up mysql -d --wait
+
+.PHONY: stop-local-mysql
+stop-local-mysql:
+	docker compose down mysql
 
 .PHONY: migrate-up
-migration-up:
-	migrate -path schema/db -database $(DSN) up
+migrate-up:
+	go run cmd/migration/main.go --up
 
 .PHONY: migrate-down
-migration-down:
-	migrate -path schema/db -database $(DSN) down
+migrate-down:
+	go run cmd/migration/main.go --down
 
 .PHONY: generate-sqlc
 generate-sqlc:

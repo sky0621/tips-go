@@ -31,3 +31,5 @@ experiment/**/docker/
 **/.DS_Store
 
 **/bin/**
+
+**/.docker/mysql/data/
