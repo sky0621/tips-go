@@ -21,3 +21,7 @@ func (i ID) String() string {
 func (i ID) MarshalBinary() ([]byte, error) {
 	return i.Value().MarshalBinary()
 }
+
+func (i ID) IsEmpty() bool {
+	return i.Value() == uuid.Nil
+}

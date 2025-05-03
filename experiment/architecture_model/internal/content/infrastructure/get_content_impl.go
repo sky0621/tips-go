@@ -4,9 +4,9 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"github.com/google/uuid"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/application/query"
 	"github.com/sky0621/tips-go/experiment/architecture_model/internal/content/infrastructure/rdb"
+	"github.com/sky0621/tips-go/experiment/architecture_model/internal/shared/service"
 )
 
 var _ query.GetContent = (*getContentImpl)(nil)
@@ -28,7 +28,7 @@ func (g getContentImpl) Exec(ctx context.Context, id string) (query.GetContentRe
 		}
 		return query.GetContentReadModel{}, err
 	}
-	uuidID, err := uuid.FromBytes(content.ID)
+	uuidID, err := service.CreateID(content.ID)
 	if err != nil {
 		return query.GetContentReadModel{}, err
 	}

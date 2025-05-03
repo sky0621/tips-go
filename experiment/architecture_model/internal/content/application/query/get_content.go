@@ -2,7 +2,7 @@ package query
 
 import (
 	"context"
-	"github.com/google/uuid"
+	"github.com/sky0621/tips-go/experiment/architecture_model/internal/shared/model"
 )
 
 type GetContent interface {
@@ -10,10 +10,10 @@ type GetContent interface {
 }
 
 type GetContentReadModel struct {
-	ID   uuid.UUID
+	ID   model.ID
 	Name string
 }
 
 func (m GetContentReadModel) IsEmpty() bool {
-	return m.ID == uuid.Nil && m.Name == ""
+	return m.ID.IsEmpty() && m.Name == ""
 }
