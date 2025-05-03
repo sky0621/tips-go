@@ -13,13 +13,19 @@ import (
 )
 
 func main() {
-	var up, down bool
+	var up, down, test bool
 	flag.BoolVar(&up, "up", false, "全マイグレーション適用")
 	flag.BoolVar(&down, "down", false, "全マイグレーションロールバック")
+	flag.BoolVar(&test, "test", false, "テスト用DBか否か")
 	flag.Parse()
 
 	ctx := context.Background()
-	cfg := config.NewConfig()
+	var cfg config.Config
+	if test {
+		cfg = config.NewTestConfig()
+	} else {
+		cfg = config.NewConfig()
+	}
 	sqlDB, err := rdb.NewDB(ctx, cfg)
 	if err != nil {
 		fmt.Println(err)

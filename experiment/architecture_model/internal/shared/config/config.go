@@ -22,10 +22,10 @@ func NewConfig() Config {
 	}
 	useCloudSQL := os.Getenv("USE_CLOUD_SQL") == "true"
 	cfg := Config{
+		DBPort:      os.Getenv("DB_PORT"),
 		DBUser:      os.Getenv("DB_USER"),
 		DBPass:      os.Getenv("DB_PASSWORD"),
 		DBName:      os.Getenv("DB_NAME"),
-		DBPort:      os.Getenv("DB_PORT"),
 		UseCloudSQL: useCloudSQL,
 	}
 	if useCloudSQL {
@@ -34,4 +34,17 @@ func NewConfig() Config {
 		cfg.DBHost = os.Getenv("DB_HOST")
 	}
 	return cfg
+}
+
+func NewTestConfig() Config {
+	if err := godotenv.Load(); err != nil {
+		log.Println("Warning: .env ファイルが見つかりませんでした")
+	}
+	return Config{
+		DBHost: os.Getenv("TEST_DB_HOST"),
+		DBPort: os.Getenv("TEST_DB_PORT"),
+		DBUser: os.Getenv("TEST_DB_USER"),
+		DBPass: os.Getenv("TEST_DB_PASSWORD"),
+		DBName: os.Getenv("TEST_DB_NAME"),
+	}
 }

@@ -33,3 +33,4 @@ experiment/**/docker/
 **/bin/**
 
 **/.docker/mysql/data/
+**/.docker/mysql_test/data/
