@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"context"
-	"fmt"
 	"github.com/sky0621/tips-go/how2use/library/standard/slog/stacktrace/domain/model"
 	"github.com/sky0621/tips-go/how2use/library/standard/slog/stacktrace/domain/service"
 )
@@ -18,7 +17,7 @@ func NewUser(s service.User) User {
 func (u User) ListUser(ctx context.Context) ([]model.User, error) {
 	users, err := u.s.ListUser(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("[usecase] failed to list users: %w", err)
+		return nil, err
 	}
 	return users, nil
 }

@@ -6,6 +6,7 @@ import (
 	"log/slog"
 	"os"
 	"runtime"
+	"strings"
 )
 
 func SetDefaultLogger() {
@@ -55,6 +56,9 @@ func fmtErr(err error) slog.Value {
 				continue
 			}
 			file, line := fn.FileLine(pc)
+			if strings.Contains(file, "runtime") {
+				continue
+			}
 			lines = append(lines, fmt.Sprintf("%s %s:%d", fn.Name(), file, line))
 		}
 		attrs = append(attrs, slog.Any("trace", lines))

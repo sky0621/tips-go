@@ -2,7 +2,6 @@ package handler
 
 import (
 	"context"
-	"fmt"
 	"github.com/sky0621/tips-go/how2use/library/standard/slog/stacktrace/usecase"
 )
 
@@ -22,7 +21,7 @@ type UserDto struct {
 func (u *User) ListUser(ctx context.Context) ([]UserDto, error) {
 	res, err := u.u.ListUser(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("[handler] failed to list users: %w", err)
+		return nil, err
 	}
 	var userDtos []UserDto
 	for _, user := range res {
