@@ -21,6 +21,8 @@ type Server struct {
 func (s Server) GetTodos(ctx echo.Context, params api.GetTodosParams) error {
 	// TODO: 本来ならserviceに指定して件数を絞る操作をするが省略
 	fmt.Println(params.Limit)
+	requestID := ctx.Response().Header().Get(echo.HeaderXRequestID)
+	fmt.Println(requestID)
 
 	todos, err := s.todoService.ListTodo()
 	if err != nil {

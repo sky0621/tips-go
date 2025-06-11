@@ -21,6 +21,7 @@ func main() {
 	e.Use(echomiddleware.LoggerWithConfig(echomiddleware.LoggerConfig{}))
 	e.Use(echomiddleware.Recover())
 	e.Use(echomiddleware.CORSWithConfig(echomiddleware.CORSConfig{}))
+	e.Use(echomiddleware.RequestID())
 	e.Use(middleware.OapiRequestValidator(swagger))
 	api.RegisterHandlers(e, svr)
 	e.Logger.Fatal(e.Start(":8080"))
