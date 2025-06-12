@@ -17,16 +17,17 @@ type School struct {
 
 type Grade struct {
 	ID        GradeID
-	GradeName string `copier:"Name"`
+	GradeName string
 	No        int
 	CreatedAt time.Time
 	Classes   []Class
 }
 
 type Class struct {
-	ID       ClassID
-	Name     string
-	Students []Student
+	ID        ClassID
+	Name      string
+	OnlyModel int
+	Students  []Student
 }
 
 type Student struct {

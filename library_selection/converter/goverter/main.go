@@ -2,19 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/jinzhu/copier"
-	"github.com/sky0621/tips-go/library_selection/converter/copier/dto"
-	"github.com/sky0621/tips-go/library_selection/converter/copier/model"
+	"github.com/sky0621/tips-go/library_selection/converter/goverter/dto/generated"
+	"github.com/sky0621/tips-go/library_selection/converter/goverter/model"
 	"time"
 )
 
 func main() {
 	schoolModel := createModel()
-	var schoolDTO dto.SchoolDTO
-	err := copier.Copy(&schoolDTO, &schoolModel)
-	if err != nil {
-		panic(err)
-	}
+	schoolDTO := (&generated.SchoolConverterImpl{}).FromSchoolModel(schoolModel)
 	fmt.Println(schoolDTO)
 }
 
