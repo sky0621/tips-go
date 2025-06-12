@@ -8,9 +8,7 @@ import (
 	model "github.com/sky0621/tips-go/library_selection/converter/goverter/model"
 )
 
-type SchoolConverterImpl struct{}
-
-func (c *SchoolConverterImpl) FromClassModel(source model.Class) dto.ClassDTO {
+func FromClassModel(source model.Class) dto.ClassDTO {
 	var dtoClassDTO dto.ClassDTO
 	dtoClassDTO.ID = string(source.ID)
 	dtoClassDTO.Name = source.Name
@@ -18,12 +16,12 @@ func (c *SchoolConverterImpl) FromClassModel(source model.Class) dto.ClassDTO {
 	if source.Students != nil {
 		dtoClassDTO.Students = make([]dto.StudentDTO, len(source.Students))
 		for i := 0; i < len(source.Students); i++ {
-			dtoClassDTO.Students[i] = c.modelStudentToDtoStudentDTO(source.Students[i])
+			dtoClassDTO.Students[i] = modelStudentToDtoStudentDTO(source.Students[i])
 		}
 	}
 	return dtoClassDTO
 }
-func (c *SchoolConverterImpl) FromGradeModel(source model.Grade) dto.GradeDTO {
+func FromGradeModel(source model.Grade) dto.GradeDTO {
 	var dtoGradeDTO dto.GradeDTO
 	dtoGradeDTO.ID = string(source.ID)
 	dtoGradeDTO.Name = source.GradeName
@@ -32,12 +30,12 @@ func (c *SchoolConverterImpl) FromGradeModel(source model.Grade) dto.GradeDTO {
 	if source.Classes != nil {
 		dtoGradeDTO.Classes = make([]dto.ClassDTO, len(source.Classes))
 		for i := 0; i < len(source.Classes); i++ {
-			dtoGradeDTO.Classes[i] = c.FromClassModel(source.Classes[i])
+			dtoGradeDTO.Classes[i] = FromClassModel(source.Classes[i])
 		}
 	}
 	return dtoGradeDTO
 }
-func (c *SchoolConverterImpl) FromSchoolModel(source model.School) dto.SchoolDTO {
+func FromSchoolModel(source model.School) dto.SchoolDTO {
 	var dtoSchoolDTO dto.SchoolDTO
 	dtoSchoolDTO.ID = string(source.ID)
 	dtoSchoolDTO.Name = source.Name
@@ -46,12 +44,12 @@ func (c *SchoolConverterImpl) FromSchoolModel(source model.School) dto.SchoolDTO
 	if source.Grades != nil {
 		dtoSchoolDTO.Grades = make([]dto.GradeDTO, len(source.Grades))
 		for i := 0; i < len(source.Grades); i++ {
-			dtoSchoolDTO.Grades[i] = c.FromGradeModel(source.Grades[i])
+			dtoSchoolDTO.Grades[i] = FromGradeModel(source.Grades[i])
 		}
 	}
 	return dtoSchoolDTO
 }
-func (c *SchoolConverterImpl) ToClassModel(source dto.ClassDTO) model.Class {
+func ToClassModel(source dto.ClassDTO) model.Class {
 	var modelClass model.Class
 	modelClass.ID = model.ClassID(source.ID)
 	modelClass.Name = source.Name
@@ -59,12 +57,12 @@ func (c *SchoolConverterImpl) ToClassModel(source dto.ClassDTO) model.Class {
 	if source.Students != nil {
 		modelClass.Students = make([]model.Student, len(source.Students))
 		for i := 0; i < len(source.Students); i++ {
-			modelClass.Students[i] = c.ToStudentModel(source.Students[i])
+			modelClass.Students[i] = ToStudentModel(source.Students[i])
 		}
 	}
 	return modelClass
 }
-func (c *SchoolConverterImpl) ToGradeModel(source dto.GradeDTO) model.Grade {
+func ToGradeModel(source dto.GradeDTO) model.Grade {
 	var modelGrade model.Grade
 	modelGrade.ID = model.GradeID(source.ID)
 	modelGrade.GradeName = source.Name
@@ -73,12 +71,12 @@ func (c *SchoolConverterImpl) ToGradeModel(source dto.GradeDTO) model.Grade {
 	if source.Classes != nil {
 		modelGrade.Classes = make([]model.Class, len(source.Classes))
 		for i := 0; i < len(source.Classes); i++ {
-			modelGrade.Classes[i] = c.ToClassModel(source.Classes[i])
+			modelGrade.Classes[i] = ToClassModel(source.Classes[i])
 		}
 	}
 	return modelGrade
 }
-func (c *SchoolConverterImpl) ToSchoolModel(source dto.SchoolDTO) model.School {
+func ToSchoolModel(source dto.SchoolDTO) model.School {
 	var modelSchool model.School
 	modelSchool.ID = model.SchoolID(source.ID)
 	modelSchool.Name = source.Name
@@ -87,18 +85,18 @@ func (c *SchoolConverterImpl) ToSchoolModel(source dto.SchoolDTO) model.School {
 	if source.Grades != nil {
 		modelSchool.Grades = make([]model.Grade, len(source.Grades))
 		for i := 0; i < len(source.Grades); i++ {
-			modelSchool.Grades[i] = c.ToGradeModel(source.Grades[i])
+			modelSchool.Grades[i] = ToGradeModel(source.Grades[i])
 		}
 	}
 	return modelSchool
 }
-func (c *SchoolConverterImpl) ToStudentModel(source dto.StudentDTO) model.Student {
+func ToStudentModel(source dto.StudentDTO) model.Student {
 	var modelStudent model.Student
 	modelStudent.ID = model.SchoolID(source.ID)
 	modelStudent.Name = source.Name
 	return modelStudent
 }
-func (c *SchoolConverterImpl) modelStudentToDtoStudentDTO(source model.Student) dto.StudentDTO {
+func modelStudentToDtoStudentDTO(source model.Student) dto.StudentDTO {
 	var dtoStudentDTO dto.StudentDTO
 	dtoStudentDTO.ID = string(source.ID)
 	dtoStudentDTO.Name = source.Name

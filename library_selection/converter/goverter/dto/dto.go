@@ -60,6 +60,7 @@ func (s SchoolDTO) String() string {
 }
 
 // goverter:converter
+// goverter:output:format function
 // goverter:extend TimeToTime
 type SchoolConverter interface {
 	FromSchoolModel(source model.School) SchoolDTO

@@ -9,7 +9,7 @@ import (
 
 func main() {
 	schoolModel := createModel()
-	schoolDTO := (&generated.SchoolConverterImpl{}).FromSchoolModel(schoolModel)
+	schoolDTO := generated.FromSchoolModel(schoolModel)
 	fmt.Println(schoolDTO)
 }
 
