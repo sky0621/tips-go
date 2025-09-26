@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS bug_status (
+    status VARCHAR(20) PRIMARY KEY
+);
+
+CREATE TABLE IF NOT EXISTS bugs (
+    bug_id INT AUTO_INCREMENT PRIMARY KEY,
+    status VARCHAR(20),
+    FOREIGN KEY (status) REFERENCES bug_status(status) ON UPDATE CASCADE
+);

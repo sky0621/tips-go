@@ -1,0 +1,3 @@
+SELECT * FROM bugs WHERE MATCH(description) AGAINST('crashes' IN NATURAL LANGUAGE MODE);
+
+SELECT * FROM bugs WHERE MATCH(description) AGAINST('+error -403' IN BOOLEAN MODE);
