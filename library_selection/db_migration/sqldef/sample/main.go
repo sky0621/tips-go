@@ -43,9 +43,9 @@ func loadMySQLConfig() (mysqlConfig, error) {
 	cfg := mysqlConfig{
 		Host:     getEnv("SQLDEF_MYSQL_HOST", "127.0.0.1"),
 		Port:     getEnv("SQLDEF_MYSQL_PORT", "3306"),
-		User:     os.Getenv("SQLDEF_MYSQL_USER"),
-		Password: os.Getenv("SQLDEF_MYSQL_PASSWORD"),
-		Database: os.Getenv("SQLDEF_MYSQL_DATABASE"),
+		User:     getEnv("SQLDEF_MYSQL_USER", "app"),
+		Password: getEnv("SQLDEF_MYSQL_PASSWORD", "app"),
+		Database: getEnv("SQLDEF_MYSQL_DATABASE", "sample"),
 		DryRun:   isTruthy(os.Getenv("SQLDEF_DRY_RUN")),
 	}
 
