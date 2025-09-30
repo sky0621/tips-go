@@ -46,7 +46,7 @@ mysql-stop:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) down
 
 install-sqldef:
-	go install github.com/k0kubun/sqldef/cmd/mysqldef@latest
+	go install github.com/sqldef/sqldef/cmd/mysqldef@latest
 
 sqldef-dry-run:
 	$(SQDEF_BIN) --host=$(SQLDEF_MYSQL_HOST) --port=$(SQLDEF_MYSQL_PORT) --user=$(SQLDEF_MYSQL_USER) $(SQLDEF_PASSWORD_OPT) --dry-run $(SQLDEF_MYSQL_DATABASE) < $(SCHEMA_FILE)
