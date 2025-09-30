@@ -13,25 +13,31 @@
 | --- | --- | --- |
 | `SQLDEF_MYSQL_HOST` | 任意 | 接続先ホスト。未指定時は `127.0.0.1` |
 | `SQLDEF_MYSQL_PORT` | 任意 | 接続先ポート。未指定時は `3306` |
-| `SQLDEF_MYSQL_USER` | 必須 | 接続ユーザ |
-| `SQLDEF_MYSQL_PASSWORD` | 任意 | 接続パスワード |
-| `SQLDEF_MYSQL_DATABASE` | 必須 | 対象データベース名 |
+| `SQLDEF_MYSQL_USER` | 任意 | 接続ユーザ。未指定時は `app` |
+| `SQLDEF_MYSQL_PASSWORD` | 任意 | 接続パスワード。未指定時は `app` |
+| `SQLDEF_MYSQL_DATABASE` | 任意 | 対象データベース名。未指定時は `sample` |
 | `SQLDEF_DRY_RUN` | 任意 | `true`/`1` などを指定すると `mysqldef --dry-run` で差分のみ表示 |
 
 ## 実行方法
 
-```bash
-export SQLDEF_MYSQL_HOST=127.0.0.1
-export SQLDEF_MYSQL_PORT=3306
-export SQLDEF_MYSQL_USER=root
-export SQLDEF_MYSQL_PASSWORD=secret
-export SQLDEF_MYSQL_DATABASE=app_db
+まずはリポジトリ直下（`library_selection/db_migration/sqldef` ディレクトリ）で MySQL を起動します。
 
-# 差分を確認したい場合
-export SQLDEF_DRY_RUN=true
+```bash
+docker compose up -d
+```
+
+```bash
+cd library_selection/db_migration/sqldef/sample
+
+# 必要に応じて環境変数を上書き（既定は docker-compose と揃っています）
+# export SQLDEF_MYSQL_HOST=127.0.0.1
+# export SQLDEF_MYSQL_PORT=3306
+# export SQLDEF_MYSQL_USER=app
+# export SQLDEF_MYSQL_PASSWORD=app
+# export SQLDEF_MYSQL_DATABASE=sample
+# export SQLDEF_DRY_RUN=true
 
 # スキーマ適用
-cd library_selection/db_migration/sqldef/sample
 go run .
 ```
 
