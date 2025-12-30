@@ -34,3 +34,4 @@ experiment/**/docker/
 
 **/.docker/mysql/data/
 **/.docker/mysql_test/data/
+db/docker/

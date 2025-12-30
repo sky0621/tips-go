@@ -6,14 +6,12 @@ DOCKER_COMPOSE_FILE ?= docker-compose.yml
 MYSQL_CONTAINER_NAME ?= sqldef-mysql
 MYSQL_IMAGE ?= mysql:8.0
 MYSQL_HOST ?= 127.0.0.1
-MYSQL_PORT ?= 3306
+MYSQL_PORT ?= 6306
 MYSQL_ROOT_PASSWORD ?= root
 MYSQL_DATABASE ?= sample
 MYSQL_USER ?= app
 MYSQL_PASSWORD ?= app
 
-SQDEF_BIN ?= mysqldef
-SCHEMA_FILE ?= sample/schema/schema.sql
 GO_MODULE ?= ./sample
 
 SQLDEF_MYSQL_HOST ?= $(MYSQL_HOST)
@@ -35,9 +33,7 @@ export MYSQL_DATABASE
 export MYSQL_USER
 export MYSQL_PASSWORD
 
-SQLDEF_PASSWORD_OPT := $(if $(strip $(SQLDEF_MYSQL_PASSWORD)),--password=$(SQLDEF_MYSQL_PASSWORD),)
-
-.PHONY: mysql-start mysql-stop install-sqldef sqldef-dry-run sqldef-run go-run
+.PHONY: mysql-start mysql-stop go-run
 
 mysql-start:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) up -d
@@ -45,14 +41,5 @@ mysql-start:
 mysql-stop:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) down
 
-install-sqldef:
-	go install github.com/sqldef/sqldef/cmd/mysqldef@latest
-
-sqldef-dry-run:
-	$(SQDEF_BIN) --host=$(SQLDEF_MYSQL_HOST) --port=$(SQLDEF_MYSQL_PORT) --user=$(SQLDEF_MYSQL_USER) $(SQLDEF_PASSWORD_OPT) --dry-run $(SQLDEF_MYSQL_DATABASE) < $(SCHEMA_FILE)
-
-sqldef-run:
-	$(SQDEF_BIN) --host=$(SQLDEF_MYSQL_HOST) --port=$(SQLDEF_MYSQL_PORT) --user=$(SQLDEF_MYSQL_USER) $(SQLDEF_PASSWORD_OPT) $(SQLDEF_MYSQL_DATABASE) < $(SCHEMA_FILE)
-
 go-run:
-	go run $(GO_MODULE)
+	@(cd $(GO_MODULE) && go run .)
