@@ -11,6 +11,12 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	}
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+			log.Println(err)
+		}
+	}(file)
 	handleData(file)
 
 	log.Println("============================")
