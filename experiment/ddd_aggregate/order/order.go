@@ -13,6 +13,12 @@ const (
 	StatusSubmitted Status = "submitted"
 )
 
+type ItemSnapshot struct {
+	ProductID ProductID
+	Quantity  int
+	UnitPrice int
+}
+
 type Order struct {
 	id         OrderID
 	customerID CustomerID
@@ -44,6 +50,14 @@ func NewProductID(value string) (ProductID, error) {
 	return id, nil
 }
 
+func ParseStatus(value string) (Status, error) {
+	status := Status(strings.TrimSpace(value))
+	if err := validateStatus(status); err != nil {
+		return "", err
+	}
+	return status, nil
+}
+
 func New(id OrderID, customerID CustomerID) (*Order, error) {
 	if err := validateOrderID(id); err != nil {
 		return nil, err
@@ -58,6 +72,41 @@ func New(id OrderID, customerID CustomerID) (*Order, error) {
 		status:     StatusDraft,
 		items:      make(map[ProductID]*OrderItem),
 	}, nil
+}
+
+func Reconstruct(id OrderID, customerID CustomerID, status Status, items []ItemSnapshot) (*Order, error) {
+	if err := validateOrderID(id); err != nil {
+		return nil, err
+	}
+	if err := validateCustomerID(customerID); err != nil {
+		return nil, err
+	}
+	if err := validateStatus(status); err != nil {
+		return nil, err
+	}
+	if status == StatusSubmitted && len(items) == 0 {
+		return nil, ErrNoItemsToSubmit
+	}
+
+	aggregate := &Order{
+		id:         id,
+		customerID: customerID,
+		status:     status,
+		items:      make(map[ProductID]*OrderItem),
+	}
+
+	for _, snapshot := range items {
+		item, err := newItem(snapshot.ProductID, snapshot.Quantity, snapshot.UnitPrice)
+		if err != nil {
+			return nil, err
+		}
+		if _, exists := aggregate.items[item.productID]; exists {
+			return nil, ErrDuplicateProduct
+		}
+		aggregate.items[item.productID] = item
+	}
+
+	return aggregate, nil
 }
 
 func (o *Order) ID() OrderID {
@@ -94,11 +143,11 @@ func (o *Order) AddItem(productID ProductID, quantity int, unitPrice int) error 
 		return nil
 	}
 
-	o.items[productID] = &OrderItem{
-		productID: productID,
-		quantity:  quantity,
-		unitPrice: unitPrice,
+	item, err := newItem(productID, quantity, unitPrice)
+	if err != nil {
+		return err
 	}
+	o.items[productID] = item
 	return nil
 }
 
@@ -182,4 +231,31 @@ func validateProductID(id ProductID) error {
 		return ErrEmptyProductID
 	}
 	return nil
+}
+
+func validateStatus(status Status) error {
+	switch status {
+	case StatusDraft, StatusSubmitted:
+		return nil
+	default:
+		return ErrInvalidStatus
+	}
+}
+
+func newItem(productID ProductID, quantity int, unitPrice int) (*OrderItem, error) {
+	if err := validateProductID(productID); err != nil {
+		return nil, err
+	}
+	if quantity <= 0 {
+		return nil, ErrInvalidQuantity
+	}
+	if unitPrice < 0 {
+		return nil, ErrInvalidUnitPrice
+	}
+
+	return &OrderItem{
+		productID: productID,
+		quantity:  quantity,
+		unitPrice: unitPrice,
+	}, nil
 }

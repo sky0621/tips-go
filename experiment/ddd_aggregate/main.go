@@ -1,13 +1,39 @@
 package main
 
 import (
+	"context"
+	"database/sql"
 	"fmt"
 	"log"
+	"time"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/sky0621/tips-go/experiment/ddd_aggregate/order"
+	"github.com/sky0621/tips-go/experiment/ddd_aggregate/rdb"
+	"github.com/sky0621/tips-go/experiment/ddd_aggregate/repository"
 )
 
 func main() {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	cfg, err := rdb.LoadConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	db, err := sql.Open("mysql", cfg.DSN())
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	if err := db.PingContext(ctx); err != nil {
+		log.Fatal(err)
+	}
+
+	repo := repository.NewOrderRepository(db)
+
 	orderID, err := order.NewOrderID("ORD-1001")
 	if err != nil {
 		log.Fatal(err)
@@ -17,7 +43,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	o, err := order.New(orderID, customerID)
+	aggregate, err := order.New(orderID, customerID)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -31,24 +57,27 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if err := o.AddItem(coffeeID, 2, 450); err != nil {
+	if err := aggregate.AddItem(coffeeID, 2, 450); err != nil {
 		log.Fatal(err)
 	}
-	if err := o.AddItem(teaID, 1, 300); err != nil {
+	if err := aggregate.AddItem(teaID, 1, 300); err != nil {
+		log.Fatal(err)
+	}
+	if err := aggregate.Submit(); err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("order %s total: %d\n", o.ID(), o.TotalPrice())
-	for _, item := range o.Items() {
+	if err := repo.Save(ctx, aggregate); err != nil {
+		log.Fatal(err)
+	}
+
+	loaded, err := repo.FindByID(ctx, orderID)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("order %s status: %s total: %d\n", loaded.ID(), loaded.Status(), loaded.TotalPrice())
+	for _, item := range loaded.Items() {
 		fmt.Printf("- %s x%d = %d\n", item.ProductID(), item.Quantity(), item.Subtotal())
-	}
-
-	if err := o.Submit(); err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("status after submit: %s\n", o.Status())
-
-	if err := o.AddItem(coffeeID, 1, 450); err != nil {
-		fmt.Printf("add after submit: %v\n", err)
 	}
 }

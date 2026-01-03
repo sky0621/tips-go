@@ -32,6 +32,8 @@ experiment/**/docker/
 
 **/bin/**
 
+experiment/ddd_aggregate/.cache/
+
 **/.docker/mysql/data/
 **/.docker/mysql_test/data/
 db/docker/
