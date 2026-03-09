@@ -24,6 +24,14 @@ go run .
 
 失敗が 1 件でもあると終了コード 1 で終了します。
 
+特定の SQL 名を検査対象外にする場合は、`sqlc` の `-- name:` 名を `--exclude` で指定します。
+
+```bash
+go run . --exclude=UnsafeListSchools
+```
+
+複数指定する場合はカンマ区切りです。
+
 ## 判定ルール
 
 - 対象は `SELECT`, `UPDATE`, `DELETE`

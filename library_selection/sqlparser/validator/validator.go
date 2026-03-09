@@ -27,6 +27,7 @@ type Result struct {
 	Name      string
 	Type      string
 	Valid     bool
+	Skipped   bool
 	Err       error
 }
 
@@ -38,18 +39,39 @@ func (r Result) String() string {
 	if r.Err != nil {
 		return fmt.Sprintf("ERROR %s: %v", location, r.Err)
 	}
+	if r.Skipped {
+		return fmt.Sprintf("SKIP %s [%s]", location, r.Type)
+	}
 	if r.Valid {
 		return fmt.Sprintf("OK %s [%s]", location, r.Type)
 	}
 	return fmt.Sprintf("NG %s [%s]: missing condition on schools.id", location, r.Type)
 }
 
-func ValidateSQLCProject(configPath string) ([]Result, error) {
+type Options struct {
+	excludedNames map[string]struct{}
+}
+
+type Option func(*Options)
+
+func WithExcludedNames(names []string) Option {
+	return func(opts *Options) {
+		if opts.excludedNames == nil {
+			opts.excludedNames = make(map[string]struct{}, len(names))
+		}
+		for _, name := range names {
+			opts.excludedNames[strings.ToLower(name)] = struct{}{}
+		}
+	}
+}
+
+func ValidateSQLCProject(configPath string, optionFns ...Option) ([]Result, error) {
 	cfg, err := loadConfig(configPath)
 	if err != nil {
 		return nil, err
 	}
 
+	opts := newOptions(optionFns...)
 	baseDir := filepath.Dir(configPath)
 	var results []Result
 	for _, block := range cfg.SQL {
@@ -61,7 +83,7 @@ func ValidateSQLCProject(configPath string) ([]Result, error) {
 			if d.IsDir() || filepath.Ext(path) != ".sql" {
 				return nil
 			}
-			fileResults, err := ValidateSQLFile(path)
+			fileResults, err := ValidateSQLFile(path, opts)
 			if err != nil {
 				return err
 			}
@@ -76,7 +98,7 @@ func ValidateSQLCProject(configPath string) ([]Result, error) {
 	return results, nil
 }
 
-func ValidateSQLFile(path string) ([]Result, error) {
+func ValidateSQLFile(path string, opts *Options) ([]Result, error) {
 	sqlBytes, err := os.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("read %s: %w", path, err)
@@ -100,6 +122,17 @@ func ValidateSQLFile(path string) ([]Result, error) {
 		if idx < len(annotations) {
 			name = annotations[idx]
 		}
+		if opts.shouldSkip(name) {
+			results = append(results, Result{
+				File:      path,
+				Statement: restoreSQL(stmt),
+				Name:      name,
+				Type:      stmtType,
+				Skipped:   true,
+				Valid:     true,
+			})
+			continue
+		}
 
 		valid, err := validateStatement(stmt)
 		results = append(results, Result{
@@ -113,6 +146,24 @@ func ValidateSQLFile(path string) ([]Result, error) {
 	}
 
 	return results, nil
+}
+
+func newOptions(optionFns ...Option) *Options {
+	opts := &Options{
+		excludedNames: make(map[string]struct{}),
+	}
+	for _, optionFn := range optionFns {
+		optionFn(opts)
+	}
+	return opts
+}
+
+func (o *Options) shouldSkip(name string) bool {
+	if name == "" {
+		return false
+	}
+	_, ok := o.excludedNames[strings.ToLower(name)]
+	return ok
 }
 
 func loadConfig(path string) (*sqlcConfig, error) {
