@@ -31,6 +31,7 @@ _testmain.go
 **/.DS_Store
 
 **/bin/**
+**/.cache/
 
 experiment/ddd_aggregate/.cache/
 
